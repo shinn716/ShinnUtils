@@ -11,6 +11,7 @@ public class ShinnFPS : MonoBehaviour {
 	private string fps;
 	public bool showFPS = false;
 	public bool showTime = false;
+	public GUIStyle myStyle;
 
 	void Start () {
 		timeleft = updateInterval;
@@ -32,10 +33,10 @@ public class ShinnFPS : MonoBehaviour {
 	void OnGUI () {
 
 		if(showFPS)
-			GUI.Label(new Rect (Screen.width-70, 0, 70, 20), "FPS " + fps);
+			GUI.Label(new Rect (Screen.width-100, 0, 70, 20), "FPS " + fps, myStyle);
 
 		if(showTime)
-			GUI.Label(new Rect (Screen.width-70, 20, 70, 40), "Time " + Time.time);
+			GUI.Label(new Rect (Screen.width-100, 20, 70, 40), "Time " + Time.time.ToString("F2"), myStyle);
 	}
 
 }

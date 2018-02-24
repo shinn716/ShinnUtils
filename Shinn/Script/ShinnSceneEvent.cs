@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(LoadScene))]
+[RequireComponent(typeof(ShinnPreLoadScene))]
 public class ShinnSceneEvent : MonoBehaviour {
 
-	public LoadScene _load;
+	public ShinnPreLoadScene _load;
 	public string PressKey;
 
 	void Update () {
