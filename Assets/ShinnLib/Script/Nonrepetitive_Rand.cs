@@ -4,17 +4,16 @@ using UnityEngine;
 
 public class Nonrepetitive_Rand : MonoBehaviour {
 
-	[Header("Array Length (Get 'value')")]
+	[Header("Array Length (Get 'show')")]
 	public int ArrayLength;
-	private int[] _value;
-	public int[] value
+
+	public int[] show
 	{
-		get { return _value;}
-		set	{ _value = value;}	
+		get { return _show;}
 	}
 
 	[SerializeField]
-	int[] show;
+	int[] _show;
 
 
 	void Start () {
@@ -23,9 +22,8 @@ public class Nonrepetitive_Rand : MonoBehaviour {
 		
 
 	public void init(){
-		_value = GetRandomSequence2(ArrayLength, ArrayLength);
 		//-----Show In Editor
-		show = value;
+		_show = GetRandomSequence2(ArrayLength, ArrayLength);
 	}
 
 	public int[] GetRandomSequence2(int total, int n)

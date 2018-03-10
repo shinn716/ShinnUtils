@@ -9,9 +9,27 @@ public class ShinnFPS : MonoBehaviour {
 	private int frames = 0;
 	private float timeleft;
 	private string fps;
-	public bool showFPS = false;
-	public bool showTime = false;
+
 	public GUIStyle myStyle;
+
+	[SerializeField]
+	private bool _showFPS = false;
+
+	[SerializeField]
+	private bool _showTime = false;
+
+	public bool showFPS
+	{
+		get{ return _showFPS; }
+		set{ _showFPS = value; }
+	}
+
+	public bool showTime
+	{
+		get{ return _showTime; }
+		set{ _showTime = value; }
+	}
+
 
 	void Start () {
 		timeleft = updateInterval;

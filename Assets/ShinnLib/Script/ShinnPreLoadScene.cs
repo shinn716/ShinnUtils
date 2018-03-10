@@ -5,11 +5,16 @@ using UnityEngine.SceneManagement;
 
 public class ShinnPreLoadScene : MonoBehaviour {
 
-	[Header("預載場景")]
-	public AsyncOperation async;
+	[Header("PreLoadScene")]
 	public string LoadSceneName;
 	public float time;
 	public bool loadScene;
+
+	private AsyncOperation _async;
+	public AsyncOperation async{
+		get { return _async;}
+	}
+
 
 	void Start () {
 		if(loadScene)
@@ -17,7 +22,7 @@ public class ShinnPreLoadScene : MonoBehaviour {
 	}
 
 	void DelayLoad(){
-		async = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync (LoadSceneName, LoadSceneMode.Single);
-		async.allowSceneActivation = false;
+		_async = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync (LoadSceneName, LoadSceneMode.Single);
+		_async.allowSceneActivation = false;
 	}
 }

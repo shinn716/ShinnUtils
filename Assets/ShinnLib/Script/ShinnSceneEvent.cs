@@ -6,6 +6,7 @@ using UnityEngine;
 public class ShinnSceneEvent : MonoBehaviour {
 
 	public ShinnPreLoadScene _load;
+
 	public string PressKey;
 
 	void Update () {

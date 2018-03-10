@@ -8,12 +8,17 @@ public class ShinnLookFuct : MonoBehaviour {
 	public Transform LookTarget;
 
 	[Header("Lock x,z")]
-	public bool LockRotXZ;
+	[SerializeField]
+	private bool _LockRotXZ;
+	public bool LockRotXZ {
+		get{ return _LockRotXZ; }
+		set{ _LockRotXZ = value; }
+	}
 
 	void FixedUpdate () {
 		this.gameObject.transform.LookAt (LookTarget);
 
-		if (LockRotXZ)
+		if (_LockRotXZ)
 			this.gameObject.transform.eulerAngles = new Vector3 (0, this.gameObject.transform.rotation.y, 0);
 	}
 }

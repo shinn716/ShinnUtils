@@ -35,6 +35,9 @@ public class ShinnFadeFuct : MonoBehaviour {
 		_fadeoutend = false;
 	}
 
+	[Header("ReLoad this Scene")]
+	public bool loadScene = false;
+
 	void Update () {
 
 		if(FadeIn){
@@ -43,6 +46,9 @@ public class ShinnFadeFuct : MonoBehaviour {
 				FadeIn = false;
 
 				_fadeinend = true;
+
+				if (loadScene)
+					Application.LoadLevel (0);
 
 			} else
 				lerpvalue = Mathf.Lerp (lerpvalue, 1, Time.deltaTime * FadeSpeed);
