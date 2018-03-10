@@ -44,17 +44,16 @@ public class ShinnFadeFuct : MonoBehaviour {
 			if (lerpvalue > 0.98f) {
 				lerpvalue = 1f;
 				FadeIn = false;
-
+				this.GetComponent<Image> ().color = new Color (r, g, b, lerpvalue);
 				_fadeinend = true;
 
 				if (loadScene)
 					Application.LoadLevel (0);
 
-			} else
+			} else {
 				lerpvalue = Mathf.Lerp (lerpvalue, 1, Time.deltaTime * FadeSpeed);
-
-			this.GetComponent<Image> ().color = new Color (r, g, b, lerpvalue);
-
+				this.GetComponent<Image> ().color = new Color (r, g, b, lerpvalue);
+			}
 		}
 
 
@@ -62,16 +61,15 @@ public class ShinnFadeFuct : MonoBehaviour {
 			if (lerpvalue < 0.02f) {
 				lerpvalue = 0f;
 				FadeOut = false;
-
+				this.GetComponent<Image> ().color = new Color (r, g, b, lerpvalue);
 				_fadeoutend = true;
 
 				if (CompleteDisableObject)
 					this.gameObject.SetActive (false);
-			} else
+			} else {
 				lerpvalue = Mathf.Lerp (lerpvalue, 0, Time.deltaTime * FadeSpeed);
-
-			this.GetComponent<Image> ().color = new Color (r, g, b, lerpvalue);
-
+				this.GetComponent<Image> ().color = new Color (r, g, b, lerpvalue);
+			}
 		}
 	}
 		
