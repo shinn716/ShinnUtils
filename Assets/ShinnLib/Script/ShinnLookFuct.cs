@@ -5,7 +5,7 @@ using UnityEngine;
 public class ShinnLookFuct : MonoBehaviour {
 
 	[Header("Look at a target")]
-	public Transform LookTarget;
+	[SerializeField] Transform LookTarget;
 
 	[Header("Lock x,z")]
 	[SerializeField]
