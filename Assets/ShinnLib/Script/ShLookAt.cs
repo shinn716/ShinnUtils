@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class ShLookAt : MonoBehaviour {
 
-	public Transform target;
+	[SerializeField] Transform target;
 
 	void FixedUpdate () {
 
