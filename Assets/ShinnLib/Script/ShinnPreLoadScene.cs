@@ -6,9 +6,9 @@ using UnityEngine.SceneManagement;
 public class ShinnPreLoadScene : MonoBehaviour {
 
 	[Header("PreLoadScene")]
-	public string LoadSceneName;
-	public float time;
-	public bool loadScene;
+	[SerializeField] string LoadSceneName;
+	[SerializeField] float time;
+	[SerializeField] bool loadScene;
 
 	private AsyncOperation _async;
 	public AsyncOperation async{
