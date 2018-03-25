@@ -5,11 +5,11 @@ using UnityEngine;
 public class ShinnRotateSelf : MonoBehaviour {
 
 	[Header("Random Speed, Noise Xscale")]
-	public float speed;
+	[SerializeField] float speed;
 
 	[Header("Noise Rotation")]
-	public bool NoiseSt;
-	public float NoiseRange;
+	[SerializeField] bool NoiseSt;
+	[SerializeField] float NoiseRange;
 
 	void FixedUpdate () {
 
