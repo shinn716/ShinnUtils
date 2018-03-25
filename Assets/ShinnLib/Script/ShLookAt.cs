@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class ShLookAt : MonoBehaviour {
 
 	public Transform target;
@@ -12,7 +13,7 @@ public class ShLookAt : MonoBehaviour {
 		direction.y = 0;
 		transform.rotation = Quaternion.Slerp (transform.rotation, Quaternion.LookRotation (direction), .05f);
 
-		//--Slerp
+		//--Slerp another method
 		//Vector3 temp = target.position - transform.position;
 		//Quaternion targetRotation = Quaternion.LookRotation (temp);
 		//transform.rotation = Quaternion.Slerp (transform.rotation, Quaternion.EulerAngles (0, targetRotation.y, 0), Time.fixedDeltaTime * 1f);
