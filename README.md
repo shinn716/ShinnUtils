@@ -18,3 +18,4 @@ http://www.shaderslab.com/index.html
 
 SteamVR Tracking without an HMD
 1. http://help.triadsemi.com/steamvr-tracking/steamvr-tracking-without-an-hmd
+2. http://www.pencilsquaregames.com/getting-steamvr-tracking-data-in-unity-without-a-hmd/
