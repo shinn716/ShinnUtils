@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ShinnFPS : MonoBehaviour {
 
-	public float updateInterval = 0.5f;
+	[SerializeField] float updateInterval = 0.5f;
 	private float accum = 0.0f;
 	private int frames = 0;
 	private float timeleft;

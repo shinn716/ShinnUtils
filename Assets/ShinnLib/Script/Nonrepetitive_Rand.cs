@@ -5,7 +5,8 @@ using UnityEngine;
 public class Nonrepetitive_Rand : MonoBehaviour {
 
 	[Header("Array Length (Get 'show')")]
-	public int ArrayLength;
+	[SerializeField]
+	int ArrayLength;
 
 	public int[] show
 	{
