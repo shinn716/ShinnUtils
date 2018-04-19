@@ -14,10 +14,3 @@ http://www.shaderslab.com/index.html
 10. http://www.shaderslab.com/demo-60---fur-shader.html
 12. http://www.shaderslab.com/demo-27---moss-on-rock.html
 13. http://www.shaderslab.com/demo-34---cosmic-effect.html
-
-
-SteamVR Tracking without an HMD
-
-Reference.
-1. http://help.triadsemi.com/steamvr-tracking/steamvr-tracking-without-an-hmd
-2. http://www.pencilsquaregames.com/getting-steamvr-tracking-data-in-unity-without-a-hmd/
