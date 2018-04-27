@@ -18,7 +18,7 @@ public class UploadAndQrcode : MonoBehaviour {
 	string m_LocalFileName="";
 	string m_URL;
 
-	public string serverIP="http://35.194.156.113";							
+	public string serverIP="";							
 	public string serverFilesloc = "/2018UltraGraffiti/api";
 	public string fileloc = "C:/UltraGraffitiData/scene2_gif/";
 
