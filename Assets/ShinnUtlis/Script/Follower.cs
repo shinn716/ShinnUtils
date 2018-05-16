@@ -20,6 +20,10 @@ public class Follower : MonoBehaviour {
 			if (direction.magnitude > StopDist) {
 				//GetComponent<Animator> ().SetBool ("run", true);
 				transform.Translate (0, 0, ChaseSpeed);
+				
+				//if(anim.GetCurrentAnimatorStateInfo(0).IsName("walk") )
+				//	transform.Translate (0, 0, ChaseSpeed);
+				
 			} else {
 				//GetComponent<Animator> ().SetBool ("run", false);
 			}
