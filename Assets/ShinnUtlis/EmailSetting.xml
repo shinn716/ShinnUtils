@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<State>
+
+	<SMTP_Client>smtp.gmail.com</SMTP_Client>
+	<SMTP_Port>587</SMTP_Port>
+	<USER>abc@gmail.com</USER>
+	<USER_Pass>12345</USER_Pass>
+
+	<To>abcd@gmail.com</To>
+	<Subject>Title</Subject>
+	<Body>Content</Body>
+	<AttachFile></AttachFile>
+
+</State>

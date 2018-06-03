@@ -24,9 +24,34 @@ namespace ShinnUtil{
 			if (oscenable) {
 				osc = GetComponent<OSC> ();
 				osc.SetAddressHandler (address, OnReceive);
+				//OscMessageHandler (msgRceive);
 			}
 		}
-		
+		/*
+		void msgRceive(OscMessage message){
+			switch(message.address){
+				
+			default:
+			break;
+
+			case "/address1":
+				print ("trigger1");
+				state = 1;
+			break;
+
+			case "/address2":
+				print ("trigger2");
+				state = 2;
+				break;
+
+			case "/address3":
+				print ("trigger3");
+				state = 3;
+				break;
+			}
+
+		}*/
+
 		void OnReceive(OscMessage message){
 			print ("Receive message " + message + " "+ message.values[0]);
 			string receive = message.values[0].ToString();
