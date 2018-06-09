@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -21,11 +21,26 @@ namespace ShinnUtil{
 		[Header("Noise Rotate")]
 		[SerializeField] bool NoiseSt = false;
 
+		[Header("Freeze Rotation")]
+		[SerializeField] bool FreezeRotx = false;
+		[SerializeField] bool FreezeRoty = false;
+		[SerializeField] bool FreezeRotz = false;
+
 		float NoiseSeed1;
 		float NoiseSeed2;
 		float NoiseSeed3;
 
+		float RotxOrg;
+		float RotyOrg;
+		float RotzOrg;
+
 		void Start(){
+
+			RotxOrg = transform.localEulerAngles.x;
+			RotyOrg = transform.localEulerAngles.y;
+			RotzOrg = transform.localEulerAngles.z;
+
+			
 			if(RandSt){
 				px = Random.Range (RotatePxRange.x, RotatePxRange.y);
 				py = Random.Range (RotatePyRange.x, RotatePyRange.y);
@@ -49,6 +64,16 @@ namespace ShinnUtil{
 			}
 			else
 				transform.Rotate (new Vector3(px, py, pz) * speed);
+
+
+			if (FreezeRotx)
+				transform.localEulerAngles = new Vector3 (RotxOrg, transform.localEulerAngles.y, transform.localEulerAngles.z);
+
+			if (FreezeRoty)
+				transform.localEulerAngles = new Vector3 (transform.localEulerAngles.x, RotyOrg, transform.localEulerAngles.z);
+
+			if (FreezeRotz)
+				transform.localEulerAngles = new Vector3 (transform.localEulerAngles.x, transform.localEulerAngles.y, RotzOrg);
 
 		}
 
