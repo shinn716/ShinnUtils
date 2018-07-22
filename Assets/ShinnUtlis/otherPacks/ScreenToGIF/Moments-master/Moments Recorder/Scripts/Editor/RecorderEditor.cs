@@ -38,8 +38,9 @@ namespace MomentsEditor
 		SerializedProperty m_Quality;
 		SerializedProperty m_BufferSize;
 		SerializedProperty m_WorkerPriority;
+        SerializedProperty mypath;
 
-		void OnEnable()
+        void OnEnable()
 		{
 			m_AutoAspect = serializedObject.FindProperty("m_AutoAspect");
 			m_Width = serializedObject.FindProperty("m_Width");
@@ -49,7 +50,9 @@ namespace MomentsEditor
 			m_Quality = serializedObject.FindProperty("m_Quality");
 			m_BufferSize = serializedObject.FindProperty("m_BufferSize");
 			m_WorkerPriority = serializedObject.FindProperty("WorkerPriority");
-		}
+            mypath = serializedObject.FindProperty("mypath");
+
+        }
 
 		public override void OnInspectorGUI()
 		{
@@ -77,8 +80,10 @@ namespace MomentsEditor
 			EditorGUILayout.PropertyField(m_Repeat, new GUIContent("Repeat", "-1 to disable, 0 to loop indefinitely, >0 to loop a set number of time."));
 			EditorGUILayout.PropertyField(m_FramePerSecond, new GUIContent("Frames Per Second", "The number of frames per second the gif will run at."));
 			EditorGUILayout.PropertyField(m_BufferSize, new GUIContent("Record Time", "The amount of time (in seconds) to record to memory."));
+            EditorGUILayout.PropertyField(mypath, new GUIContent("Path Location"));
 
-			serializedObject.ApplyModifiedProperties();
+
+            serializedObject.ApplyModifiedProperties();
 
 			GUI.enabled = true;
 

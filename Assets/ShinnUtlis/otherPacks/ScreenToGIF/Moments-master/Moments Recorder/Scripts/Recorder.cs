@@ -69,14 +69,14 @@ namespace Moments
 		[SerializeField, Min(0.1f)]
 		float m_BufferSize = 3f;
 
-		#endregion
+        [SerializeField]
+        string mypath = "C:/gif";
 
-		#region Public fields
+        #endregion
 
+        #region Public fields
 
-		string mypath="C:/UltraGraffitiData/scene2_gif";
-
-		public string outPutname;
+        public string outPutname;
 		public string output(string tmpname){
 			 return outPutname;
 		}

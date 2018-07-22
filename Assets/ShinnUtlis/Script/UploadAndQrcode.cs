@@ -20,7 +20,7 @@ public class UploadAndQrcode : MonoBehaviour {
 
 	public string serverIP="";							
 	public string serverFilesloc = "/2018UltraGraffiti/api";
-	public string fileloc = "C:/UltraGraffitiData/scene2_gif/";
+	public string readFilePath = "C:/UltraGraffitiData/scene2_gif/";
 
 
 	public void Awake()
@@ -32,7 +32,7 @@ public class UploadAndQrcode : MonoBehaviour {
 
 	public void StartUpAndQr(string fileName)
 	{
-		m_LocalFileName = fileloc + fileName;
+		m_LocalFileName = readFilePath + fileName;
 		UploadFile (m_LocalFileName, m_URL);
 		Debug.Log ("Upload to " + m_URL + " File name " + m_LocalFileName);
 
