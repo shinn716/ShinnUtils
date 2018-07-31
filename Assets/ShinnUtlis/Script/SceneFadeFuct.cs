@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 namespace ShinnUtil{
 
@@ -18,9 +19,6 @@ namespace ShinnUtil{
 		[SerializeField, Range(0, 1)]
 		public float r, g, b;
 
-		[Space]
-		public bool CompleteDisableObject;
-
 		bool _fadeinend = false;
 		public bool FadeInEnd{
 			get { return _fadeinend; }
@@ -32,11 +30,10 @@ namespace ShinnUtil{
 			get { return _fadeoutend; }
 			set { _fadeoutend = value; }
 		}
+			
 
-
-		[Header("ReLoad this Scene")]
-		public bool loadScene = false;
-		public int level = 0;
+		[Header("Unity Events")]
+		[SerializeField] UnityEvent _event;
 
 		Color RenderColor;
 		Renderer Render;
@@ -103,9 +100,11 @@ namespace ShinnUtil{
 						RenderImage.color = RenderColor;
 
 					_fadeinend = true;
+					_event.Invoke ();
 
-					if (loadScene)
-						Application.LoadLevel (level);
+
+					//if (loadScene)
+					//	Application.LoadLevel (level);
 
 				} else {
 					lerpvalue = Mathf.Lerp (lerpvalue, 1, Time.deltaTime * FadeSpeed);
@@ -135,9 +134,10 @@ namespace ShinnUtil{
 					
 
 					_fadeoutend = true;
+					_event.Invoke ();
 
-					if (CompleteDisableObject)
-						gameObject.SetActive (false);
+					//if (CompleteDisableObject)
+					//	gameObject.SetActive (false);
 					
 				} else {
 					
@@ -154,6 +154,11 @@ namespace ShinnUtil{
 			}
 
 
+		}
+
+
+		public void ReLoadLevel(int level){
+			Application.LoadLevel (level);
 		}
 
 
