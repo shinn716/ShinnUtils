@@ -4,24 +4,23 @@ using UnityEngine;
 
 namespace ShinnUtil{
 
-[RequireComponent(typeof(Rigidbody))]
+//[RequireComponent(typeof(Rigidbody))]
+	
 public class LookAt : MonoBehaviour {
 
-	[SerializeField] Transform target;
+        [SerializeField] Transform target;
+        [SerializeField] float speed = .01f;
+        [SerializeField] bool onThrGround = false;
 
-	void FixedUpdate () {
+        void FixedUpdate()
+        {
 
-		Vector3 direction = target.position - transform.position;
-		direction.y = 0;
-		transform.rotation = Quaternion.Slerp (transform.rotation, Quaternion.LookRotation (direction), .05f);
+            Vector3 direction = target.position - transform.position;
 
-		//--Slerp another method
-		//Vector3 temp = target.position - transform.position;
-		//Quaternion targetRotation = Quaternion.LookRotation (temp);
-		//transform.rotation = Quaternion.Slerp (transform.rotation, Quaternion.EulerAngles (0, targetRotation.y, 0), Time.fixedDeltaTime * 1f);
-		//transform.eulerAngles = new Vector3 (0, transform.eulerAngles.y, 0);
+            if(onThrGround)
+                direction.y = 0;
 
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), speed);
 	}
-}
 
 }
