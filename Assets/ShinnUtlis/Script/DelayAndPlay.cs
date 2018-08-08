@@ -13,14 +13,12 @@ public class DelayAndPlay : MonoBehaviour {
     AudioSource AS;
 
 	void Start () {
-        print("DelayAndPlay");
         AS = GetComponent<AudioSource>();
         StartCoroutine(Play(delaytime));
 	}
     IEnumerator Play(float time)
     {
         yield return new WaitForSeconds(time);
-        print("Play Audio");
         int randindex = Random.Range(0, clip.Length);
         AS.PlayOneShot(clip[randindex], volume);
     }
