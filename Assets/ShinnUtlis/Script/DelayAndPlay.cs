@@ -5,17 +5,21 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSource))]
 public class DelayAndPlay : MonoBehaviour {
 
-    public float time = 1.5f;
-	public AudioSource _as;
+    public AudioClip clip;
+    public float delaytime = 1.5f;
+    public float volume = 1;
+
+    AudioSource AS;
+
 	void Start () {
-		_as.enabled = false;
-		StartCoroutine (PlayAudio(time));
+        AS = GetComponent<AudioSource>();
+        StartCoroutine(Play(delaytime));
 	}
 
-	IEnumerator PlayAudio(float delay){
-		yield return new WaitForSeconds (delay);
-		_as.enabled = true;
-		_as.Play ();
-	}
+    IEnumerator Play(float time)
+    {
+        yield return new WaitForSeconds(time);
+        AS.PlayOneShot(clip, volume);
+    }
 
 }
