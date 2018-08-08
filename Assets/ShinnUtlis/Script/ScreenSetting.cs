@@ -8,7 +8,7 @@ public class ScreenSetting : MonoBehaviour {
     public bool FullScreen = true;
     public bool FiToScreen = false;
 
-	void Start () {
+	void Awake () {
 
         if (FiToScreen)
         {
