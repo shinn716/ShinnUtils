@@ -14,9 +14,10 @@ public class ScreenSetting : MonoBehaviour
     void Awake()
     {
 
-        if (FiToScreen && Enable)
+        if (FiToScreen && Enable) {
+            Debug.Log("Resolution: " + ScreenResolution.x + " x " + ScreenResolution.y + " FullScreen: " + FullScreen);
             Screen.SetResolution((int)ScreenResolution.x, (int)ScreenResolution.y, FullScreen);
-        
+        }
 
     }
 
