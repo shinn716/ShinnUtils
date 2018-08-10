@@ -7,7 +7,8 @@ using System.IO;
 namespace ShinnUtil{
 
 	public class LoadXml : MonoBehaviour {
-
+		
+		public bool absoluteLoc = true;
 		public string filepath = "C:/Users/Shinn/Desktop/EmailSetting.xml";
 
 		public static string temp_client;
@@ -21,19 +22,26 @@ namespace ShinnUtil{
 		public static string temp_fileloc;
 
 		void Awake(){
-			LoadFromXml ();
+			
+			if(absoluteLoc)
+				LoadFromXml (filepath);
+			else{
+				string assets = (Application.streamingAssetsPath + "/EmailSetting.xml").ToString();
+				LoadFromXml(assets);
+			}
+				
 		}
 
-		public void LoadFromXml()
+		public void LoadFromXml(string path)
 		{
 			XmlDocument xmlDoc = new XmlDocument (); 
-			xmlDoc.Load (filepath);
+			xmlDoc.Load (path);
 
 
-			if (File.Exists (filepath)) {
+			if (File.Exists (path)) {
 				print ("Load XML Success..");
 
-				xmlDoc.Load (filepath); 
+				xmlDoc.Load (path); 
 
 				XmlNodeList _client = xmlDoc.GetElementsByTagName ("SMTP_Client");
 				XmlNodeList _port = xmlDoc.GetElementsByTagName ("SMTP_Port");
