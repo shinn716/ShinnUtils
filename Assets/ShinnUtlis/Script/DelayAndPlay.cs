@@ -5,6 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSource))]
 public class DelayAndPlay : MonoBehaviour {
 
+    public AudioClip[] clip;
     public float delaytime = 1.5f;
 
     [Range(0, 1)]

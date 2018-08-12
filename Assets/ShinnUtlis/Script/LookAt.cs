@@ -17,10 +17,11 @@ public class LookAt : MonoBehaviour {
 
             Vector3 direction = target.position - transform.position;
 
-            if(onThrGround)
+            if (onThrGround)
                 direction.y = 0;
 
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), speed);
+        }
 	}
 
 }
