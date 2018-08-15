@@ -22,11 +22,13 @@ public class SimpleItween : MonoBehaviour
     public iTween.EaseType ease;
     public iTween.LoopType loop;
     public bool islocal = false;
-	public bool ignoreTimeScalest = false;
-	public bool AutoStart = true;
+    public bool ignoreTimeScalest = false;
+    public bool AutoStart = true;
+    public bool orienttopathst = false;
+    public float lookaheadValue = .05f;
 
     [Header("ShakePosition")]
-	public Vector3 shakePos;
+    public Vector3 shakePos;
 
     [Header("ScaleState")]
     public Vector3 scaleValue;
@@ -79,7 +81,8 @@ public class SimpleItween : MonoBehaviour
                                                             "time", time, "delay", delay, 
                                                             "easetype", ease, "looptype", loop, 
                                                             "islocal", islocal, "ignoretimescale", ignoreTimeScalest, 
-                                                            "oncomplete", "Complete", "oncompletetarget", gameObject
+                                                            "oncomplete", "Complete", "oncompletetarget", gameObject,
+							    "orienttopath", orienttopathst, "lookahead", lookaheadValue
                                                         ));
                 break;
 
@@ -88,7 +91,8 @@ public class SimpleItween : MonoBehaviour
                                                             "time", time, "delay", delay,
                                                             "easetype", ease, "looptype", loop,
                                                             "islocal", islocal, "ignoretimescale", ignoreTimeScalest,
-                                                            "oncomplete", "Complete", "oncompletetarget", gameObject
+                                                            "oncomplete", "Complete", "oncompletetarget", gameObject,
+							    "orienttopath", orienttopathst, "lookahead", lookaheadValue
                                                         ));
                 break;
 
@@ -97,7 +101,8 @@ public class SimpleItween : MonoBehaviour
                                                             "time", time, "delay", delay,
                                                             "easetype", ease, "looptype", loop,
                                                             "islocal", islocal, "ignoretimescale", ignoreTimeScalest,
-                                                            "oncomplete", "Complete", "oncompletetarget", gameObject
+                                                            "oncomplete", "Complete", "oncompletetarget", gameObject,
+							    "orienttopath", orienttopathst, "lookahead", lookaheadValue
                                                         ));
                 break;
                 
@@ -106,7 +111,8 @@ public class SimpleItween : MonoBehaviour
                                                             "time", time, "delay", delay,
                                                             "easetype", ease, "looptype", loop,
                                                             "islocal", islocal, "ignoretimescale", ignoreTimeScalest,
-                                                            "oncomplete", "Complete", "oncompletetarget", gameObject
+                                                            "oncomplete", "Complete", "oncompletetarget", gameObject,
+							    "orienttopath", orienttopathst, "lookahead", lookaheadValue
                                                         ));
                 break;
 
@@ -116,14 +122,16 @@ public class SimpleItween : MonoBehaviour
                                                                 "time", time, "delay", delay,
                                                                 "easetype", ease, "looptype", loop,
                                                                 "islocal", islocal, "ignoretimescale", ignoreTimeScalest,
-                                                                "oncomplete", "Complete", "oncompletetarget", gameObject
+                                                                "oncomplete", "Complete", "oncompletetarget", gameObject, 
+								"orienttopath", orienttopathst, "lookahead", lookaheadValue
                                                             ));
                 else
                     iTween.MoveTo(gameObject, iTween.Hash(      "position", moveloc.position,
                                                                 "time", time, "delay", delay,
                                                                 "easetype", ease, "looptype", loop,
                                                                 "islocal", islocal, "ignoretimescale", ignoreTimeScalest,
-                                                                "oncomplete", "Complete", "oncompletetarget", gameObject
+                                                                "oncomplete", "Complete", "oncompletetarget", gameObject,
+								"orienttopath", orienttopathst, "lookahead", lookaheadValue
                                                             ));
 
                 break;
@@ -134,7 +142,8 @@ public class SimpleItween : MonoBehaviour
                                                             "time", time, "delay", delay,
                                                             "easetype", ease, "looptype", loop,
                                                             "islocal", islocal, "ignoretimescale", ignoreTimeScalest,
-                                                            "oncomplete", "Complete", "oncompletetarget", gameObject
+                                                            "oncomplete", "Complete", "oncompletetarget", gameObject,
+							    "orienttopath", orienttopathst, "lookahead", lookaheadValue
                                                         ));
                 break;
         }
