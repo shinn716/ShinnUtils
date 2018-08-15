@@ -14,3 +14,6 @@ http://www.shaderslab.com/index.html
 10. http://www.shaderslab.com/demo-60---fur-shader.html
 12. http://www.shaderslab.com/demo-27---moss-on-rock.html
 13. http://www.shaderslab.com/demo-34---cosmic-effect.html
+
+
+http://nn-hokuson.hatenablog.com/entry/2017/06/06/202953
