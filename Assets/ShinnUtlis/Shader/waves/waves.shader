@@ -1,21 +1,14 @@
-﻿Shader "Custom/waves" {
+Shader "Custom/waves" {
 
 
 	Properties
 	{
-		_CenterX("CenterX", float) = 110
-		_CenterY("CenterY", float) = 139
-		_CenterZ("CenterZ", float) = 0
-
-		_ColorR("Red", Range(0,255)) = 0
-		_ColorG("Green", Range(0,255)) = 0
-		_ColorB("Blue", Range(0,255)) = 0
-
+		_Center("Center", Vector) = (110, 139, 0, 0)
+		_WaveColor("WaveColor", Color) = (1, 1, 1, 1)
 		_CircleColor("CircleColor", Color) = (1, 1, 1, 1)
-
 		_Thickness("Thickness", Range(0, 5))=3
 		_Speed("Speed", Range(0, 5)) = 1
-		//_Alpha("Alpha", Range(0,1)) = 1
+
 	}
 
 	SubShader{
@@ -23,36 +16,34 @@
 		LOD 200
 
 		CGPROGRAM
-#pragma surface surf Standard 
-#pragma target 3.0
+		#pragma surface surf Standard 
+		#pragma target 3.0
 
 		struct Input {
-		float3 worldPos;
+			float3 worldPos;
 		};
 
-	float _CenterX;
-	float _CenterY;
-	float _CenterZ;
-	float _ColorR;
-	float _ColorG;
-	float _ColorB;
-	float _Speed;
-	float _Thickness;
 
-	float4 _CircleColor;
+		float4 _Center;
+		float4 _WaveColor;
+	
+		float _Speed;
+		float _Thickness;
+	
+		float4 _CircleColor;
 
-	void surf(Input IN, inout SurfaceOutputStandard o) {
-		float dist = distance(fixed3(_CenterX, _CenterY, _CenterZ), IN.worldPos);
-		float val = abs(sin(dist*_Thickness - _Time * 100 * _Speed));
+		void surf(Input IN, inout SurfaceOutputStandard o) {
 
-		if (val > 0.98) {
-			o.Albedo = fixed4(_CircleColor.r, _CircleColor.g, _CircleColor.b, _CircleColor.a);
+			float dist = distance(fixed3(_Center.x, _Center.y, _Center.z), IN.worldPos);
+			float val = abs(sin(dist*_Thickness - _Time * 100 * _Speed));
+	
+			if (val > 0.98) 
+				o.Albedo = fixed4(_CircleColor.r, _CircleColor.g, _CircleColor.b, _CircleColor.a);
+			else 
+				o.Albedo = fixed4(_WaveColor.r, _WaveColor.g, _WaveColor.b, _WaveColor.a);
+			
 		}
-		else {
-			o.Albedo = fixed4(_ColorR / 255.0, _ColorG / 255.0, _ColorB / 255.0, 1);
-		}
-	}
-	ENDCG
+		ENDCG
 	}
 		FallBack "Diffuse"
 }
