@@ -30,9 +30,6 @@ Shader "PostEffect/contranst"
 		COLOR{
 
 			float4 c = tex2D(_MainTex, i.uv);
-			//Hafe screen
-			//c = 1 / (1 + exp(-_Contrast * (c - _AffectRange)));
-
 			if (i.uv.y > _AffectRange) 
 				c = 1 / (1 + exp(-_Contrast * (c - .5)));
 	
