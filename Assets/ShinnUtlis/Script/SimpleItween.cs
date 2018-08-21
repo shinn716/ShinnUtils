@@ -8,15 +8,16 @@ public class SimpleItween : MonoBehaviour
     public enum state
     {
         shakePosition,
-        SP_fadein,
-		SP_fadeout,
-        scaleIn,
-        moveto, 
-        rotationto
+        SP_fadeto,
+        scaleto,
+        moveto,
+        rotationto,
+        lightColorto
     }
 
     public state mystate;
 
+    [Header("ItweenSetting")]
     public float time;
     public float delay = 0;
     public iTween.EaseType ease;
@@ -39,11 +40,19 @@ public class SimpleItween : MonoBehaviour
     [Header("RotationTo")]
     public Vector3 rotvalue;
 
+    [Header("ColorTo")]
+    public Color endColor;
+
+    [Header("FadeTo")]
+    public float fadeStart = 0;
+    public float fadeEnd = 1;
+
     [Header("CompleteEvent")]
+    public bool startComplete = false;
     public UnityEvent unityevent;
     
-    
-    
+
+
     /*
     ...
     hashtable.Add("oncomplete", "afterPlayerMove");
@@ -55,7 +64,6 @@ public class SimpleItween : MonoBehaviour
     paramHashtable.Add("value3", stringVal);
     paramHashtable.Add("value4", boolVal);
     paramHashtable.Add("value5", gObjVal);
-
     //Include the oncompleteparams parameter  to the hashtable
     hashtable.Add("oncompleteparams", paramHashtable);
     
@@ -107,65 +115,55 @@ public class SimpleItween : MonoBehaviour
         switch (mystate)
         {
             case state.shakePosition:
-			iTween.ShakePosition(gameObject, iTween.Hash(   "x", shakePos.x, "y", shakePos.y, "z", shakePos.z , 
-                                                            "time", time, "delay", delay, 
-                                                            "easetype", ease, "looptype", loop, 
-                                                            "islocal", islocal, "ignoretimescale", ignoreTimeScalest, 
+                iTween.ShakePosition(gameObject, iTween.Hash(   "x", shakePos.x, "y", shakePos.y, "z", shakePos.z,
+                                                                "time", time, "delay", delay,
+                                                                "easetype", ease, "looptype", loop,
+                                                                "islocal", islocal, "ignoretimescale", ignoreTimeScalest,
+                                                                "oncomplete", "Complete", "oncompletetarget", gameObject,
+                                                                "orienttopath", orienttopathst, "lookahead", lookaheadValue
+                                                         ));
+                break;
+
+            case state.SP_fadeto:
+                iTween.ValueTo(gameObject, iTween.Hash(     "from", fadeStart, "to", fadeEnd, "onupdate", "fadeto1",
+                                                            "time", time, "delay", delay,
+                                                            "easetype", ease, "looptype", loop,
+                                                            "islocal", islocal, "ignoretimescale", ignoreTimeScalest,
                                                             "oncomplete", "Complete", "oncompletetarget", gameObject,
-							    "orienttopath", orienttopathst, "lookahead", lookaheadValue
+                                                            "orienttopath", orienttopathst, "lookahead", lookaheadValue
                                                         ));
                 break;
 
-			case state.SP_fadein:
-				iTween.ValueTo(gameObject, iTween.Hash(     "from", 0, "to", 1, "onupdate", "fadeto1",
+            case state.scaleto:
+                iTween.ScaleFrom(gameObject, iTween.Hash(   "scale", scaleValue,
                                                             "time", time, "delay", delay,
                                                             "easetype", ease, "looptype", loop,
                                                             "islocal", islocal, "ignoretimescale", ignoreTimeScalest,
                                                             "oncomplete", "Complete", "oncompletetarget", gameObject,
-							    "orienttopath", orienttopathst, "lookahead", lookaheadValue
-                                                        ));
-                break;
-
-			case state.SP_fadeout:
-				iTween.ValueTo(gameObject, iTween.Hash(     "from", 1, "to", 0, "onupdate", "fadeto2",
-                                                            "time", time, "delay", delay,
-                                                            "easetype", ease, "looptype", loop,
-                                                            "islocal", islocal, "ignoretimescale", ignoreTimeScalest,
-                                                            "oncomplete", "Complete", "oncompletetarget", gameObject,
-							    "orienttopath", orienttopathst, "lookahead", lookaheadValue
-                                                        ));
-                break;
-                
-            case state.scaleIn:
-                iTween.ScaleFrom(gameObject, iTween.Hash(	"scale", scaleValue,
-                                                            "time", time, "delay", delay,
-                                                            "easetype", ease, "looptype", loop,
-                                                            "islocal", islocal, "ignoretimescale", ignoreTimeScalest,
-                                                            "oncomplete", "Complete", "oncompletetarget", gameObject,
-							    "orienttopath", orienttopathst, "lookahead", lookaheadValue
+                                                            "orienttopath", orienttopathst, "lookahead", lookaheadValue
                                                         ));
                 break;
 
             case state.moveto:
-                if(islocal)
-                    iTween.MoveTo(gameObject, iTween.Hash(	    "position", moveloc.localPosition,
+                if (islocal)
+                    iTween.MoveTo(gameObject, iTween.Hash(      "position", moveloc.localPosition,
                                                                 "time", time, "delay", delay,
                                                                 "easetype", ease, "looptype", loop,
                                                                 "islocal", islocal, "ignoretimescale", ignoreTimeScalest,
-                                                                "oncomplete", "Complete", "oncompletetarget", gameObject, 
-								"orienttopath", orienttopathst, "lookahead", lookaheadValue
-                                                            ));
+                                                                "oncomplete", "Complete", "oncompletetarget", gameObject,
+                                                                 "orienttopath", orienttopathst, "lookahead", lookaheadValue
+                                                         ));
                 else
                     iTween.MoveTo(gameObject, iTween.Hash(      "position", moveloc.position,
                                                                 "time", time, "delay", delay,
                                                                 "easetype", ease, "looptype", loop,
                                                                 "islocal", islocal, "ignoretimescale", ignoreTimeScalest,
                                                                 "oncomplete", "Complete", "oncompletetarget", gameObject,
-								"orienttopath", orienttopathst, "lookahead", lookaheadValue
-                                                            ));
+                                                                "orienttopath", orienttopathst, "lookahead", lookaheadValue
+                                                         ));
 
                 break;
-
+                
 
             case state.rotationto:
                 iTween.RotateTo(gameObject, iTween.Hash(    "rotation", rotvalue,
@@ -173,7 +171,19 @@ public class SimpleItween : MonoBehaviour
                                                             "easetype", ease, "looptype", loop,
                                                             "islocal", islocal, "ignoretimescale", ignoreTimeScalest,
                                                             "oncomplete", "Complete", "oncompletetarget", gameObject,
-							    "orienttopath", orienttopathst, "lookahead", lookaheadValue
+                                                            "orienttopath", orienttopathst, "lookahead", lookaheadValue
+                                                        ));
+                break;
+
+
+
+            case state.lightColorto:
+                iTween.ColorTo(gameObject, iTween.Hash(     "color", endColor,
+                                                            "time", time, "delay", delay,
+                                                            "easetype", ease, "looptype", loop,
+                                                            "islocal", islocal, "ignoretimescale", ignoreTimeScalest,
+                                                            "oncomplete", "Complete", "oncompletetarget", gameObject,
+                                                            "orienttopath", orienttopathst, "lookahead", lookaheadValue
                                                         ));
                 break;
         }
@@ -202,7 +212,8 @@ public class SimpleItween : MonoBehaviour
 
     void Complete()
     {
-        unityevent.Invoke();
+        if(startComplete)
+            unityevent.Invoke();
     }
 
 }
