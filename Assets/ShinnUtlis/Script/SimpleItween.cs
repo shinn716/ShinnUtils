@@ -8,11 +8,11 @@ public class SimpleItween : MonoBehaviour
     public enum state
     {
         shakePosition,
-        SP_fadeto,
         scaleto,
         moveto,
         rotationto,
-        lightColorto
+        SP_fadeto,
+        colorto
     }
 
     public state mystate;
@@ -177,7 +177,7 @@ public class SimpleItween : MonoBehaviour
 
 
 
-            case state.lightColorto:
+            case state.colorto:
                 iTween.ColorTo(gameObject, iTween.Hash(     "color", endColor,
                                                             "time", time, "delay", delay,
                                                             "easetype", ease, "looptype", loop,
