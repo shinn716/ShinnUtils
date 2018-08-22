@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
@@ -13,12 +13,15 @@ public class SimpleItweenEditor : Editor {
     {
         script = (SimpleItween)target;
 
+        EditorGUILayout.Space();
         script.mystate = (SimpleItween.state)EditorGUILayout.EnumPopup("Simple Itween Fuction", script.mystate);
 
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("Itween general setting.");
+
+        EditorGUILayout.Space();
         script.time = EditorGUILayout.FloatField("Time", script.time);
-        script.delay = EditorGUILayout.FloatField("Delay", script.delay);
+        script.delay = EditorGUILayout.Slider("Delay", script.delay, 0, 10);
 
         EditorGUILayout.Space();
         script.ease = (iTween.EaseType)EditorGUILayout.EnumPopup("EaseType", script.ease);
@@ -26,11 +29,11 @@ public class SimpleItweenEditor : Editor {
 
         EditorGUILayout.Space();
         script.islocal = EditorGUILayout.Toggle("Is local", script.islocal);
-        script.ignoreTimeScalest = EditorGUILayout.Toggle("Ignore time scalest", script.ignoreTimeScalest);
+        script.ignoreTimeScalest = EditorGUILayout.Toggle("Ignore time scale", script.ignoreTimeScalest);
 
         EditorGUILayout.Space();
         script.orienttopathst = EditorGUILayout.Toggle("Orien to path", script.orienttopathst);
-        script.lookaheadValue = EditorGUILayout.FloatField("Look ahead value", script.lookaheadValue);
+        script.lookaheadValue = EditorGUILayout.Slider("Look ahead value", script.lookaheadValue, 0, 1);
 
         EditorGUILayout.Space();
         script.AutoStart = EditorGUILayout.Toggle("Auto start", script.AutoStart);
@@ -59,13 +62,13 @@ public class SimpleItweenEditor : Editor {
         switch (script.mystate)
         {
 
-            case SimpleItween.state.lightColorto:
+            case SimpleItween.state.colorto:
                 script.endColor = EditorGUILayout.ColorField("EndColor", script.endColor);
                 break;
 
 
             case SimpleItween.state.moveto:
-                script.moveloc = (Transform) EditorGUILayout.ObjectField(new GUIContent("Source1"), script.moveloc, typeof(Transform), true);
+                script.moveloc = (Transform) EditorGUILayout.ObjectField("Target loc", script.moveloc, typeof(Transform), true);
                 break;
 
 
@@ -85,8 +88,8 @@ public class SimpleItweenEditor : Editor {
 
 
             case SimpleItween.state.SP_fadeto:
-                script.fadeStart = EditorGUILayout.FloatField("Sprite fade start", script.fadeStart);
-                script.fadeEnd = EditorGUILayout.FloatField("Sprite fade end", script.fadeEnd);
+                script.fadeStart = EditorGUILayout.Slider("Sprite fade start", script.fadeStart, 0, 1);
+                script.fadeEnd = EditorGUILayout.Slider("Sprite fade end", script.fadeEnd, 0, 1);
                 break;
 
         }
