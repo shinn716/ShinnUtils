@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,6 +13,11 @@ namespace ShinnUtil
         [Header("Reload")]
         public KeyCode ReloadKey = KeyCode.F5;
         public int level = 0;
+
+        [Header("Screen Resolutuin setting")]
+        public Vector2 ScreenResolution = new Vector2(1920, 281);
+        public bool FullScreen = true;
+        public bool FitToScreen = false;
 
         [Header("Show sys info")]
         public bool showFPS = false;
@@ -51,6 +56,16 @@ namespace ShinnUtil
             else if (this != s_Instance)
             {
                 Destroy(gameObject);
+            }
+
+
+            /// Screen Setting
+            /// 
+
+            if (FitToScreen)
+            {
+                Debug.Log("Resolution: " + ScreenResolution.x + " x " + ScreenResolution.y + " FullScreen: " + FullScreen);
+                Screen.SetResolution((int)ScreenResolution.x, (int)ScreenResolution.y, FullScreen);
             }
         }
 
