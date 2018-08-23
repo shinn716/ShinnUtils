@@ -14,10 +14,10 @@ public class SimpleItweenEditor : Editor {
         script = (SimpleItween)target;
 
         EditorGUILayout.Space();
-        script.mystate = (SimpleItween.state)EditorGUILayout.EnumPopup("Simple Itween Fuction", script.mystate);
+        EditorGUILayout.LabelField("Itween general setting.");
 
         EditorGUILayout.Space();
-        EditorGUILayout.LabelField("Itween general setting.");
+        script.target = (GameObject) EditorGUILayout.ObjectField("Target", script.target, typeof(GameObject), true);
 
         EditorGUILayout.Space();
         script.time = EditorGUILayout.FloatField("Time", script.time);
@@ -52,6 +52,9 @@ public class SimpleItweenEditor : Editor {
 
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("-----------------------");
+        script.mystate = (SimpleItween.state)EditorGUILayout.EnumPopup("Simple Itween Fuction", script.mystate);
+
+        EditorGUILayout.Space();
         SelectType();
 
 
