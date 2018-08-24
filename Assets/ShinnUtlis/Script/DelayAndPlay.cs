@@ -1,22 +1,24 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
-public class DelayAndPlay : MonoBehaviour {
-
+public class DelayAndPlay : MonoBehaviour
+{
     public AudioClip[] clip;
-    public float delaytime = 1.5f;
+    public Vector2 delayTimeRange = new Vector2(0, 1);
 
     [Range(0, 1)]
     public float volume = 1;
 
     AudioSource AS;
 
-	void Start () {
+    void Start()
+    {
+        float delaytime = Random.Range(delayTimeRange.x, delayTimeRange.y);
         AS = GetComponent<AudioSource>();
         StartCoroutine(Play(delaytime));
-	}
+    }
     IEnumerator Play(float time)
     {
         yield return new WaitForSeconds(time);
