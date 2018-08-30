@@ -7,6 +7,29 @@
         {
             return (v == a) ? x : (v - a) * (y - x) / (b - a) + x;
         }
+        
+        
+        public static int[] NonrepetitiveRandom(int total)
+        {
+            int[] sequence = new int[total];
+            int[] output = new int[total];
+
+            for (int i = 0; i < total; i++)
+            {
+                sequence[i] = i;
+            }
+
+            int end = total - 1;
+            for (int i = 0; i < total; i++)
+            {
+                int num = UnityEngine.Random.Range(0, end + 1);
+                output[i] = sequence[num];
+                sequence[num] = sequence[end];
+                end--;
+            }
+            return output;
+        }
+        
 
     }
 
