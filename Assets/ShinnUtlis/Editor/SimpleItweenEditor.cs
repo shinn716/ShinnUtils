@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using UnityEngine.Events;
+using Shinn;
 
 [CustomEditor(typeof(SimpleItween))]
 public class SimpleItweenEditor : Editor {
