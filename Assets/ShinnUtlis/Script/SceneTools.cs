@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using RenderHeads.Media.AVProVideo;
 
-namespace ShinnUtil
+namespace Shinn
 {
     public class SceneTools : MonoBehaviour
     {
