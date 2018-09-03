@@ -1,18 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
+using RenderHeads.Media.AVProVideo;
 
 namespace ShinnUtil
 {
     public class SceneTools : MonoBehaviour
     {
-
         static SceneTools s_Instance;
 
+        [Header("Dont destroy on this script.")]
         [Header("Reload")]
         public KeyCode ReloadKey = KeyCode.F5;
         public int level = 0;
+
+        [Header("Pause")]
+        public KeyCode PauseKey = KeyCode.P;
+        private MediaPlayer[] mediaplayer;
+        bool pause = false;
 
         [Header("Screen Resolutuin setting")]
         public Vector2 ScreenResolution = new Vector2(1920, 281);
@@ -58,10 +64,6 @@ namespace ShinnUtil
                 Destroy(gameObject);
             }
 
-
-            /// Screen Setting
-            /// 
-
             if (FitToScreen)
             {
                 Debug.Log("Resolution: " + ScreenResolution.x + " x " + ScreenResolution.y + " FullScreen: " + FullScreen);
@@ -72,16 +74,28 @@ namespace ShinnUtil
         void Start()
         {
             timeleft = updateInterval;
+
+            // Need Avpro Packages
+            var allmedia = Resources.FindObjectsOfTypeAll<MediaPlayer>();
+            mediaplayer = new MediaPlayer[allmedia.Length];
+            mediaplayer = allmedia;
         }
 
         void Update()
         {
+            if (Input.GetKeyDown(PauseKey))
+            {
+                pause = !pause;
+
+                if (pause)
+                    Pause();
+                else
+                    Resume();
+            }
+
             if (Input.GetKeyDown(ReloadKey))
                 Application.LoadLevel(level);
 
-
-            ///Show FPS
-            ///
 
             if (showFPS)
             {
@@ -109,8 +123,28 @@ namespace ShinnUtil
             if (showTime)
                 GUI.Label(new Rect(Screen.width - 100, 20, 70, 60), "Time " + Time.time.ToString("f0"), myStyle);
         }
+
+
+        private void Pause()
+        {
+            Time.timeScale = 0;
+
+            if (mediaplayer == null)
+                return;
+
+            for (int i = 0; i < mediaplayer.Length; i++)
+                mediaplayer[i].Pause();
+        }
+
+        private void Resume()
+        {
+            Time.timeScale = 1;
+
+            if (mediaplayer == null)
+                return;
+
+            for (int i = 0; i < mediaplayer.Length; i++)
+                mediaplayer[i].Play();
+        }
     }
-
-
-
 }
