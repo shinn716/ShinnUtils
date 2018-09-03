@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
@@ -109,15 +109,9 @@ public class SimpleItweenEditor : Editor {
                     EditorGUILayout.PropertyField(onCheck);
                 }
 
-
-
-
                 if (GUI.changed)
                     serializedObject.ApplyModifiedProperties();
             }
-
-
-
         }
 
         EditorGUILayout.Space();
@@ -136,32 +130,31 @@ public class SimpleItweenEditor : Editor {
         switch (script.mystate)
         {
 
-            case SimpleItween.state.colorto:
+            case SimpleItween.state.colorTo:
                 script.endColor = EditorGUILayout.ColorField("EndColor", script.endColor);
                 break;
 
-
-            case SimpleItween.state.moveto:
+            case SimpleItween.state.moveTo:
                 script.moveloc = (Transform) EditorGUILayout.ObjectField("Target loc", script.moveloc, typeof(Transform), true);
                 break;
 
-
-            case SimpleItween.state.rotationto:
+            case SimpleItween.state.rotationTo:
                 script.rotvalue = EditorGUILayout.Vector3Field("Euler angles", script.rotvalue);
                 break;
 
-
-            case SimpleItween.state.scaleto:
+            case SimpleItween.state.scaleTo:
                 script.scaleValue = EditorGUILayout.Vector3Field("Scale value", script.scaleValue);
                 break;
-
 
             case SimpleItween.state.shakePosition:
                 script.shakePos = EditorGUILayout.Vector3Field("Shake value", script.shakePos);
                 break;
 
+            case SimpleItween.state.punchPosition:
+                script.punchPos = EditorGUILayout.Vector3Field("Punch value", script.punchPos);
+                break;
 
-            case SimpleItween.state.SP_fadeto:
+            case SimpleItween.state.SP_fadeTo:
                 script.fadeStart = EditorGUILayout.Slider("Sprite fade start", script.fadeStart, 0, 1);
                 script.fadeEnd = EditorGUILayout.Slider("Sprite fade end", script.fadeEnd, 0, 1);
                 break;
