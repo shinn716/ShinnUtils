@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using Shinn;
 
 [CustomEditor(typeof(CustomMaterialCon))]
 public class CustomMaterialConEditor : Editor {
