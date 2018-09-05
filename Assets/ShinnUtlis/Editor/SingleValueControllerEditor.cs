@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
@@ -31,6 +31,9 @@ public class SingleValueControllerEditor : Editor{
             //EditorGUILayout.Space();
 
             EditorGUILayout.LabelField("General setting.");
+
+            EditorGUILayout.Space();
+            script.autoStart = EditorGUILayout.Toggle("AutoStart", script.autoStart);
 
             EditorGUILayout.Space();
             script.target = (GameObject)EditorGUILayout.ObjectField("Target", script.target, typeof(GameObject), true);
