@@ -18,6 +18,7 @@ namespace Shinn
 
         [Header("ItweenSetting")]
         public GameObject target;
+        public bool autoStart = true;
         public float time;
         public float delay = 0;
         public iTween.EaseType ease;
@@ -36,12 +37,19 @@ namespace Shinn
 
 
             // if (isfloatevents)
+
+            if(autoStart)
+                Go();
+        }
+
+        public void Go() { 
             iTween.ValueTo(target, iTween.Hash("from", valuerange.x, "to", valuerange.y, "onupdate", "floateventsProcess",
                                                 "time", time, "delay", delay,
                                                 "easetype", ease, "looptype", loop,
                                                 "ignoretimescale", ignoreTimeScalest,
                                                 "oncomplete", "Complete", "oncompletetarget", gameObject
                                             ));
+
         }
 
 
