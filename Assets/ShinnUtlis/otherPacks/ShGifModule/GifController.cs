@@ -5,7 +5,7 @@ using ShinnUtil;
 
 public class GifController : MonoBehaviour {
 
-	public UploadAndQrcode upload;
+	public Shinn.UploadAndQrcode upload;
 
 	void Start () {
 		
