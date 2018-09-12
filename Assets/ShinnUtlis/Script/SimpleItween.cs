@@ -19,6 +19,7 @@ namespace Shinn
             rotationTo,
             SP_fadeTo,
             colorTo,
+            rotationToAndmoveTo,
         }
 
         public state mystate;
@@ -224,6 +225,48 @@ namespace Shinn
                                                                 "oncomplete", "Complete", "oncompletetarget", gameObject,
                                                                 "orienttopath", orienttopathst, "lookahead", lookaheadValue
                                                             ));
+                    break;
+
+
+                case state.rotationToAndmoveTo:
+
+                    if (islocal)
+                    {
+                        iTween.MoveTo(target, iTween.Hash("position", moveloc.localPosition,
+                                                                    "time", time, "delay", delay,
+                                                                    "easetype", ease, "looptype", loop,
+                                                                    "islocal", islocal, "ignoretimescale", ignoreTimeScalest,
+                                                                    "oncomplete", "Complete", "oncompletetarget", gameObject,
+                                                                     "orienttopath", orienttopathst, "lookahead", lookaheadValue
+                                                             ));
+
+                        iTween.RotateTo(target, iTween.Hash("rotation", moveloc.localEulerAngles,
+                                                            "time", time, "delay", delay,
+                                                            "easetype", ease, "looptype", loop,
+                                                            "islocal", islocal, "ignoretimescale", ignoreTimeScalest,
+                                                            "oncomplete", "Complete", "oncompletetarget", gameObject,
+                                                            "orienttopath", orienttopathst, "lookahead", lookaheadValue
+                                                            ));
+                    }
+                    else
+                    {
+                        iTween.MoveTo(target, iTween.Hash("position", moveloc.position,
+                                                                    "time", time, "delay", delay,
+                                                                    "easetype", ease, "looptype", loop,
+                                                                    "islocal", islocal, "ignoretimescale", ignoreTimeScalest,
+                                                                    "oncomplete", "Complete", "oncompletetarget", gameObject,
+                                                                    "orienttopath", orienttopathst, "lookahead", lookaheadValue
+                                                             ));
+
+                        iTween.RotateTo(target, iTween.Hash("rotation", moveloc.eulerAngles,
+                                                            "time", time, "delay", delay,
+                                                            "easetype", ease, "looptype", loop,
+                                                            "islocal", islocal, "ignoretimescale", ignoreTimeScalest,
+                                                            "oncomplete", "Complete", "oncompletetarget", gameObject,
+                                                            "orienttopath", orienttopathst, "lookahead", lookaheadValue
+                                                       ));
+                    }
+
                     break;
 
             }
