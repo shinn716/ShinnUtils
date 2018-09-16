@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using RenderHeads.Media.AVProVideo;
+//using RenderHeads.Media.AVProVideo;
 
 namespace Shinn
 {
@@ -17,7 +17,7 @@ namespace Shinn
 
         [Header("Pause")]
         public KeyCode PauseKey = KeyCode.P;
-        private MediaPlayer[] mediaplayer;
+        //private MediaPlayer[] mediaplayer;
         bool pause = false;
 
         [Header("Screen Resolutuin setting")]
@@ -76,9 +76,9 @@ namespace Shinn
             timeleft = updateInterval;
 
             // Need Avpro Packages
-            var allmedia = Resources.FindObjectsOfTypeAll<MediaPlayer>();
-            mediaplayer = new MediaPlayer[allmedia.Length];
-            mediaplayer = allmedia;
+            //var allmedia = Resources.FindObjectsOfTypeAll<MediaPlayer>();
+            //mediaplayer = new MediaPlayer[allmedia.Length];
+            //mediaplayer = allmedia;
         }
 
         void Update()
@@ -129,22 +129,22 @@ namespace Shinn
         {
             Time.timeScale = 0;
 
-            if (mediaplayer == null)
-                return;
+            //if (mediaplayer == null)
+            //    return;
 
-            for (int i = 0; i < mediaplayer.Length; i++)
-                mediaplayer[i].Pause();
+            //for (int i = 0; i < mediaplayer.Length; i++)
+            //    mediaplayer[i].Pause();
         }
 
         private void Resume()
         {
             Time.timeScale = 1;
 
-            if (mediaplayer == null)
-                return;
+            //if (mediaplayer == null)
+            //    return;
 
-            for (int i = 0; i < mediaplayer.Length; i++)
-                mediaplayer[i].Play();
+            //for (int i = 0; i < mediaplayer.Length; i++)
+            //    mediaplayer[i].Play();
         }
     }
 }

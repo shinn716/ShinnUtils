@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ShinnUtil{
-
-//[RequireComponent(typeof(Rigidbody))]
-	
-public class LookAt : MonoBehaviour {
+namespace Shinn
+{
+    public class LookAt : MonoBehaviour
+    {
 
         [SerializeField] Transform target;
         [SerializeField] float speed = .01f;
@@ -22,6 +21,6 @@ public class LookAt : MonoBehaviour {
 
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), speed);
         }
-	}
+    }
 
 }

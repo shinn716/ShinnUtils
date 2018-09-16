@@ -47,7 +47,6 @@ public class InstantiateObjs : MonoBehaviour {
             Gizmos.DrawCube(new Vector3(transform.position.x + posxRange.y, transform.position.y + posyRange.x, transform.position.z + poszRange.y), Vector3.one * size);
             Gizmos.DrawCube(new Vector3(transform.position.x + posxRange.x, transform.position.y + posyRange.y, transform.position.z + poszRange.y), Vector3.one * size);
             Gizmos.DrawCube(new Vector3(transform.position.x + posxRange.y, transform.position.y + posyRange.y, transform.position.z + poszRange.y), Vector3.one * size);
-
         }
 
         else

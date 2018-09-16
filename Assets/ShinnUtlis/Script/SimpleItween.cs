@@ -19,7 +19,7 @@ namespace Shinn
             rotationTo,
             SP_fadeTo,
             colorTo,
-            rotationToAndmoveTo,
+            rotationToAndMoveTo,
         }
 
         public state mystate;
@@ -228,7 +228,7 @@ namespace Shinn
                     break;
 
 
-                case state.rotationToAndmoveTo:
+                case state.rotationToAndMoveTo:
 
                     if (islocal)
                     {

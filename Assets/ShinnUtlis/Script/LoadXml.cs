@@ -7,8 +7,13 @@ using System.IO;
 namespace ShinnUtil{
 
 	public class LoadXml : MonoBehaviour {
-		
-		public bool absoluteLoc = true;
+
+        public enum path {
+            absolute,
+            opposite
+        }
+
+        public path pathstate;
 		public string filepath = "C:/Users/Shinn/Desktop/EmailSetting.xml";
 
 		public static string temp_client;
@@ -22,13 +27,13 @@ namespace ShinnUtil{
 		public static string temp_fileloc;
 
 		void Awake(){
-			
-			if(absoluteLoc)
-				LoadFromXml (filepath);
-			else{
-				string assets = (Application.streamingAssetsPath + "/EmailSetting.xml").ToString();
-				LoadFromXml(assets);
-			}
+
+            if (pathstate == path.absolute)
+                LoadFromXml(filepath);
+            else {
+                string assets = (Application.streamingAssetsPath + "/EmailSetting.xml").ToString();
+                LoadFromXml(assets);
+            }
 				
 		}
 

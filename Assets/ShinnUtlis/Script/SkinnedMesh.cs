@@ -76,12 +76,12 @@ public class SkinnedMesh : MonoBehaviour
 
 	}
 
-	/*void OnDrawGizmos(){
+	void OnDrawGizmos(){
 		for (int i = 0; i < vertices.Length; i++) {
-			Gizmos.DrawSphere (vertices [i], .01f);
-			Gizmos.color = Color.white;
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawSphere (vertices [i], .01f);
 		}
-	}*/
+	}
 
 
 }

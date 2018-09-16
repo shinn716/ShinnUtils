@@ -160,7 +160,7 @@ public class SimpleItweenEditor : Editor {
                 script.fadeEnd = EditorGUILayout.Slider("Sprite fade end", script.fadeEnd, 0, 1);
                 break;
 
-            case SimpleItween.state.rotationToAndmoveTo:
+            case SimpleItween.state.rotationToAndMoveTo:
                 script.moveloc = (Transform)EditorGUILayout.ObjectField("Target loc", script.moveloc, typeof(Transform), true);
                 break;
 
