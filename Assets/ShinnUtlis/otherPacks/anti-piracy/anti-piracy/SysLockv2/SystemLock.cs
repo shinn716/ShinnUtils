@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Xml;
 using System.IO;
 using System;
-using UnityEditor;
+//using UnityEditor;
 
 public class SystemLock : MonoBehaviour {
 
@@ -123,7 +123,7 @@ public class SystemLock : MonoBehaviour {
         string result = encoder.EncryptBase64(nowDate.ToString());
 
         File.WriteAllText(path, result);
-        AssetDatabase.ImportAsset(path);
+        //AssetDatabase.ImportAsset(path);
     }
 
 }
