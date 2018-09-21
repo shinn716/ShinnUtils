@@ -38,8 +38,8 @@ namespace Shinn
 
         void Awake()
         {
-            Mesh mesh = GetComponent<MeshFilter>().mesh;
-            vertices = mesh.vertices;
+            MeshFilter mesh = GetComponent<MeshFilter>();
+            vertices = mesh.sharedMesh.vertices;
             Debug.Log("Draw in Editor " + vertices.Length);
         }
 
