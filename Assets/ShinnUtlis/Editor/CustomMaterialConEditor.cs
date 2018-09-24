@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
@@ -18,7 +18,17 @@ public class CustomMaterialConEditor : Editor {
         EditorGUILayout.LabelField("Custom value for material.");
 
         EditorGUILayout.Space();
-        script.mat = (Material) EditorGUILayout.ObjectField("Material", script.mat, typeof(Material), true);
+
+
+        EditorGUIUtility.LookLikeInspector();
+        SerializedProperty tps = serializedObject.FindProperty("mat");
+        EditorGUI.BeginChangeCheck();
+        EditorGUILayout.PropertyField(tps, true);
+
+        if (EditorGUI.EndChangeCheck())
+            serializedObject.ApplyModifiedProperties();
+
+        //script.mat = (Material) EditorGUILayout.ObjectField("Material", script.mat, typeof(Material), true);
         script.priority = EditorGUILayout.TextField("Priority", script.priority);
         script.autoStart = EditorGUILayout.Toggle("Autostart", script.autoStart);
         

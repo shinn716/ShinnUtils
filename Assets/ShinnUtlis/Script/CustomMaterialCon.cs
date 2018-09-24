@@ -18,7 +18,7 @@ namespace Shinn
 
 
         [Header("General setting.")]
-        public Material mat;
+        public Material[] mat;
         public string priority = "_emission";
         public bool autoStart = true;
         public state type;
@@ -48,7 +48,8 @@ namespace Shinn
 
             if (mat == null)
             {
-                mat = GetComponent<Renderer>().material;
+                for(int i=0; i< mat.Length; i++)
+                    mat[i] = GetComponent<Renderer>().material;
             }
 
 
@@ -104,8 +105,8 @@ namespace Shinn
 
 
                 case state.ValueControl:
-
-                    mat.SetFloat(priority, range.x);
+                    for (int i = 0; i < mat.Length; i++)
+                        mat[i].SetFloat(priority, range.x);
                     iTween.ValueTo(gameObject, iTween.Hash("from", range.x, "to", range.y,
                                                             "onupdate", "ValueProcess",
                                                             "time", time, "delay", delay,
@@ -121,27 +122,32 @@ namespace Shinn
         #region itween valueto Processing
         void ValueProcess(float newvalue)
         {
-            mat.SetFloat(priority, newvalue);
+            for (int i = 0; i < mat.Length; i++)
+                mat[i].SetFloat(priority, newvalue);
         }
 
         void ColorRProcess(float newvalue)
         {
-            mat.SetColor(priority, new Color(newvalue, mat.GetColor(priority).g, mat.GetColor(priority).b, mat.GetColor(priority).a));
+            for (int i = 0; i < mat.Length; i++)
+                mat[i].SetColor(priority, new Color(newvalue, mat[i].GetColor(priority).g, mat[i].GetColor(priority).b, mat[i].GetColor(priority).a));
         }
 
         void ColorGProcess(float newvalue)
         {
-            mat.SetColor(priority, new Color(mat.GetColor(priority).r, newvalue, mat.GetColor(priority).b, mat.GetColor(priority).a));
+            for (int i = 0; i < mat.Length; i++)
+                mat[i].SetColor(priority, new Color(mat[i].GetColor(priority).r, newvalue, mat[i].GetColor(priority).b, mat[i].GetColor(priority).a));
         }
 
         void ColorBProcess(float newvalue)
         {
-            mat.SetColor(priority, new Color(mat.GetColor(priority).r, mat.GetColor(priority).g, newvalue, mat.GetColor(priority).a));
+            for (int i = 0; i < mat.Length; i++)
+                mat[i].SetColor(priority, new Color(mat[i].GetColor(priority).r, mat[i].GetColor(priority).g, newvalue, mat[i].GetColor(priority).a));
         }
 
         void ColorAProcess(float newvalue)
         {
-            mat.SetColor(priority, new Color(mat.GetColor(priority).r, mat.GetColor(priority).g, mat.GetColor(priority).b, newvalue));
+            for (int i = 0; i < mat.Length; i++)
+                mat[i].SetColor(priority, new Color(mat[i].GetColor(priority).r, mat[i].GetColor(priority).g, mat[i].GetColor(priority).b, newvalue));
         }
         #endregion
 
