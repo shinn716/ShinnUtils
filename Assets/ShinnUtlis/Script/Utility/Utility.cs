@@ -30,6 +30,14 @@
             return output;
         }
         
+        //String to float
+        public static float GetFloat(string stringValue, float defaultValue)
+	    {
+		    float result = defaultValue;
+		    float.TryParse(stringValue, out result);
+		    return result;
+	    }
+        
 
     }
 
