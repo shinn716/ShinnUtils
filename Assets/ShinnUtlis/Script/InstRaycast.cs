@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -23,6 +23,8 @@ public class InstRaycast : MonoBehaviour {
 
     int count = 0;
 
+    public Vector3 GetRaycastPosition { get; set; }
+
     private void Start () {
         if (c == null)
             c = Camera.main;
@@ -46,13 +48,15 @@ public class InstRaycast : MonoBehaviour {
                 {
                     count = 0;
                     GameObject go1 = Instantiate(prefab);
-                    go1.transform.localPosition = GetWorldPositionOnPlane(Input.mousePosition, raycastDist);
+                    GetRaycastPosition = GetWorldPositionOnPlane(Input.mousePosition, raycastDist);
+                    go1.transform.localPosition = GetRaycastPosition;
                 }
                 break;
 
             case CameraState.orthographic:
                 GameObject go2 = Instantiate(prefab);
-                go2.transform.localPosition = new Vector3(c.ScreenToWorldPoint(Input.mousePosition).x, c.ScreenToWorldPoint(Input.mousePosition).y, raycastDist);
+                GetRaycastPosition = new Vector3(c.ScreenToWorldPoint(Input.mousePosition).x, c.ScreenToWorldPoint(Input.mousePosition).y, raycastDist);
+                go2.transform.localPosition = GetRaycastPosition;
                 break;
         }
     }
