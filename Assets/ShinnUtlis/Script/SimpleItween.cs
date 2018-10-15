@@ -175,7 +175,7 @@ namespace Shinn
                     break;
 
                 case state.scaleTo:
-                    iTween.ScaleFrom(target, iTween.Hash("scale", scaleValue,
+                    iTween.ScaleTo(target, iTween.Hash("scale", scaleValue,
                                                                 "time", time, "delay", delay,
                                                                 "easetype", ease, "looptype", loop,
                                                                 "islocal", islocal, "ignoretimescale", ignoreTimeScalest,
