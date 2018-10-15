@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class InstantiateRaycast : MonoBehaviour {
+public class InstantiateRaycastObjs : MonoBehaviour {
 
     public enum CameraState
     {
