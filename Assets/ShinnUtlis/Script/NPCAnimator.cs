@@ -30,6 +30,21 @@ public class NPCAnimator : MonoBehaviour {
                 StartCoroutine(DelayPlay(Random.Range(0, 1), mystate[i].AnimationName, speed));
         }
     }
+    
+    private void Update()
+    {
+        for (int i = 0; i < mystate.Length; i++)
+        {
+            if (mystate[i].active)
+            {
+                anim.speed = speed;
+                anim.SetBool(mystate[i].AnimationName, true);
+            }else
+            {
+                anim.SetBool(mystate[i].AnimationName, false);
+            }
+        }
+    }
 
     IEnumerator DelayPlay(float delay, string state, float speed)
     {
