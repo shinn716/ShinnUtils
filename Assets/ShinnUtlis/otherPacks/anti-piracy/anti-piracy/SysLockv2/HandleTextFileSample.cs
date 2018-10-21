@@ -18,11 +18,11 @@ public class HandleTextFileSample
         //writer.Close();
 
         //Re-import the file to update the reference in the editor
-        AssetDatabase.ImportAsset(path);
-        TextAsset asset = (TextAsset) Resources.Load("test");
+        //AssetDatabase.ImportAsset(path);
+        //TextAsset asset = (TextAsset) Resources.Load("test");
 
         //Print the text from the file
-        Debug.Log(asset.text);
+        //Debug.Log(asset.text);
     }
 
     [MenuItem("Tools/Read file")]

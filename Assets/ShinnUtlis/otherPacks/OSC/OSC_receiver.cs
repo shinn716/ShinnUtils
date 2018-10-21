@@ -26,7 +26,7 @@ using UnityEngine;
 			//OscMessageHandler (msgRceive);
 		}
 	}
-	/*
+    /*
 	void msgRceive(OscMessage message){
 		switch(message.address){
 			
@@ -50,25 +50,13 @@ using UnityEngine;
 
 	}*/
 
-	void OnReceive(OscMessage message){
-	
-	     	print("Receive message " + message);
-        	ReveiveData = message.address;
+    void OnReceive(OscMessage message)
+    {
 
-       		for (int i = 0; i < message.values.Count; i++)
-            	ReveiveData += " " + message.values[i];
-		
-		if(receive=="s7"){
-			print ("trigger7");
-			state = 7;
-		}
-		if(receive=="s5"){
-			print ("trigger5");
-			state = 5;
-		}
-		if(receive=="s4"){
-			print ("trigger4");
-			state = 4;
-		}
-	}
+        print("Receive message " + message);
+        ReveiveData = message.address;
+
+        for (int i = 0; i < message.values.Count; i++)
+            ReveiveData += " " + message.values[i];
+    }
 }

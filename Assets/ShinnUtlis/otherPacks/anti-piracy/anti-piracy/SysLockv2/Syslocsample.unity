@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -268,12 +268,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a7af6c989b45874db0c73cb1d237425, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  password: 52794298
-  filepath: C:/ProgramData/rumusyslock/setting.txt
-  nowDate: 0
-  xmlDate: 0
-  datesetfilepath: C:/VOH/dateset.txt
-  dateset: 0
 --- !u!1 &2032945181
 GameObject:
   m_ObjectHideFlags: 0
@@ -283,6 +277,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2032945183}
   - component: {fileID: 2032945182}
+  - component: {fileID: 2032945185}
   - component: {fileID: 2032945184}
   m_Layer: 0
   m_Name: Sample
@@ -299,12 +294,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 2032945181}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c95cd3d8182f054388c1c5be28fb446, type: 3}
+  m_Script: {fileID: 11500000, guid: 115f90cee0a62a64aa75491adc666e95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  content: 20181019
   password: 52794298
-  result: 
+  filepath: C:/ProgramData/rumusyslock/setting.xml
+  nowDate: 0
+  xmlDate: 0
+  datesetfilepath: C:/VOH/dateset.xml
+  dateset: 0
 --- !u!4 &2032945183
 Transform:
   m_ObjectHideFlags: 0
@@ -326,10 +324,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 2032945181}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a588257481a651449f5277fd4fed48e, type: 3}
+  m_Script: {fileID: 11500000, guid: 604246786a8150a4f9a1bf89a53f9634, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   password: 52794298
-  encodedContent: sus8az9Y07eyycqrMQhdSk6J0OLBqOFT
-  correctContent: '!@#$%^&*SDFGHJK79431'
+  encodedContent: 98xq+2QeqxU=
+  correctContent: 10
+  result: 
+--- !u!114 &2032945185
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2032945181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ea70bc9c380e694b966a095834ed309, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  content: 10
+  password: 52794298
   result: 

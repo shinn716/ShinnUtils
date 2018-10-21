@@ -10,6 +10,12 @@ namespace Shinn
 
     public class SingleValueController : MonoBehaviour
     {
+        public enum Type{
+            Itween,
+            PerlinNoise
+        }
+
+        public Type type = Type.Itween;
 
         [Header("float to")]
         public Vector2 valuerange = new Vector2(0, 1);
@@ -28,6 +34,16 @@ namespace Shinn
         public bool complete = false;
         public UnityEvent unityevent;
 
+        [Header("PerlinNoiseSetting")]
+        public float intensity = 1;
+        public float basevalue = 0;
+        public float noiseSpeed = 1;
+        public float randomseed = 0.0F;
+        public bool startRand = true;
+        public float stopTime = 0;
+        bool startperlin = false;
+        int mytime = 0;
+
         void OnEnable()
         {
 
@@ -42,14 +58,39 @@ namespace Shinn
                 Go();
         }
 
-        public void Go() { 
-            iTween.ValueTo(target, iTween.Hash("from", valuerange.x, "to", valuerange.y, "onupdate", "floateventsProcess",
-                                                "time", time, "delay", delay,
-                                                "easetype", ease, "looptype", loop,
-                                                "ignoretimescale", ignoreTimeScalest,
-                                                "oncomplete", "Complete", "oncompletetarget", gameObject
-                                            ));
+        public void Go() {
 
+            if (type == Type.PerlinNoise)
+            {
+                if(startRand)
+                    randomseed = UnityEngine.Random.value;
+                startperlin = true;
+
+                if(stopTime!=0)
+                    Invoke("StopPerlinNoise", stopTime);
+            }
+
+            else
+            {
+                iTween.ValueTo(target, iTween.Hash("from", valuerange.x, "to", valuerange.y, "onupdate", "floateventsProcess",
+                                                    "time", time, "delay", delay,
+                                                    "easetype", ease, "looptype", loop,
+                                                    "ignoretimescale", ignoreTimeScalest,
+                                                    "oncomplete", "Complete", "oncompletetarget", gameObject
+                                                ));
+            }
+        }
+
+        private void Update()
+        {
+            if (startperlin) {
+                float value = basevalue + intensity * Mathf.PerlinNoise(Time.time * noiseSpeed, randomseed);
+                floatevents.Invoke(value);
+            }
+        }
+
+        public void StopPerlinNoise() {
+            startperlin = false;
         }
 
 
