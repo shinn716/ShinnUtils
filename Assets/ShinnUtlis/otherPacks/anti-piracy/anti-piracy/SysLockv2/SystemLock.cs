@@ -9,7 +9,7 @@ using System;
 public class SystemLock : MonoBehaviour {
 
     [Header("Decode")]
-    public string password;
+    public string password = 52794298;
 
     [Header("System")]
     public string filepath = "C:/ProgramData/rumusyslock/setting.xml";
