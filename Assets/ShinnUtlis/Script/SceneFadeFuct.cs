@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 
-namespace ShinnUtil{
+namespace Shinn{
 
 	public class SceneFadeFuct : MonoBehaviour {
 
