@@ -30,7 +30,6 @@ public class AnimationForTimeLineEvent : MonoBehaviour {
             param = anim.parameters[i];
             anim.SetBool(param.name, false);
         }
-        
         anim.SetBool(actionName[name], true);
     }
 
