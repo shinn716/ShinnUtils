@@ -1,29 +1,30 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneForTimelineEvents : MonoBehaviour {
-
-    public int LoadLevel = 0;
-    AsyncOperation asyncOperation;
+public class SceneForTimelineEvents : MonoBehaviour
+{
+    public int[] LoadLevel;
+    AsyncOperation[] asyncOperation;
 
     private void Start()
     {
-        StartCoroutine(LoadScene(LoadLevel));
+        asyncOperation = new AsyncOperation[LoadLevel.Length];
+        for (int i=0; i<LoadLevel.Length; i++)
+            StartCoroutine(LoadScene(i, LoadLevel[i]));
     }
 
-    public void nextScene()
+    public void nextScene(int index)
     {
-        asyncOperation.allowSceneActivation = true;
+        asyncOperation[index].allowSceneActivation = true;
     }
 
 
-    IEnumerator LoadScene(int level)
+    IEnumerator LoadScene(int index, int level)
     {
         yield return null;
-        asyncOperation = SceneManager.LoadSceneAsync(level);
-        asyncOperation.allowSceneActivation = false;
-        Debug.Log("Pro :" + asyncOperation.progress);
+        asyncOperation[index] = SceneManager.LoadSceneAsync(level);
+        asyncOperation[index].allowSceneActivation = false;
     }
 }
