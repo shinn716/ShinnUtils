@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -25,13 +25,12 @@ public class ParticleSystemColorPool : MonoBehaviour {
     public bool changeColorSt = false;
     public float time;
 
-    private void Awake () {
-        PickUpColor();
-    }
-
     private void Start()
     {
-        if(changeColorSt)
+        print("start");
+        PickUpColor();
+
+        if (changeColorSt)
             InvokeRepeating("PickUpColor", time, time);
     }
 
@@ -39,23 +38,16 @@ public class ParticleSystemColorPool : MonoBehaviour {
     {
         int index = Random.Range(0, mystate.color.Length);
 
+        if (allRandomst)
+            index = Random.Range(0, mystate.color.Length);
+
         for (int i = 0; i < PS.Length; i++)
         {
-            if (allRandomst)
-                index = Random.Range(0, mystate.color.Length);
-
-            if (PS.Length != 0) {
-                var main = PS[i].main;
-                main.startColor = new ParticleSystem.MinMaxGradient(mystate.color[index]);
-            }
-
-            if (trail.Length != 0)
-                trail[i].colorGradient = mystate.color[index];
+            var main = PS[i].main;
+            main.startColor = new ParticleSystem.MinMaxGradient(mystate.color[index]);
         }
+
+        for(int i=0; i< trail.Length; i++)
+            trail[i].colorGradient = mystate.color[index];
     }
-
-
-
-
-
 }
