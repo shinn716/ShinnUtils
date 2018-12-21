@@ -13,22 +13,23 @@ namespace Shinn
         [Header("Dont destroy on this script.")]
         [Header("Reload")]
         public KeyCode ReloadKey = KeyCode.F5;
+        public bool Dontdestroy = true;
         public int level = 0;
 
         [Header("Pause")]
         public KeyCode PauseKey = KeyCode.P;
         //private MediaPlayer[] mediaplayer;
-        bool pause = false;
+        private bool pause = false;
 
         [Header("Screen Resolutuin setting")]
         public Vector2 ScreenResolution = new Vector2(1920, 281);
         public bool FullScreen = true;
         public bool FitToScreen = false;
 
-        [Header("Show sys info")]
-        public bool showFPS = false;
-        public bool showTime = false;
+        [Header("Show Sys info")]
+        public KeyCode ShowKey = KeyCode.S;
 
+        private bool showInfo = false;
         private float updateInterval = 0.5f;
         private float accum = 0.0f;
         private int frames = 0;
@@ -38,30 +39,21 @@ namespace Shinn
         [Header("Text style")]
         public GUIStyle myStyle;
 
-
-        public bool ShowFPS
-        {
-            get { return showFPS; }
-            set { showFPS = value; }
-        }
-
-        public bool ShowTime
-        {
-            get { return showTime; }
-            set { showTime = value; }
-        }
-
+        protected Rect viewWindow;
+        
         private void Awake()
         {
-            if (s_Instance == null)
+            if (Dontdestroy)
             {
-                s_Instance = this;
-                DontDestroyOnLoad(gameObject);
-            }
-
-            else if (this != s_Instance)
-            {
-                Destroy(gameObject);
+                if (s_Instance == null)
+                {
+                    s_Instance = this;
+                    DontDestroyOnLoad(gameObject);
+                }
+                else if (this != s_Instance)
+                {
+                    Destroy(gameObject);
+                }
             }
 
             if (FitToScreen)
@@ -74,7 +66,8 @@ namespace Shinn
         void Start()
         {
             timeleft = updateInterval;
-
+            viewWindow = new Rect(10, 10, 150, 50);
+        
             // Need Avpro Packages
             //var allmedia = Resources.FindObjectsOfTypeAll<MediaPlayer>();
             //mediaplayer = new MediaPlayer[allmedia.Length];
@@ -94,10 +87,12 @@ namespace Shinn
             }
 
             if (Input.GetKeyDown(ReloadKey))
-                Application.LoadLevel(level);
+                SceneManager.LoadScene(level);
 
+            if (Input.GetKeyDown(ShowKey))
+                showInfo = !showInfo;
 
-            if (showFPS)
+            if (showInfo)
             {
                 timeleft -= Time.deltaTime;
                 accum += Time.timeScale / Time.deltaTime;
@@ -114,14 +109,24 @@ namespace Shinn
 
         }
 
+        protected void Window(int id)
+        {
+            using (new GUILayout.VerticalScope())
+            {
+                GUILayout.Label("FPS                " + fps, myStyle);
+                GUILayout.Label("Play time         " + Time.time.ToString("f0"), myStyle);
+            }
+            UnityEngine.GUI.DragWindow();
+        }
+
 
         private void OnGUI()
         {
-            if (showFPS)
-                GUI.Label(new Rect(Screen.width - 100, 0, 70, 20), "FPS  " + fps, myStyle);
-
-            if (showTime)
-                GUI.Label(new Rect(Screen.width - 100, 20, 70, 60), "Time " + Time.time.ToString("f0"), myStyle);
+            if(showInfo)
+                using (new GUILayout.HorizontalScope())
+                {
+                    viewWindow = GUILayout.Window(GetInstanceID(), viewWindow, Window, "System Info");
+                }
         }
 
 
