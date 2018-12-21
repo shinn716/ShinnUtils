@@ -65,12 +65,12 @@ namespace Shinn
         #endregion
 
         #region UnityEvents
-        public bool EnableBool = false;
-        public bool EnableInt = false;
-        public bool EnableFloat = false;
-        public bool EnableFloatArray = false;
-        public bool EnableColor = false;
-        public bool EnableVoid = false;
+        public bool EnableBool { get; set; }
+        public bool EnableInt { get; set; }
+        public bool EnableFloat { get; set; }
+        public bool EnableFloatArray { get; set; }
+        public bool EnableColor { get; set; }
+        public bool EnableVoid { get; set; }
 
         public VoidEvent voidevents;
         public BoolEvent boolevents;
@@ -85,32 +85,7 @@ namespace Shinn
         public float[] floatarrayvalue;
         public Color colorvalue;
         #endregion
-
-        #region Return params methods.
-        //hashtable.Add("oncomplete", "afterPlayerMove");
-
-        ////Create oncompleteparams hashtable
-        //Hashtable paramHashtable = new Hashtable();
-        //paramHashtable.Add("value1", _fieldIndex);
-        //paramHashtable.Add("value2", floatVal);
-        //paramHashtable.Add("value3", stringVal);
-        //paramHashtable.Add("value4", boolVal);
-        //paramHashtable.Add("value5", gObjVal);
-        ////Include the oncompleteparams parameter  to the hashtable
-        //hashtable.Add("oncompleteparams", paramHashtable);
-
-
-        //public void afterPlayerMove(object cmpParams)
-        //{
-        //  Hashtable hstbl = (Hashtable)cmpParams;
-        //  Debug.Log("Your int value " + (int)hstbl["value1"]);
-        //  Debug.Log("Your float value " + (float)hstbl["value2"]);
-        //  Debug.Log("Your string value " + (string)hstbl["value3"]);
-        //  Debug.Log("Your bool value " + (bool)hstbl["value4"]);
-        //  Debug.Log("Your GameObject value " + (GameObject)hstbl["value5"]);
-        //}
-        #endregion
-
+        
         private void OnEnable()
         {
 
