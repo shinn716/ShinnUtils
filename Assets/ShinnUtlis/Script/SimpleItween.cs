@@ -52,6 +52,7 @@ namespace Shinn
         public Vector3 rotvalue;
 
         [Header("ColorTo")]
+        public Color startColor;
         public Color endColor;
 
         [Header("FadeTo")]
@@ -110,7 +111,7 @@ namespace Shinn
         //}
         #endregion
 
-        void OnEnable()
+        private void OnEnable()
         {
 
             if (target == null)
@@ -140,7 +141,7 @@ namespace Shinn
             iTween.Stop(gameObject);
         }
 
-        void Select()
+        private void Select()
         {
             switch (mystate)
             {
@@ -269,10 +270,13 @@ namespace Shinn
 
                     break;
 
+
+                default:
+                    break;
             }
         }
 
-        void fadeto1(float newvalue)
+        private void Fadeto1(float newvalue)
         {
             if (GetComponent<SpriteRenderer>() != null)
             {
@@ -281,7 +285,7 @@ namespace Shinn
             }
         }
 
-        void Complete()
+        private void Complete()
         {
             if (startComplete)
             {
@@ -304,6 +308,14 @@ namespace Shinn
                     voidevents.Invoke();
             }
         }
+
+        private void OnDisable()
+        {
+            var itween = GetComponent<iTween>();
+            if (itween != null)
+                Destroy(itween);
+        }
+
     }
 
 }
