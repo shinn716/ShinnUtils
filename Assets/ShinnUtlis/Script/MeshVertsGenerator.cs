@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
@@ -15,27 +15,40 @@ namespace Shinn
             Medium,
             High
         }
-
         public Quality quality;
 
         [Header("Gizmos stroke"), Range(0, 1)]
         public float stroke = .01f;
-
-        Vector3[] vertices;
-        int count=0;
-
-        GameObject tempGroup;
-        GameObject[] tempbox;
-
-        Vector3[] meshverts;
-
-        bool draw = false;
 
         public Vector3[] GetMeshVertices
         {
             get { return meshverts; }
         }
 
+        private Vector3[] vertices;
+        private Vector3[] meshverts;     
+        
+        private GameObject tempGroup;
+        private GameObject[] tempbox;      
+        
+        private bool draw = false;
+        private int count = 0;
+
+        private int QualitySelect(Quality quality)
+        {
+            switch (quality)
+            {
+                case Quality.Low:
+                    return vertices.Length / 3;
+                case Quality.Medium:
+                    return vertices.Length / 3 * 2;
+                case Quality.High:
+                    return vertices.Length;
+                default:
+                    return vertices.Length;
+            }
+        }
+        
         void Awake()
         {
             MeshFilter mesh = GetComponent<MeshFilter>();
@@ -44,25 +57,19 @@ namespace Shinn
         }
 
         [Button]
-        void GenerateMesh()
+        public void GenerateMesh()
         {
-            if (quality == Quality.Low)
-                count = vertices.Length / 3;
-            else if (quality == Quality.Medium)
-                count = vertices.Length / 3 * 2;
-            else
-                count = vertices.Length;
-
+            count = QualitySelect(quality);
 
             tempGroup = new GameObject();
-            tempGroup.name = "Group(Using the script to delete, thx.)";
+            tempGroup.name = "Group(Using the script to delete.)";
             tempGroup.transform.parent = transform;
             
             Instan();
         }
 
         [Button]
-        void Destory() {
+        public void Destory() {
             int childs = transform.childCount;
             for (int i = 0; i < childs; i++)
                 DestroyImmediate(transform.GetChild(i).gameObject);
@@ -71,13 +78,13 @@ namespace Shinn
         }
 
         [Button]
-        void RemoveCommpont()
+        public void RemoveCommpont()
         {
             draw = false;
             DestroyImmediate(GetComponent<MeshVertsGenerator>());
         }
 
-        void Instan()
+        private void Instan()
         {
             meshverts = new Vector3[count];
             tempbox = new GameObject[count];
@@ -90,7 +97,6 @@ namespace Shinn
                 tempbox[i].transform.localEulerAngles = Vector3.zero;
                 tempbox[i].transform.localScale = Vector3.one;
                 tempbox[i].transform.parent = tempGroup.transform;
-
                 meshverts[i] = vertices[i];
             }
 
@@ -98,29 +104,19 @@ namespace Shinn
 
             tempGroup.transform.localPosition = Vector3.zero;
             tempGroup.transform.localEulerAngles = Vector3.zero;
-            tempGroup.transform.localScale = Vector3.one;
-
-           
+            tempGroup.transform.localScale = Vector3.one;           
         }
 
-        //void OnValidate()
-        //{
-
-        //}
-
-
-        void OnDrawGizmos()
+        private void OnDrawGizmos()
         {
             if (draw)
-            {
-
                 for (int i = 0; i < tempbox.Length; i++)
                 {
                     Gizmos.DrawWireSphere(tempbox[i].transform.position, stroke);
                     Gizmos.color = Color.yellow;
                 }
-            }
         }
+
     }
 
 }
