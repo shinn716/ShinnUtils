@@ -1,37 +1,42 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ShinnUtil{
-
+namespace Shinn
+{
 	public class NoiseCamera : MonoBehaviour {
 
 		[Header("NoiseCamera")]
-		[SerializeField] float NoiseSpeed = .5f;
+        public Camera cam;
 
-		[SerializeField]
-		bool _NoiseCamViewSt;
+        public bool autoStart = true;
 		public bool NoiseCamViewSt {
-			get{ return _NoiseCamViewSt; }
-			set{ _NoiseCamViewSt = value; }
+			get{ return autoStart; }
+			set{ autoStart = value; }
 		}
 
 		[Space]
-		[SerializeField] float BaseValue = 0;
-		[SerializeField] float ScaleValue = 30;
+        public float BaseValue = 0;
+        public float ScaleValue = 30;
+        [Range(0, 3)]
+        public float NoiseSpeed = .5f;
 
-		float zoomindata;
+        [Header("Noise Time Data"), ReadOnly]
+        public float timedata;  
 
-		[Header("Noise Time Data")]
-		[SerializeField] float timedata;
+        private void Start()
+        {
+            if (cam == null)
+                cam = GetComponent<Camera>();
+        }
 
-
-		void FixedUpdate () {
-
-			if (_NoiseCamViewSt) {
+        private void FixedUpdate ()
+        {
+			if (autoStart)
+            {
 				timedata += .01f;
-				zoomindata = BaseValue + Mathf.PerlinNoise (timedata * NoiseSpeed, 0.0F) * ScaleValue;
-				gameObject.GetComponent<Camera> ().fieldOfView = zoomindata;
+                float zoomindata = BaseValue + Mathf.PerlinNoise (timedata * NoiseSpeed, 0.0F) * ScaleValue;
+                cam.fieldOfView = zoomindata;
 			}
 
 		}
