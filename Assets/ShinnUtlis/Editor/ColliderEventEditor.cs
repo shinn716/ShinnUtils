@@ -7,8 +7,8 @@ using Shinn;
 [CustomEditor(typeof(ColliderEvent))]
 public class ColliderEventEditor : Editor {
 
-    ColliderEvent script;
-    bool eventfold = false;
+    private ColliderEvent script;
+    private bool eventfold = false;
 
     public override void OnInspectorGUI()
     {
@@ -89,21 +89,32 @@ public class ColliderEventEditor : Editor {
 
     }
 
-
-    void SelectType()
+    private void SelectType()
     {
         switch (script.mytype)
         {
             default:
                 break;
 
-            case ColliderEvent.type.Trigger:
-                script.mytype = ColliderEvent.type.Trigger;
+            case ColliderEvent.type.OnTriggerEnter:
+                script.mytype = ColliderEvent.type.OnTriggerEnter;
+                break;
+            case ColliderEvent.type.OnTriggerExit:
+                script.mytype = ColliderEvent.type.OnTriggerExit;
+                break;
+            case ColliderEvent.type.OnTriggerStay:
+                script.mytype = ColliderEvent.type.OnTriggerStay;
                 break;
 
 
-            case ColliderEvent.type.Collision:
-                script.mytype = ColliderEvent.type.Collision;
+            case ColliderEvent.type.OnCollisionEnter:
+                script.mytype = ColliderEvent.type.OnCollisionEnter;
+                break;
+            case ColliderEvent.type.OnCollisionEXit:
+                script.mytype = ColliderEvent.type.OnCollisionEXit;
+                break;
+            case ColliderEvent.type.OnCollisionStay:
+                script.mytype = ColliderEvent.type.OnCollisionStay;
                 break;
         }
     }
