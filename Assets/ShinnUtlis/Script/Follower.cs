@@ -7,16 +7,19 @@ namespace Shinn
 
     public class Follower : MonoBehaviour
     {
+        public enum MoveType
+        {
+            Lerp,
+            Translate
+        }
+
         [Header("Chase Target")]
         public bool enable = true;
-        public bool Enable {
-            set { enable = value; }
-        }
         public Transform target;
-        public Transform Target
-        {
-            set { target = value; }
-        }
+        public MoveType type;
+
+        public bool Enable { set { enable = value; } }
+        public Transform Target { set { target = value; } }
 
         [Header("Chase speed and rotation speed."), Range(0, 1)]
         public float chaseSpeed = .1f;
@@ -35,11 +38,25 @@ namespace Shinn
         public string moveAnimName = "walk";
         public string encounterAnimName = "attack";
 
+       private bool MoveTypeState()
+        {
+            switch (type)
+            {
+                case MoveType.Lerp:
+                    return true;
+
+                case MoveType.Translate:
+                    return false;
+
+                default:
+                    return false;
+            }
+        }
+
         void FixedUpdate()
         {
             if (enable)
             {
-
                 Vector3 direction = target.transform.position - transform.position;
 
                 if (onTheGround)
@@ -56,18 +73,27 @@ namespace Shinn
                             Debug.LogError("Need assign an animator.");
                             return;
                         }
-
-                        if (anim.GetCurrentAnimatorStateInfo(0).IsName("run"))
+                        else
                         {
-                            anim.SetBool("run", true);
-                            anim.SetBool("attack", false);
-                            //transform.Translate(0, 0, chaseSpeed);
-                            transform.position = Vector3.Lerp(transform.position, target.position, chaseSpeed);
+                            if (anim.GetCurrentAnimatorStateInfo(0).IsName(moveAnimName))
+                            {
+                                anim.SetBool(moveAnimName, true);
+                                anim.SetBool(encounterAnimName, false);
+
+                                if (MoveTypeState())
+                                    transform.position = Vector3.Lerp(transform.position, target.position, chaseSpeed);
+                                else
+                                    transform.Translate(0, 0, chaseSpeed);
+                            }
                         }
                     }
                     else
-                        //transform.Translate(0, 0, chaseSpeed);
-                        transform.position = Vector3.Lerp(transform.position, target.position, chaseSpeed);
+                    {
+                        if (MoveTypeState())
+                            transform.position = Vector3.Lerp(transform.position, target.position, chaseSpeed);
+                        else
+                            transform.Translate(0, 0, chaseSpeed);
+                    }
                 }
                 else
                 {
@@ -78,8 +104,11 @@ namespace Shinn
                             Debug.LogError("Need assign an animator.");
                             return;
                         }
-                        anim.SetBool("run", false);
-                        anim.SetBool("attack", true);
+                        else
+                        {
+                            anim.SetBool(moveAnimName, false);
+                            anim.SetBool(encounterAnimName, true);
+                        }
                     }
                 }
 
