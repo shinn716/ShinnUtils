@@ -2,38 +2,39 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(AudioSource))]
-public class CarouselSFX : MonoBehaviour {
-	
-	[SerializeField] AudioClip[] clip;
-	AudioSource AS;
+namespace Shinn
+{
+    [RequireComponent(typeof(AudioSource))]
+    public class CarouselSFX : MonoBehaviour
+    {
 
-    [SerializeField]
-    bool autoStart = true;
+        [SerializeField] AudioClip[] clip;
+        private AudioSource AS { get; set; }
 
-    [Range(0, 1)]
-    public float volume = 1;
-    public float pitch = .5f;
+        [SerializeField]
+        public bool autoStart = true;
 
-    void Start () {
-		AS = GetComponent<AudioSource> ();
-        if (autoStart)
+        [Range(0, 1)]
+        public float volume = 1;
+
+        private void Start()
         {
-            int index = Random.Range(0, clip.Length);
-            AS.PlayOneShot(clip[index]);
+            AS = GetComponent<AudioSource>();
+        }
+
+        private void Update()
+        {
+            if (!AS.isPlaying && autoStart)
+            {
+                int index = Random.Range(0, clip.Length);
+                AS.PlayOneShot(clip[index], volume);
+            }
+        }
+
+        public void Stop()
+        {
+            autoStart = false;
         }
     }
 
-
-	void Update () {
-		
-		if(!AS.isPlaying && autoStart)
-        {
-			int index = Random.Range (0, clip.Length);
-			AS.PlayOneShot (clip [index], volume);
-            AS.pitch = pitch;
-
-        }
-
-	}
 }
