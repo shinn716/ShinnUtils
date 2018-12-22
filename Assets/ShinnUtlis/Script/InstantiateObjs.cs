@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using EasyButtons;
 
 namespace shinn
 {
     public class InstantiateObjs : MonoBehaviour
     {
+        public bool autostart = true;
         public GameObject[] prefabs;
         public Vector2 InstianteCount = new Vector2(5, 10);
 
@@ -40,6 +42,12 @@ namespace shinn
         }
 
         private void Start()
+        {
+            if(autostart)
+                Generate();
+        }
+        
+        public void Generate()
         {
             if (prefabs.Length != 0)
             {
