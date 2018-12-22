@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
@@ -7,8 +7,7 @@ using Shinn;
 [CustomEditor(typeof(CustomMaterialCon))]
 public class CustomMaterialConEditor : Editor {
 
-    CustomMaterialCon script;
-
+    private CustomMaterialCon script;
 
     public override void OnInspectorGUI()
     {
@@ -27,20 +26,13 @@ public class CustomMaterialConEditor : Editor {
 
         if (EditorGUI.EndChangeCheck())
             serializedObject.ApplyModifiedProperties();
-
-        //script.mat = (Material) EditorGUILayout.ObjectField("Material", script.mat, typeof(Material), true);
-        script.priority = EditorGUILayout.TextField("Priority", script.priority);
-        script.autoStart = EditorGUILayout.Toggle("Autostart", script.autoStart);
         
-        EditorGUILayout.Space();
+        script.priority = EditorGUILayout.TextField("Priority", script.priority);
+        script.autoStart = EditorGUILayout.Toggle("Autostart", script.autoStart);        
         script.time = EditorGUILayout.FloatField("Time", script.time);
         script.delay = EditorGUILayout.Slider("Delay", script.delay, 0, 10);
-
-        EditorGUILayout.Space();
         script.ease = (iTween.EaseType)EditorGUILayout.EnumPopup("EaseType", script.ease);
         script.loop = (iTween.LoopType)EditorGUILayout.EnumPopup("LoopType", script.loop);
-
-        EditorGUILayout.Space();
         script.ignoreTimeScalest = EditorGUILayout.Toggle("Ignore time scale", script.ignoreTimeScalest);
         
 
@@ -66,7 +58,7 @@ public class CustomMaterialConEditor : Editor {
         SelectType();
     }
 
-    void SelectType()
+    private void SelectType()
     {
         switch (script.type)
         {
@@ -84,7 +76,4 @@ public class CustomMaterialConEditor : Editor {
                 break;
         }
     }
-
-
-
 }
