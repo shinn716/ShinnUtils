@@ -16,39 +16,49 @@ public class InstRaycast : MonoBehaviour {
     public Camera c;
     public CameraState camstate;
     public float raycastDist = 10;
+    public bool CameraSelect()
+    {
+        switch (camstate)
+        {
+            case CameraState.perspective:
+                return true;
+            case CameraState.orthographic:
+                return false;
+            default:
+                return true;
+        }
+    }
+
 
     [Header("Instantiate State")]
     public int gentime = 100;
     public GameObject[] prefab;
-    public Vector2 scaleRange;
-    public Vector2 rotXRange;
-    public Vector2 rotYRange;
-    public Vector2 rotZRange;
-    public Vector2 posOffsetRange;
+    public Vector2 scaleRange = Vector2.one;
 
-    int count = 0;
+    [MinMax(-360, 360, ShowEditRange = true), Space]
+    public Vector2 rotXRange = Vector2.zero;
+
+    [MinMax(-360, 360, ShowEditRange = true), Space]
+    public Vector2 rotYRange = Vector2.zero;
+
+    [MinMax(-360, 360, ShowEditRange = true), Space]
+    public Vector2 rotZRange = Vector2.zero;
+    public Vector2 posOffsetRange = Vector2.zero;    
 
     public Vector3 GetRaycastPosition { get; set; }
+    private int count = 0;
+
 
     private void Start () {
         if (c == null)
             c = Camera.main;
 	}
 
-    private void FixedUpdate () {
-        if (enable) 
-            Select(camstate);
-	}
-
-
-    private void Select(CameraState cam) {
-
-        switch (cam)
-        {
-            default:
-                break;
-
-            case CameraState.perspective:
+    private void FixedUpdate()
+    {
+        if (enable)
+            if (CameraSelect())
+            {
                 count++;
                 if (count > gentime)
                 {
@@ -57,7 +67,7 @@ public class InstRaycast : MonoBehaviour {
                     GameObject go1 = Instantiate(prefab[Random.Range(0, prefab.Length)]);
                     GetRaycastPosition = GetWorldPositionOnPlane(Input.mousePosition, raycastDist);
 
-                    go1.transform.localPosition = new Vector3(  GetRaycastPosition.x + Random.Range(posOffsetRange.x, posOffsetRange.y),
+                    go1.transform.localPosition = new Vector3(GetRaycastPosition.x + Random.Range(posOffsetRange.x, posOffsetRange.y),
                                                                 GetRaycastPosition.y + Random.Range(posOffsetRange.x, posOffsetRange.y),
                                                                 GetRaycastPosition.z);
                     float scale = Random.Range(scaleRange.x, scaleRange.y);
@@ -69,9 +79,9 @@ public class InstRaycast : MonoBehaviour {
                     go1.transform.localEulerAngles = new Vector3(rotx, roty, rotz);
                     go1.transform.parent = transform;
                 }
-                break;
-
-            case CameraState.orthographic:
+            }
+            else
+            {
                 count++;
                 if (count > gentime)
                 {
@@ -79,7 +89,7 @@ public class InstRaycast : MonoBehaviour {
 
                     GameObject go2 = Instantiate(prefab[Random.Range(0, prefab.Length)]);
                     GetRaycastPosition = new Vector3(c.ScreenToWorldPoint(Input.mousePosition).x, c.ScreenToWorldPoint(Input.mousePosition).y, raycastDist);
-                    go2.transform.localPosition = new Vector3(  GetRaycastPosition.x + Random.Range(posOffsetRange.x, posOffsetRange.y),
+                    go2.transform.localPosition = new Vector3(GetRaycastPosition.x + Random.Range(posOffsetRange.x, posOffsetRange.y),
                                                                 GetRaycastPosition.y + Random.Range(posOffsetRange.x, posOffsetRange.y),
                                                                 GetRaycastPosition.z);
 
@@ -92,8 +102,7 @@ public class InstRaycast : MonoBehaviour {
                     go2.transform.localEulerAngles = new Vector3(rotx2, roty2, rotz2);
                     go2.transform.parent = transform;
                 }
-                break;
-        }
+            }
     }
 
     private Vector3 GetWorldPositionOnPlane(Vector3 screenPosition, float z)
@@ -104,6 +113,4 @@ public class InstRaycast : MonoBehaviour {
         xy.Raycast(ray, out distance);
         return ray.GetPoint(distance);
     }
-
-
 }
