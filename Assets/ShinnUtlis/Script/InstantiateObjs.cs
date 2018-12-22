@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using EasyButtons;
 
-namespace shinn
+namespace Shinn
 {
     public class InstantiateObjs : MonoBehaviour
     {
