@@ -10,7 +10,6 @@ namespace Shinn
     {
         static SceneTools s_Instance;
 
-        [Header("Dont destroy on this script.")]
         [Header("Reload")]
         public KeyCode ReloadKey = KeyCode.F5;
         public bool Dontdestroy = true;
