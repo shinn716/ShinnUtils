@@ -9,27 +9,33 @@ namespace Shinn {
     public class ColliderEvent : MonoBehaviour {
 
         public enum type{
-            Trigger,
-            Collision,
+            OnTriggerEnter,
+            OnCollisionEnter,
+            OnTriggerStay,
+            OnCollisionStay,
+            OnTriggerExit,
+            OnCollisionEXit, 
             None
         }
 
-        bool tri = false;
-        bool col = false;
-
-        [Space]
         public type mytype;
         public string tagname = "TagName";
 
-        [Space]
-        [Header("CompleteEvent")]
-        public bool EnableBool = false;
-        public bool EnableInt = false;
-        public bool EnableFloat = false;
-        public bool EnableFloatArray = false;
-        public bool EnableColor = false;
-        public bool EnableVoid = false;
+        private bool triEn = false;
+        private bool colEn = false;
+        private bool triSt = false;
+        private bool colSt = false;
+        private bool triEx = false;
+        private bool colEx = false;
 
+        #region Events
+        public bool EnableBool { get; set; }
+        public bool EnableInt { get; set; }
+        public bool EnableFloat { get; set; }
+        public bool EnableFloatArray { get; set; }
+        public bool EnableColor { get; set; }
+        public bool EnableVoid { get; set; }
+        
         public VoidEvent voidevents;
         public BoolEvent boolevents;
         public IntEvent intevents;
@@ -42,32 +48,80 @@ namespace Shinn {
         public float floatvalue;
         public float[] floatarrayvalue;
         public Color colorvalue;
+        #endregion
 
         private void Start()
         {
-            switch (mytype) {
-
+            switch (mytype)
+            {
                 default:
-                    tri = false;
-                    col = false;
+                    triEn = false;
+                    colEn = false;
+                    triSt = false;
+                    colSt = false;
+                    triEx = false;
+                    colEx = false;
                     break;
 
-                case type.Trigger:
-                    tri = true;
-                    col = false;
+
+                case type.OnTriggerEnter:
+                    triEn = true;
+                    colEn = false;
+                    triSt = false;
+                    colSt = false;
+                    triEx = false;
+                    colEx = false;
                     break;
 
-                case type.Collision:
-                    tri = false;
-                    col = true;
+                case type.OnCollisionEnter:
+                    triEn = false;
+                    colEn = true;
+                    triSt = false;
+                    colSt = false;
+                    triEx = false;
+                    colEx = false;
+                    break;
+
+                case type.OnTriggerStay:
+                    triEn = false;
+                    colEn = false;
+                    triSt = true;
+                    colSt = false;
+                    triEx = false;
+                    colEx = false;
+                    break;
+
+                case type.OnCollisionStay:
+                    triEn = false;
+                    colEn = false;
+                    triSt = false;
+                    colSt = true;
+                    triEx = false;
+                    colEx = false;
+                    break;
+
+                case type.OnTriggerExit:
+                    triEn = false;
+                    colEn = false;
+                    triSt = false;
+                    colSt = false;
+                    triEx = true;
+                    colEx = false;
+                    break;
+
+                case type.OnCollisionEXit:
+                    triEn = false;
+                    colEn = false;
+                    triSt = false;
+                    colSt = false;
+                    triEx = false;
+                    colEx = true;
                     break;
             }
         }
-
-        //OnTriggerEnter、OnTriggerStay、OnTriggerExit
-        void OnTriggerEnter(Collider other)
+        private void OnTriggerEnter(Collider other)
         {
-            if (other.tag == tagname && tri)
+            if (other.tag == tagname && triEn)
             {
                 if (EnableBool)
                     boolevents.Invoke(boolvalue);
@@ -88,11 +142,101 @@ namespace Shinn {
                     voidevents.Invoke();
             }
         }
-
-        //OnCollisionEnter、OnCollisionStay、OnCollisionEXit
-        void OnCollisionEnter(Collision other)
+        private void OnCollisionEnter(Collision other)
         {
-            if (other.gameObject.tag == tagname && col)
+            if (other.gameObject.tag == tagname && colEn)
+            {
+                if (EnableBool)
+                    boolevents.Invoke(boolvalue);
+
+                if (EnableInt)
+                    intevents.Invoke(intvalue);
+
+                if (EnableFloat)
+                    floatevents.Invoke(floatvalue);
+
+                if (EnableFloatArray)
+                    floatarratevents.Invoke(floatarrayvalue);
+
+                if (EnableColor)
+                    colorevents.Invoke(colorvalue);
+
+                if (EnableVoid)
+                    voidevents.Invoke();
+            }
+        }
+        private void OnTriggerStay(Collider other)
+        {
+            if (other.tag == tagname && triSt)
+            {
+                if (EnableBool)
+                    boolevents.Invoke(boolvalue);
+
+                if (EnableInt)
+                    intevents.Invoke(intvalue);
+
+                if (EnableFloat)
+                    floatevents.Invoke(floatvalue);
+
+                if (EnableFloatArray)
+                    floatarratevents.Invoke(floatarrayvalue);
+
+                if (EnableColor)
+                    colorevents.Invoke(colorvalue);
+
+                if (EnableVoid)
+                    voidevents.Invoke();
+            }
+        }
+        private void OnCollisionStay(Collision other)
+        {
+            if (other.gameObject.tag == tagname && colSt)
+            {
+                if (EnableBool)
+                    boolevents.Invoke(boolvalue);
+
+                if (EnableInt)
+                    intevents.Invoke(intvalue);
+
+                if (EnableFloat)
+                    floatevents.Invoke(floatvalue);
+
+                if (EnableFloatArray)
+                    floatarratevents.Invoke(floatarrayvalue);
+
+                if (EnableColor)
+                    colorevents.Invoke(colorvalue);
+
+                if (EnableVoid)
+                    voidevents.Invoke();
+            }
+        }
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.tag == tagname && triEx)
+            {
+                if (EnableBool)
+                    boolevents.Invoke(boolvalue);
+
+                if (EnableInt)
+                    intevents.Invoke(intvalue);
+
+                if (EnableFloat)
+                    floatevents.Invoke(floatvalue);
+
+                if (EnableFloatArray)
+                    floatarratevents.Invoke(floatarrayvalue);
+
+                if (EnableColor)
+                    colorevents.Invoke(colorvalue);
+
+                if (EnableVoid)
+                    voidevents.Invoke();
+            }
+        }
+        private void OnCollisionExit(Collision other)
+        {
+            if (other.gameObject.tag == tagname && colEx)
             {
                 if (EnableBool)
                     boolevents.Invoke(boolvalue);
