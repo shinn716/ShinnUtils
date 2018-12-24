@@ -78,10 +78,10 @@ namespace Moments
 
         #region Public fields
 
+        public float RecorderTime { get { return m_BufferSize; } }
+
         public string outPutname;
-		public string output(string tmpname){
-			 return outPutname;
-		}
+        public string OutPutname { get { return outPutname; } }
 
 		/// <summary>
 		/// Current state of the recorder.
@@ -388,8 +388,8 @@ namespace Moments
 		string GenerateFileName()
 		{
 			string timestamp = DateTime.Now.ToString("yyyyMMddHHmmssffff");
-			outPutname = "sc2_" + timestamp;
-			return "sc2_" + timestamp;
+			outPutname = timestamp;
+			return outPutname;
 		}
 
 		// Pre-processing coroutine to extract frame data and send everything to a separate worker thread

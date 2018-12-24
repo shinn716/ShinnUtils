@@ -1,22 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Moments;
 using Shinn;
 
-[RequireComponent(typeof(Record))]
 public class GifController : MonoBehaviour {
 
-	public UploadAndQrcode upload;   
+    public Record record;
+    public Recorder recorder;
+    public UploadAndQrcode upload;   
     public KeyCode RecordKey = KeyCode.R;
-    public int RecorderTime = 3;
+    [ReadOnly]
+    public float RecorderTime = 3;
 
-    Record record;
-
-    void Start () {
-        record = GetComponent<Record>();
+    private void Start ()
+    {
+        RecorderTime = recorder.RecorderTime;
     }
 
-	void Update ()
+    private void Update ()
     {		
 		if(Input.GetKeyDown(RecordKey)){
             record.startRecord();
@@ -24,20 +26,19 @@ public class GifController : MonoBehaviour {
 		}
 	}
 
-	IEnumerator End(float time){
+    private IEnumerator End(float time){
         yield return new WaitForSeconds(time);
         record.endRecord();
         StartCoroutine(delayUpload());
 	}
 
-    IEnumerator delayUpload()
+    private IEnumerator delayUpload()
     {
-        while (!record.finish)
+        while (!record.Finish)
         {
-            //print("Loading progress: " + record.m_Progress + "%");
-            if (record.m_Progress >= 97f)
+            //print("Loading progress: " + record.Progress + "%");
+            if (record.Progress >= 95f)
             {
-                print("Finish!!");
                 upload.StartUpAndQr(Record.filename);
                 break;                
             }

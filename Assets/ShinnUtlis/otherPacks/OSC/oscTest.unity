@@ -229,7 +229,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   oscenable: 1
-  address: /test
+  address: /Character
   state: 0
   ReveiveData: NULL
 --- !u!114 &1694732545
@@ -245,7 +245,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inPort: 6969
   outIP: 127.0.0.1
-  outPort: 6161
+  outPort: 6969
 --- !u!4 &1694732546
 Transform:
   m_ObjectHideFlags: 0

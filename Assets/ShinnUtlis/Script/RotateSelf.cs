@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ShinnUtil{
+namespace Shinn{
 
 	public class RotateSelf : MonoBehaviour {
 

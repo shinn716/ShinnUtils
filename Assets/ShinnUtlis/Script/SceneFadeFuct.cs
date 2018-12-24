@@ -30,8 +30,8 @@ namespace Shinn{
         [SerializeField] UnityEvent _event;
 
         private Color32 guiColor;
-        Texture2D tmp2d;
-        float _alpha;
+        private Texture2D tmp2d;
+        private float _alpha;
 
         private void Start()
         {
@@ -47,7 +47,7 @@ namespace Shinn{
             tmp2d.Apply();
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             if (AutoStartFadeout)
                 Fadeout();
@@ -75,26 +75,24 @@ namespace Shinn{
             iTween.ValueTo(gameObject, iTween.Hash("from", 0, "to", 1, "time", fadeinTime, "delay", fadeinDelay, "onupdate", "processed1", "easetype", ease));
         }
 
-
-
-        void OnGUI()
+        private void OnGUI()
         {
             guiColor = new Color(r, g, b, _alpha);
             GUI.color = guiColor;
             GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), tmp2d);
         }
 
-        void processed1(float newvalue)
+        private void processed1(float newvalue)
         {
             _alpha = newvalue;
         }
 
-        void processed2(float newvalue)
+        private void processed2(float newvalue)
         {
             _alpha = newvalue;
         }
 
-        void complete()
+        private void complete()
         {
             _event.Invoke();
         }
