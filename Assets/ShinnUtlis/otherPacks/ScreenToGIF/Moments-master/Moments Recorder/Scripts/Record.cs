@@ -1,16 +1,18 @@
-﻿using UnityEngine;
+using UnityEngine;
 using Moments;
 
 [RequireComponent(typeof(Recorder)), AddComponentMenu("")]
 public class Record : MonoBehaviour
 {
 	Recorder m_Recorder;
-	float m_Progress = 0f;
+	public float m_Progress = 0f;
 	string m_LastFile="";
 	bool m_IsSaving = false;
 	public static string filename;
-	public static bool gifok=false;
 	public bool show=false;
+
+    public bool finish = false;   
+
 	void Start()
 	{
 		// Get our Recorder instance (there can be only one per camera).
@@ -25,12 +27,12 @@ public class Record : MonoBehaviour
 	}
 
 	public void startRecord(){
-		gifok=false;
 		m_Recorder.Record();
 		m_Recorder.OnPreProcessingDone = OnProcessingDone;
 		m_Recorder.OnFileSaveProgress = OnFileSaveProgress;
 		m_Recorder.OnFileSaved = OnFileSaved;
-	}
+        finish = false;
+    }
 	string tmp;
 	public void endRecord(){
 		m_Recorder.Save();
@@ -57,8 +59,8 @@ public class Record : MonoBehaviour
 		m_Progress = percent * 100f;
 		if(m_Progress>=98.5f){
 			print("gif-ok");
-			gifok=true;
-		}
+            finish = true;
+        }
 	}
 
 	void OnFileSaved(int id, string filepath)
@@ -80,20 +82,20 @@ public class Record : MonoBehaviour
 		//m_Recorder.FlushMemory();
 	}
 
-	void Update()
-	{
-		if (Input.GetKeyDown(KeyCode.Space))
-		{
-			// print("save");
-			// recordStart();
-			// Compress & save the buffered frames to a gif file. We should check the State
-			// of the Recorder before saving, but for the sake of this example we won't, so
-			// you'll see a warning in the console if you try saving while the Recorder is
-			// processing another gif.
-			// m_Recorder.Save();
-			// m_Progress = 0f;
-		}
-	}
+	//void Update()
+	//{
+	//	if (Input.GetKeyDown(KeyCode.Space))
+	//	{
+	//		// print("save");
+	//		// recordStart();
+	//		// Compress & save the buffered frames to a gif file. We should check the State
+	//		// of the Recorder before saving, but for the sake of this example we won't, so
+	//		// you'll see a warning in the console if you try saving while the Recorder is
+	//		// processing another gif.
+	//		// m_Recorder.Save();
+	//		// m_Progress = 0f;
+	//	}
+	//}
 
 	void OnGUI()
 	{
