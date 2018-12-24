@@ -71,6 +71,8 @@ namespace Moments
 
         [SerializeField]
         string mypath = "C:/gif";
+        public string GetPath { get { return mypath; } }
+
 
         #endregion
 
@@ -334,12 +336,13 @@ namespace Moments
 			Graphics.Blit(source, destination);
 		}
 
-		#endregion
+        #endregion
 
-		#region Methods
+        #region Methods
 
-		// Used to reset internal values, called on Start(), Setup() and FlushMemory()
-		void Init()
+        // Used to reset internal values, called on Start(), Setup() and FlushMemory()               
+
+        void Init()
 		{
 			State = RecorderState.Paused;
 			ComputeHeight();
