@@ -1,32 +1,48 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using ShinnUtil;
+using Shinn;
 
+[RequireComponent(typeof(Record))]
 public class GifController : MonoBehaviour {
 
-	public Shinn.UploadAndQrcode upload;
+	public UploadAndQrcode upload;   
+    public KeyCode RecordKey = KeyCode.R;
+    public int RecorderTime = 3;
 
-	void Start () {
-		
-	}
+    Record record;
 
-	void Update () {
-		
-		if(Input.GetKeyDown(KeyCode.Space)){
-			GetComponent<Record>().startRecord();
-			Invoke ("end", 3);
+    void Start () {
+        record = GetComponent<Record>();
+    }
+
+	void Update ()
+    {		
+		if(Input.GetKeyDown(RecordKey)){
+            record.startRecord();
+            StartCoroutine(End(RecorderTime));
 		}
 	}
 
-
-	void end(){
-		GetComponent<Record>().endRecord();
-		Invoke ("delayUpload", 3);
+	IEnumerator End(float time){
+        yield return new WaitForSeconds(time);
+        record.endRecord();
+        StartCoroutine(delayUpload());
 	}
 
-	void delayUpload(){
-		print ("test " + Record.filename);
-		upload.StartUpAndQr (Record.filename);
-	}
+    IEnumerator delayUpload()
+    {
+        while (!record.finish)
+        {
+            //print("Loading progress: " + record.m_Progress + "%");
+            if (record.m_Progress >= 97f)
+            {
+                print("Finish!!");
+                upload.StartUpAndQr(Record.filename);
+                break;                
+            }
+            yield return null;
+        }
+    }
+
 }
