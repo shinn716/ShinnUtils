@@ -65,12 +65,12 @@ namespace Shinn
         #endregion
 
         #region UnityEvents
-        public bool EnableBool { get; set; }
-        public bool EnableInt { get; set; }
-        public bool EnableFloat { get; set; }
-        public bool EnableFloatArray { get; set; }
-        public bool EnableColor { get; set; }
-        public bool EnableVoid { get; set; }
+        public bool EnableBool = false;
+        public bool EnableInt = false;
+        public bool EnableFloat = false;
+        public bool EnableFloatArray = false;
+        public bool EnableColor = false;
+        public bool EnableVoid = false;
 
         public VoidEvent voidevents;
         public BoolEvent boolevents;
