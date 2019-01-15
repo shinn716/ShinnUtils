@@ -4,7 +4,7 @@ using UnityEngine;
 using System.IO.Ports;
 using System.Threading;
 
-public class btTest : MonoBehaviour {
+public class SimpleSerialWrite : MonoBehaviour {
     
     public string PORT_NAME = "COM10";
     public int Baudrate = 9600;
