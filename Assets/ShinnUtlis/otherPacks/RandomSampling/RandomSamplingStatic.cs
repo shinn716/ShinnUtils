@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using EasyButtons;
 
-[RequireComponent(typeof(ParticleSystem)), ExecuteInEditMode]
+[ExecuteInEditMode]
+//[RequireComponent(typeof(ParticleSystem)), ExecuteInEditMode]
 public class RandomSamplingStatic : MonoBehaviour {
 
     ParticleSystem m_System;
@@ -21,6 +22,21 @@ public class RandomSamplingStatic : MonoBehaviour {
 
     [Range(0, 1)]
     public float gizmosStroke = .1f;
+
+    ParticleSystem ps;
+
+    [Button]
+    public void GenerateParticleSystem()
+    {
+        GameObject go = new GameObject();
+        go.transform.parent = transform;
+        go.AddComponent<ParticleSystem>();
+        go.name = "RandomSampleGroup";
+        go.transform.localPosition = Vector3.zero;
+
+        ps = go.GetComponent<ParticleSystem>();
+        StartCoroutine(SetDefaultParticleSys(ps, 1));
+    }
 
     [Button]
     public void Sampling() {
@@ -48,8 +64,41 @@ public class RandomSamplingStatic : MonoBehaviour {
         
     }
 
+    private IEnumerator SetDefaultParticleSys(ParticleSystem ps, float time)
+    {
+        yield return new WaitForSeconds(time);
 
-    IEnumerator GetParticlesInit() {
+        ParticleSystem.MainModule _main;
+        _main = ps.main;
+
+        _main.loop = false;
+        _main.startLifetime = Mathf.Infinity;
+        _main.startSize = .1f;
+        _main.startSpeed = 0;
+        _main.startColor = Color.red;
+        _main.maxParticles = 100;
+
+        ParticleSystem.EmissionModule _emissiom;
+        _emissiom = ps.emission;
+
+        _emissiom.enabled = true;
+        _emissiom.rateOverTime = Mathf.Infinity;
+
+        ParticleSystem.ShapeModule _shape;
+        _shape = ps.shape;
+
+        _shape.shapeType = ParticleSystemShapeType.MeshRenderer;
+        _shape.meshShapeType = ParticleSystemMeshShapeType.Triangle;
+        _shape.meshRenderer = GetComponent<MeshRenderer>();
+
+        ParticleSystemRenderer _render;
+        _render = ps.GetComponent<ParticleSystemRenderer>();
+
+        _render.material = new Material(Shader.Find("Sprites/Default"));
+        //_render.material.mainTexture = 
+    }
+
+    private IEnumerator GetParticlesInit() {
         yield return new WaitForSeconds(.25f);
         int numParticlesAlive = m_System.GetParticles(m_Particles);
 
@@ -70,8 +119,7 @@ public class RandomSamplingStatic : MonoBehaviour {
         start = true;
     }
 
-
-    void InitializeIfNeeded()
+    private void InitializeIfNeeded()
     {
         if (m_System == null)
             m_System = GetComponent<ParticleSystem>();
