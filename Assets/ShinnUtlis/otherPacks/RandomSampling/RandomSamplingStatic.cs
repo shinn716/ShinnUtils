@@ -4,7 +4,8 @@ using UnityEngine;
 using EasyButtons;
 
 [ExecuteInEditMode]
-public class RandomSamplingStatic : MonoBehaviour {
+public class RandomSamplingStatic : MonoBehaviour
+{
 
     private ParticleSystem m_System;
     private ParticleSystem.Particle[] m_Particles;
@@ -12,8 +13,8 @@ public class RandomSamplingStatic : MonoBehaviour {
     private bool start = false;
 
     [HideInInspector]
-    public Transform[] pointloc;   
-    public Transform[] GetPos { get { return pointloc; }  }
+    public Transform[] pointloc;
+    public Transform[] GetPos { get { return pointloc; } }
 
     [Range(1, 1000)]
     public int SamplingCount = 100;
@@ -25,7 +26,8 @@ public class RandomSamplingStatic : MonoBehaviour {
     {
         if (m_System != null)
         {
-            m_System.Stop();
+            m_System.Clear();
+            m_System.Play();
 
             ParticleSystem.MainModule _main;
             _main = m_System.main;
@@ -36,42 +38,56 @@ public class RandomSamplingStatic : MonoBehaviour {
     [Button]
     public void GenerateParticleSystem()
     {
-        gameObject.AddComponent<ParticleSystem>();
-        gameObject.name = "RandomSampleGroup";
-        gameObject.transform.localPosition = Vector3.zero;
+        if (GetComponent<ParticleSystem>() == null)
+        {
+            gameObject.AddComponent<ParticleSystem>();
+            gameObject.name = "RandomSampleGroup";
+            gameObject.transform.localPosition = Vector3.zero;
 
-        ParticleSystem ps;
-        ps = GetComponent<ParticleSystem>();
-        StartCoroutine(SetDefaultParticleSys(ps));
-        
-        ps.Stop();
+            ParticleSystem ps;
+            ps = GetComponent<ParticleSystem>();
+            SetDefaultParticleSys(ps);
+
+            ps.Stop();
+        }
     }
 
+    [Button]
+    public void RemoveParticleSystem()
+    {
+        if (GetComponent<ParticleSystem>() != null)
+            DestroyImmediate(GetComponent<ParticleSystem>());
+    }
 
     [Button]
     public void Sampling()
     {
-        InitializeIfNeeded();
-        StartCoroutine(GetParticlesInit());
+        if (GetComponent<ParticleSystem>() != null)
+        {
+            ClearSamples();
+
+            ParticleSystem ps = GetComponent<ParticleSystem>();
+            ps.Clear();
+            ps.Play();
+
+            Invoke("InitializeIfNeeded", .1f);
+            Invoke("GetParticlesInit", .1f);
+        }
     }
 
     [Button]
-    public void Clear() {
-        
+    public void ClearSamples()
+    {
         int childs = transform.childCount;
-        for (int i = childs - 1; i >= 0; i--)
-        {
-            GameObject.DestroyImmediate(transform.GetChild(i).gameObject);
-        }
+        for (int i = childs - 1; i >= 0; i--)        
+            GameObject.DestroyImmediate(transform.GetChild(i).gameObject);        
 
         point = new GameObject[0];
-        start = false;        
+        start = false;
     }
 
-    private IEnumerator SetDefaultParticleSys(ParticleSystem ps)
+    private void SetDefaultParticleSys(ParticleSystem ps)
     {
-        yield return new WaitForEndOfFrame();
-
         ParticleSystem.MainModule _main;
         _main = ps.main;
 
@@ -102,9 +118,8 @@ public class RandomSamplingStatic : MonoBehaviour {
         _render.material = new Material(Shader.Find("Sprites/Default"));
     }
 
-    private IEnumerator GetParticlesInit() {
-        yield return new WaitForEndOfFrame();
-
+    private void GetParticlesInit()
+    {
         int numParticlesAlive = m_System.GetParticles(m_Particles);
 
         point = new GameObject[numParticlesAlive];
@@ -132,7 +147,7 @@ public class RandomSamplingStatic : MonoBehaviour {
         if (m_Particles == null || m_Particles.Length < m_System.main.maxParticles)
             m_Particles = new ParticleSystem.Particle[m_System.main.maxParticles];
 
-        m_System.Stop();
+        m_System.Stop();        
     }
 
     private void OnDrawGizmos()
