@@ -26,9 +26,6 @@ public class RandomSamplingStatic : MonoBehaviour
     {
         if (m_System != null)
         {
-            m_System.Clear();
-            m_System.Play();
-
             ParticleSystem.MainModule _main;
             _main = m_System.main;
             _main.maxParticles = SamplingCount;
