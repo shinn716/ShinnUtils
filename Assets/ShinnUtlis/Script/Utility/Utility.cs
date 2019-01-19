@@ -1,14 +1,18 @@
-﻿namespace Shinn
+namespace Shinn
 {
     public class Utility
     {
-
+        /// <summary>
+        /// Mapping 
+        /// </summary>
         public static float Map(float v, float a, float b, float x, float y)
         {
             return (v == a) ? x : (v - a) * (y - x) / (b - a) + x;
         }
-        
-        
+
+        /// <summary>
+        /// 不重覆亂數 (int) 0 ~ length
+        /// </summary>
         public static int[] NonrepetitiveRandom(int total)
         {
             int[] sequence = new int[total];
@@ -29,16 +33,28 @@
             }
             return output;
         }
-        
-        //String to float
-        public static float GetFloat(string stringValue, float defaultValue)
+
+        /// <summary>
+        /// String to float, 無法轉換 out defaultValue
+        /// </summary>
+        public static float StringToFloat(string stringValue, float defaultValue = 0)
 	    {
 		    float result = defaultValue;
 		    float.TryParse(stringValue, out result);
 		    return result;
 	    }
-        
 
+        /// <summary>
+        /// Get Ip address
+        /// </summary>
+        public static string GetLocalIPAddress()
+        {
+            var host = System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName());
+            foreach (var ip in host.AddressList)            
+                if (ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)                
+                    return ip.ToString(); 
+            throw new System.Exception("No network adapters with an IPv4 address in the system!");
+        }
     }
 
 }
