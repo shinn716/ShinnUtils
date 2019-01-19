@@ -1,52 +1,57 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using EasyButtons;
 
 [ExecuteInEditMode]
-//[RequireComponent(typeof(ParticleSystem)), ExecuteInEditMode]
 public class RandomSamplingStatic : MonoBehaviour {
 
-    ParticleSystem m_System;
-    ParticleSystem.Particle[] m_Particles;
+    private ParticleSystem m_System;
+    private ParticleSystem.Particle[] m_Particles;
+    private GameObject[] point;
+    private bool start = false;
 
-    GameObject[] point;
     [HideInInspector]
-    public Transform[] pointloc;
-
-    bool start = false;
+    public Transform[] pointloc;   
     public Transform[] GetPos { get { return pointloc; }  }
 
-    [Range(0, 1000)]
+    [Range(1, 1000)]
     public int SamplingCount = 100;
 
     [Range(0, 1)]
     public float gizmosStroke = .1f;
 
-    ParticleSystem ps;
+    private void OnValidate()
+    {
+        if (m_System != null)
+        {
+            m_System.Stop();
+
+            ParticleSystem.MainModule _main;
+            _main = m_System.main;
+            _main.maxParticles = SamplingCount;
+        }
+    }
 
     [Button]
     public void GenerateParticleSystem()
     {
-        GameObject go = new GameObject();
-        go.transform.parent = transform;
-        go.AddComponent<ParticleSystem>();
-        go.name = "RandomSampleGroup";
-        go.transform.localPosition = Vector3.zero;
+        gameObject.AddComponent<ParticleSystem>();
+        gameObject.name = "RandomSampleGroup";
+        gameObject.transform.localPosition = Vector3.zero;
 
-        ps = go.GetComponent<ParticleSystem>();
-        StartCoroutine(SetDefaultParticleSys(ps, 1));
+        ParticleSystem ps;
+        ps = GetComponent<ParticleSystem>();
+        StartCoroutine(SetDefaultParticleSys(ps));
+        
+        ps.Stop();
     }
 
+
     [Button]
-    public void Sampling() {
+    public void Sampling()
+    {
         InitializeIfNeeded();
-        m_System.maxParticles = SamplingCount;
-        
-        var sh = m_System.shape;
-        sh.enabled = true;
-        sh.shapeType = ParticleSystemShapeType.MeshRenderer;
-        sh.mesh = transform.parent.gameObject.GetComponent<Mesh>();
         StartCoroutine(GetParticlesInit());
     }
 
@@ -60,13 +65,12 @@ public class RandomSamplingStatic : MonoBehaviour {
         }
 
         point = new GameObject[0];
-        start = false;
-        
+        start = false;        
     }
 
-    private IEnumerator SetDefaultParticleSys(ParticleSystem ps, float time)
+    private IEnumerator SetDefaultParticleSys(ParticleSystem ps)
     {
-        yield return new WaitForSeconds(time);
+        yield return new WaitForEndOfFrame();
 
         ParticleSystem.MainModule _main;
         _main = ps.main;
@@ -77,6 +81,7 @@ public class RandomSamplingStatic : MonoBehaviour {
         _main.startSpeed = 0;
         _main.startColor = Color.red;
         _main.maxParticles = 100;
+        _main.simulationSpace = ParticleSystemSimulationSpace.World;
 
         ParticleSystem.EmissionModule _emissiom;
         _emissiom = ps.emission;
@@ -87,19 +92,19 @@ public class RandomSamplingStatic : MonoBehaviour {
         ParticleSystem.ShapeModule _shape;
         _shape = ps.shape;
 
-        _shape.shapeType = ParticleSystemShapeType.MeshRenderer;
+        _shape.shapeType = ParticleSystemShapeType.Mesh;
         _shape.meshShapeType = ParticleSystemMeshShapeType.Triangle;
-        _shape.meshRenderer = GetComponent<MeshRenderer>();
+        _shape.mesh = transform.parent.GetComponent<MeshFilter>().sharedMesh;
 
         ParticleSystemRenderer _render;
         _render = ps.GetComponent<ParticleSystemRenderer>();
 
         _render.material = new Material(Shader.Find("Sprites/Default"));
-        //_render.material.mainTexture = 
     }
 
     private IEnumerator GetParticlesInit() {
-        yield return new WaitForSeconds(.25f);
+        yield return new WaitForEndOfFrame();
+
         int numParticlesAlive = m_System.GetParticles(m_Particles);
 
         point = new GameObject[numParticlesAlive];
@@ -126,6 +131,8 @@ public class RandomSamplingStatic : MonoBehaviour {
 
         if (m_Particles == null || m_Particles.Length < m_System.main.maxParticles)
             m_Particles = new ParticleSystem.Particle[m_System.main.maxParticles];
+
+        m_System.Stop();
     }
 
     private void OnDrawGizmos()
@@ -139,6 +146,4 @@ public class RandomSamplingStatic : MonoBehaviour {
             }
         }
     }
-
-
 }
