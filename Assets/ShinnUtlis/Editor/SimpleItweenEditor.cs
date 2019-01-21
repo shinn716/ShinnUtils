@@ -54,10 +54,11 @@ public class SimpleItweenEditor : Editor {
                 EditorGUILayout.LabelField("-----------------------");
 
                 script.EnableVoid = EditorGUILayout.Toggle("void events", script.EnableVoid);
-                script.EnableBool = EditorGUILayout.Toggle("Bool events", script.EnableBool);
+                script.EnableBool = EditorGUILayout.Toggle("bool events", script.EnableBool);
                 script.EnableInt = EditorGUILayout.Toggle("int events", script.EnableInt);
                 script.EnableFloat = EditorGUILayout.Toggle("float events", script.EnableFloat);
                 script.EnableFloatArray = EditorGUILayout.Toggle("float array events", script.EnableFloatArray);
+                script.EnableVector3 = EditorGUILayout.Toggle("vector3 events", script.EnableVector3);
                 script.EnableColor = EditorGUILayout.Toggle("color events", script.EnableColor);
 
 
@@ -94,6 +95,17 @@ public class SimpleItweenEditor : Editor {
                     EditorGUILayout.PropertyField(property, new GUIContent("Input floatarray value"), true);
 
                 }
+
+                if (script.EnableVector3)
+                {
+                    EditorGUILayout.Space();
+                    SerializedProperty onCheck = serializedObject.FindProperty("vector3events");
+                    EditorGUILayout.PropertyField(onCheck);
+
+                    SerializedProperty property = serializedObject.FindProperty("vector3value");
+                    EditorGUILayout.PropertyField(property, new GUIContent("Input vector3 value"), true);
+
+                }  
 
                 if (script.EnableColor)
                 {
