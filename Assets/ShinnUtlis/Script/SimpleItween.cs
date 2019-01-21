@@ -69,6 +69,7 @@ namespace Shinn
         public bool EnableInt = false;
         public bool EnableFloat = false;
         public bool EnableFloatArray = false;
+        public bool EnableVector3 = false;
         public bool EnableColor = false;
         public bool EnableVoid = false;
 
@@ -77,12 +78,14 @@ namespace Shinn
         public IntEvent intevents;
         public FloatEvent floatevents;
         public FloatArrayEvent floatarratevents;
+        public Vector3Event vector3events;
         public ColorEvent colorevents;
 
         public bool boolvalue;
         public int intvalue;
         public float floatvalue;
         public float[] floatarrayvalue;
+        public Vector3 vector3value;
         public Color colorvalue;
         #endregion
         
@@ -275,6 +278,9 @@ namespace Shinn
 
                 if (EnableFloatArray)
                     floatarratevents.Invoke(floatarrayvalue);
+
+                if (EnableVector3)
+                    vector3events.Invoke(vector3value);
 
                 if (EnableColor)
                     colorevents.Invoke(colorvalue);
