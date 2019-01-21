@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.IO.Ports;
+using System.IO.Ports;						// Api compatibikityLevel .NET 2.0
 using System.Threading;
 
 public class SimpleSerialWrite : MonoBehaviour {
