@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -11,6 +11,10 @@ public class IntEvent : UnityEvent<int> { }
 public class FloatEvent : UnityEvent<float> { }
 [System.Serializable]
 public class FloatArrayEvent : UnityEvent<float[]> { }
+[System.Serializable]
+public class Vector3Event : UnityEvent<Vector3> { }
+[System.Serializable]
+public class Vector3ArrrayEvent : UnityEvent<Vector3[]> { }
 [System.Serializable]
 public class ColorEvent : UnityEvent<Color> { }
 [System.Serializable]
