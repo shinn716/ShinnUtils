@@ -27,7 +27,7 @@ public class CustomMaterialConEditor : Editor {
         if (EditorGUI.EndChangeCheck())
             serializedObject.ApplyModifiedProperties();
         
-        script.priority = EditorGUILayout.TextField("Priority", script.priority);
+        script.priority = EditorGUILayout.TextField("Property", script.priority);
         script.autoStart = EditorGUILayout.Toggle("Autostart", script.autoStart);        
         script.time = EditorGUILayout.FloatField("Time", script.time);
         script.delay = EditorGUILayout.Slider("Delay", script.delay, 0, 10);
