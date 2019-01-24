@@ -56,6 +56,9 @@ public class WebcamCapture : MonoBehaviour {
 
     private void Start()
     {
+        if (wcd == null)
+            return;
+            
         wcd = WebCamTexture.devices;
         cameraList = new String[wcd.Length];
 
