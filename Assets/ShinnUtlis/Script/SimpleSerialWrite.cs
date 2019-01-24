@@ -1,7 +1,7 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.IO.Ports;						// Api compatibikityLevel .NET 2.0
+using System.IO.Ports;                                  //Api compatibikityLevel .NET 2.0
 using System.Threading;
 
 public class SimpleSerialWrite : MonoBehaviour {
@@ -10,7 +10,7 @@ public class SimpleSerialWrite : MonoBehaviour {
     public int Baudrate = 9600;
     private SerialPort sp;
 
-    void Start () {
+    private void Start () {
 
         // SerialPort.
         try
@@ -22,33 +22,36 @@ public class SimpleSerialWrite : MonoBehaviour {
         catch (System.IO.IOException e) { }
         catch (System.InvalidOperationException e) { }
     }
-	
-	void Update () {
+
+    private void Update () {
 
         if (!sp.IsOpen) { return; }
 
         if (Input.GetKeyDown(KeyCode.Q)) {
             print("q");
-            byte[] senddata = new byte[] { (int)'q', 2};
-            sp.Write(senddata, 0, senddata.Length);
+            Write((int)'q');
         }
 
         if (Input.GetKeyDown(KeyCode.W))
         {
             print("w");
-            byte[] senddata = new byte[] { (int)'w', 2 };
-            sp.Write(senddata, 0, senddata.Length);
+            Write((int)'w');
         }
 
         if (Input.GetKeyDown(KeyCode.E))
         {
             print("e");
-            byte[] senddata = new byte[] { (int)'e', 2 };
-            sp.Write(senddata, 0, senddata.Length);
+            Write((int)'e');
         }
     }
-    
-    void OnApplicationQuit()
+
+    public void Write(byte data)
+    {
+        byte[] senddata = new byte[] {data, 2 };
+        sp.Write(senddata, 0, senddata.Length);
+    }
+
+    private void OnApplicationQuit()
     {
         if (sp != null && sp.IsOpen)
             sp.Close();
