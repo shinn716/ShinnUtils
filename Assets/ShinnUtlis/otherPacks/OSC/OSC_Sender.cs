@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using EasyButtons;
@@ -12,15 +12,14 @@ public class OSC_Sender : MonoBehaviour {
         [SerializeField] public string[] data;
     }
 
-    public SendData senddata;
     public OSC osc;
+    public SendData senddata;    
 
     private void Start()
     {
         if (osc == null)
             osc = GetComponent<OSC>();
     }
-
 
     [Button]
     public void Send() {
@@ -32,5 +31,4 @@ public class OSC_Sender : MonoBehaviour {
 
         osc.Send(message);
     }
-
 }
