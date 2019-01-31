@@ -55,7 +55,7 @@ public class MinMaxDrawer : PropertyDrawer
 
                 GUI.enabled = false; // the range part is always read only
                 position.y += EditorGUIUtility.singleLineHeight;
-                EditorGUI.FloatField(position, "Selected Range", maxValue-minValue);
+                //EditorGUI.FloatField(position, "Selected Range", maxValue-minValue);
                 GUI.enabled = true; // remember to make the UI editable again!
 
                 if (isEditable)

@@ -16,11 +16,11 @@ namespace Shinn
             switch (rotaround)
             {
                 case RotateType.Constant:
-                    return Time.deltaTime * Scalevalue;
+                    return Time.deltaTime * Speed;
 
                 case RotateType.Noise:
                     timedata += .1f;
-                    return BaseValue + NoiseScaleValue * Mathf.PerlinNoise(timedata * NoiseSpeed, 0.0F);
+                    return BaseValue + Speed * Mathf.PerlinNoise(timedata * NoiseSpeed, 0.0F);
 
                 default:
                     return Time.deltaTime;
@@ -31,10 +31,9 @@ namespace Shinn
         public RotateType rotaround;
 
         [Header("Constant"), Range(-100, 100)]
-        public float Scalevalue = 1;
+        public float Speed = 1;
         [Header("Noise")]
-        public float BaseValue = 0;
-        public float NoiseScaleValue = 1;
+        public float BaseValue = 0;        
         [Range(0, 1)]
         public float NoiseSpeed = .5f;
         [ReadOnly]

@@ -16,7 +16,8 @@ namespace Shinn{
         }
 
         public path pathstate;
-		public string filepath = "C:/Users/Shinn/Desktop/EmailSetting.xml";
+		public string filepath = "C:/Users/Shinn/Desktop/";
+        public string filename = "EmailSetting.xml";
 
         [Space, ReadOnly]
 		public string temp_client;
@@ -51,22 +52,22 @@ namespace Shinn{
             }
         }
 
-		void Awake(){
-
-            string assets;
+        void Awake()
+        {
             if (PathSelect() == 0)
             {
-                assets = (Application.streamingAssetsPath + "/EmailSetting.xml").ToString();
-                LoadFromXml(assets);
+                filepath = (Application.streamingAssetsPath + "/").ToString();
+                LoadFromXml(filepath + filename);
             }
             else if (PathSelect() == 1)
             {
-                assets = (Application.persistentDataPath + "/EmailSetting.xml").ToString();
-                LoadFromXml(assets);
+                filepath = (Application.persistentDataPath + "/").ToString();
+                LoadFromXml(filepath + filename);
             }
-            else            
-                LoadFromXml(filepath);
-            
+            else
+            {
+                LoadFromXml(filepath + filename);
+            }
         }
 
         public void LoadFromXml(string path)

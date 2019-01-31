@@ -25,9 +25,9 @@ namespace Shinn{
                     break;
                 case Type.Noise:
                     transform.Rotate(new Vector3(
-                                BaseValue.x + ScaleValue.x * Mathf.PerlinNoise(Time.time * speed, NoiseSeed1),
-                                BaseValue.y + ScaleValue.y * Mathf.PerlinNoise(Time.time * speed, NoiseSeed2),
-                                BaseValue.z + ScaleValue.z * Mathf.PerlinNoise(Time.time * speed, NoiseSeed3)
+                                BaseValue.x + speed * Mathf.PerlinNoise(Time.time * NoiseSpeed, NoiseSeed1),
+                                BaseValue.y + speed * Mathf.PerlinNoise(Time.time * NoiseSpeed, NoiseSeed2),
+                                BaseValue.z + speed * Mathf.PerlinNoise(Time.time * NoiseSpeed, NoiseSeed3)
                     ));
                     break;
                 default:
@@ -50,7 +50,7 @@ namespace Shinn{
 
         [Header("Noise Rotate")]
         [SerializeField] Vector3 BaseValue;
-        [SerializeField] Vector3 ScaleValue;
+        [SerializeField, Range(0, 1)] float NoiseSpeed=1;
 
         [Header("Freeze Rotation")]
 		[SerializeField] bool FreezeRotx = false;
@@ -65,18 +65,23 @@ namespace Shinn{
         private float RotzOrg;
 
         private void Start()
-        {
+        {            
             RotxOrg = transform.localEulerAngles.x;
             RotyOrg = transform.localEulerAngles.y;
             RotzOrg = transform.localEulerAngles.z;
 
-            px = Random.Range(RotatePxRange.x, RotatePxRange.y);
-            py = Random.Range(RotatePyRange.x, RotatePyRange.y);
-            pz = Random.Range(RotatePzRange.x, RotatePzRange.y);
-
-            NoiseSeed1 = Random.value;
-            NoiseSeed2 = Random.value;
-            NoiseSeed3 = Random.value;
+            if (type == Type.Random)
+            {
+                px = Random.Range(RotatePxRange.x, RotatePxRange.y);
+                py = Random.Range(RotatePyRange.x, RotatePyRange.y);
+                pz = Random.Range(RotatePzRange.x, RotatePzRange.y);
+            }
+            else if (type == Type.Noise)
+            {
+                NoiseSeed1 = Random.value;
+                NoiseSeed2 = Random.value;
+                NoiseSeed3 = Random.value;
+            }
         }
 
         private void FixedUpdate () {

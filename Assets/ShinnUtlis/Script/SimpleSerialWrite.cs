@@ -27,22 +27,24 @@ public class SimpleSerialWrite : MonoBehaviour {
 
         if (!sp.IsOpen) { return; }
 
-        if (Input.GetKeyDown(KeyCode.Q)) {
-            print("q");
-            Write((int)'q');
-        }
 
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            print("w");
-            Write((int)'w');
-        }
+        //Example
+        //if (Input.GetKeyDown(KeyCode.Q)) {
+        //    print("q");
+        //    Write((int)'q');
+        //}
 
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            print("e");
-            Write((int)'e');
-        }
+        //if (Input.GetKeyDown(KeyCode.W))
+        //{
+        //    print("w");
+        //    Write((int)'w');
+        //}
+
+        //if (Input.GetKeyDown(KeyCode.E))
+        //{
+        //    print("e");
+        //    Write((int)'e');
+        //}
     }
 
     public void Write(byte data)

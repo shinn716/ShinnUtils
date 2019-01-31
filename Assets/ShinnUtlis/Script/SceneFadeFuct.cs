@@ -35,15 +35,10 @@ namespace Shinn{
 
         private void Start()
         {
-
             tmp2d = new Texture2D(512, 512);
             for (int y = 0; y < tmp2d.height; y++)
-            {
                 for (int x = 0; x < tmp2d.width; x++)
-                {
                     tmp2d.SetPixel(x, y, Color.white);
-                }
-            }
             tmp2d.Apply();
         }
 
@@ -72,7 +67,7 @@ namespace Shinn{
         [Button]
         public void InAndOut()
         {
-            iTween.ValueTo(gameObject, iTween.Hash("from", 0, "to", 1, "time", fadeinTime, "delay", fadeinDelay, "onupdate", "processed1", "easetype", ease));
+            iTween.ValueTo(gameObject, iTween.Hash("from", 0, "to", 1, "time", fadeinTime, "delay", fadeinDelay, "onupdate", "processed1", "easetype", ease, "oncomplete", "completeInAndOut", "oncompletetarget", gameObject));
         }
 
         private void OnGUI()
@@ -95,6 +90,11 @@ namespace Shinn{
         private void complete()
         {
             _event.Invoke();
+        }
+
+        private void completeInAndOut()
+        {
+            Fadeout();
         }
 
         public void ReLoadLevel(int level){
