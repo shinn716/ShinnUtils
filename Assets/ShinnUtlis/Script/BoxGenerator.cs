@@ -4,15 +4,16 @@ using UnityEngine;
 using EasyButtons;
 
 [ExecuteInEditMode]
-public class BoxGenerator : MonoBehaviour {
-
+public class BoxGenerator : MonoBehaviour 
+{
     public GameObject box;
     public Vector2Int RowCol;
     public float scale = 1;
     public float width = 1;
     public float depth = 1;
-    float posx;
-    float posy;
+    
+    private float posx;
+    private float posy;
 
     [Button]
     public void Generate()
