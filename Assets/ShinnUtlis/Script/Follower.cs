@@ -53,7 +53,7 @@ namespace Shinn
             }
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             if (enable)
             {
