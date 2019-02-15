@@ -38,10 +38,8 @@ public class BoxGenerator : MonoBehaviour
         posx = 0;
         posy = 0;
         int childs = transform.childCount;
-        for (int i = childs - 1; i >= 0; i--)
-        {
-            GameObject.DestroyImmediate(transform.GetChild(i).gameObject);
-        }
+        for (int i = childs - 1; i >= 0; i--)        
+            GameObject.DestroyImmediate(transform.GetChild(i).gameObject);        
 
     }
 
