@@ -59,7 +59,7 @@ namespace Shinn
 	/// <summary>
         /// CopyComponent function, from https://answers.unity.com/questions/458207/copy-a-component-at-runtime.html
         /// </summary>
-	public Component CopyComponent(Component original, GameObject destination)
+	public static Component CopyComponent(Component original, GameObject destination)
     	{
         	System.Type type = original.GetType();
         	Component copy = destination.AddComponent(type);
