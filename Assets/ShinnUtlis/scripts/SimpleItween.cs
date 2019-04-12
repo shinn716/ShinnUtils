@@ -144,7 +144,7 @@ namespace Shinn
                     break;
 
                 case state.SP_fadeTo:
-                    iTween.ValueTo(target, iTween.Hash("from", fadeStart, "to", fadeEnd, "onupdate", "fadeto1",
+                    iTween.ValueTo(target, iTween.Hash("from", fadeStart, "to", fadeEnd, "onupdate", "Fadeto1",
                                                                 "time", time, "delay", delay,
                                                                 "easetype", ease, "looptype", loop,
                                                                 "islocal", islocal, "ignoretimescale", ignoreTimeScalest,
