@@ -16,6 +16,9 @@ namespace Shinn
             punchPosition,
             scaleTo,
             moveTo,
+            moveToPx,
+            moveToPy,
+            moveToPz,
             rotationTo,
             SP_fadeTo,
             colorTo,
@@ -144,7 +147,7 @@ namespace Shinn
                     break;
 
                 case state.SP_fadeTo:
-                    iTween.ValueTo(target, iTween.Hash("from", fadeStart, "to", fadeEnd, "onupdate", "Fadeto1",
+                    iTween.ValueTo(target, iTween.Hash("from", fadeStart, "to", fadeEnd, "onupdate", "fadeto1",
                                                                 "time", time, "delay", delay,
                                                                 "easetype", ease, "looptype", loop,
                                                                 "islocal", islocal, "ignoretimescale", ignoreTimeScalest,
@@ -180,6 +183,67 @@ namespace Shinn
                                                                     "oncomplete", "Complete", "oncompletetarget", gameObject,
                                                                     "orienttopath", orienttopathst, "lookahead", lookaheadValue
                                                              ));
+
+                    break;
+
+
+                case state.moveToPx:
+                    if (islocal)
+                        iTween.MoveTo(target, iTween.Hash("x", moveloc.localPosition.x,
+                                                          "time", time, "delay", delay,
+                                                          "easetype", ease, "looptype", loop,
+                                                          "islocal", islocal, "ignoretimescale", ignoreTimeScalest,
+                                                          "oncomplete", "Complete", "oncompletetarget", gameObject,
+                                                          "orienttopath", orienttopathst, "lookahead", lookaheadValue
+                                                          ));
+                    else
+                        iTween.MoveTo(target, iTween.Hash("x", moveloc.position.x,
+                                                          "time", time, "delay", delay,
+                                                          "easetype", ease, "looptype", loop,
+                                                          "islocal", islocal, "ignoretimescale", ignoreTimeScalest,
+                                                          "oncomplete", "Complete", "oncompletetarget", gameObject,
+                                                          "orienttopath", orienttopathst, "lookahead", lookaheadValue
+                                                           ));
+
+                    break;
+
+                case state.moveToPy:
+                    if (islocal)
+                        iTween.MoveTo(target, iTween.Hash("y", moveloc.localPosition.y,
+                                                          "time", time, "delay", delay,
+                                                          "easetype", ease, "looptype", loop,
+                                                          "islocal", islocal, "ignoretimescale", ignoreTimeScalest,
+                                                          "oncomplete", "Complete", "oncompletetarget", gameObject,
+                                                          "orienttopath", orienttopathst, "lookahead", lookaheadValue
+                                                          ));
+                    else
+                        iTween.MoveTo(target, iTween.Hash("y", moveloc.position.y,
+                                                          "time", time, "delay", delay,
+                                                          "easetype", ease, "looptype", loop,
+                                                          "islocal", islocal, "ignoretimescale", ignoreTimeScalest,
+                                                          "oncomplete", "Complete", "oncompletetarget", gameObject,
+                                                          "orienttopath", orienttopathst, "lookahead", lookaheadValue
+                                                           ));
+
+                    break;
+
+                case state.moveToPz:
+                    if (islocal)
+                        iTween.MoveTo(target, iTween.Hash("z", moveloc.localPosition.z,
+                                                          "time", time, "delay", delay,
+                                                          "easetype", ease, "looptype", loop,
+                                                          "islocal", islocal, "ignoretimescale", ignoreTimeScalest,
+                                                          "oncomplete", "Complete", "oncompletetarget", gameObject,
+                                                          "orienttopath", orienttopathst, "lookahead", lookaheadValue
+                                                          ));
+                    else
+                        iTween.MoveTo(target, iTween.Hash("z", moveloc.position.z,
+                                                          "time", time, "delay", delay,
+                                                          "easetype", ease, "looptype", loop,
+                                                          "islocal", islocal, "ignoretimescale", ignoreTimeScalest,
+                                                          "oncomplete", "Complete", "oncompletetarget", gameObject,
+                                                          "orienttopath", orienttopathst, "lookahead", lookaheadValue
+                                                           ));
 
                     break;
 
@@ -254,7 +318,7 @@ namespace Shinn
             }
         }
 
-        private void Fadeto1(float newvalue)
+        private void fadeto1(float newvalue)
         {
             if (GetComponent<SpriteRenderer>() != null)
             {
@@ -295,6 +359,11 @@ namespace Shinn
             var itween = GetComponent<iTween>();
             if (itween != null)
                 Destroy(itween);
+        }
+
+        public void SetScale(Vector3 value)
+        {
+            transform.localScale = value;
         }
 
     }
