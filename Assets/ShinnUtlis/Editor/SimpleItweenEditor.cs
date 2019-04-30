@@ -151,6 +151,20 @@ public class SimpleItweenEditor : Editor {
                 script.moveloc = (Transform) EditorGUILayout.ObjectField("Target loc", script.moveloc, typeof(Transform), true);
                 break;
 
+
+            case SimpleItween.state.moveToPx:
+                script.moveloc = (Transform)EditorGUILayout.ObjectField("Target loc", script.moveloc, typeof(Transform), true);
+                break;
+
+            case SimpleItween.state.moveToPy:
+                script.moveloc = (Transform)EditorGUILayout.ObjectField("Target loc", script.moveloc, typeof(Transform), true);
+                break;
+
+            case SimpleItween.state.moveToPz:
+                script.moveloc = (Transform)EditorGUILayout.ObjectField("Target loc", script.moveloc, typeof(Transform), true);
+                break;
+
+
             case SimpleItween.state.rotationTo:
                 script.rotvalue = EditorGUILayout.Vector3Field("Euler angles", script.rotvalue);
                 break;
