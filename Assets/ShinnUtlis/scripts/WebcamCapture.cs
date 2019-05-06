@@ -19,12 +19,13 @@ public class WebcamCapture : MonoBehaviour {
         DVCPRO_HD_960x720
     }
     public Resolution resolution;
+
     private Vector2Int resulutionSelect()
     {
         switch (resolution)
         {
             default:
-                return new Vector2Int(1280, 720);
+                return new Vector2Int(640, 480);
 
             case Resolution.FHD_1920x1080:
                 return new Vector2Int(1920, 1080);
@@ -46,39 +47,33 @@ public class WebcamCapture : MonoBehaviour {
     [ReadOnly]
     public string[] cameraList;
     public int CameraIndex = 0;
-    [Range(0, 60)]
-    public int camerafps = 30;
 
+    [Space]
     public RawImage outputRawImage;
 
-    private WebCamDevice[] wcd;
-    protected WebCamTexture c;
+    private WebCamTexture c;
 
     private void Start()
     {
+        WebCamDevice[] wcd = WebCamTexture.devices;
         if (wcd == null)
             return;
-            
-        wcd = WebCamTexture.devices;
+
         cameraList = new String[wcd.Length];
 
         if (wcd.Length == 0)  
             Debug.LogWarning("找不到實體攝影機");
-        
         else
         {
             for (int i = 0; i < wcd.Length; i++)
-            {
-                Debug.Log("目前可用的攝影機有：" + wcd[i].name);
                 cameraList[i] = wcd[i].name;
-            }
 
-            Debug.Log("----------------------------------------------------------------");
-            Debug.Log("目前使用的攝影機是：" + wcd[CameraIndex].name);
+            c = new WebCamTexture(wcd[CameraIndex].name);
+            outputRawImage.texture = c;
 
             Vector2Int resol = resulutionSelect();
-            c = new WebCamTexture(wcd[CameraIndex].name, resol.x, resol.y, camerafps);
-            outputRawImage.texture = c;
+            RectTransform rect = outputRawImage.GetComponent<RectTransform>();
+            rect.sizeDelta = new Vector2(resol.x, resol.y);
         }
 
         if (Application.isPlaying)
