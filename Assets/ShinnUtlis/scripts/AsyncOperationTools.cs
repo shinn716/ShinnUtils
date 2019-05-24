@@ -8,8 +8,7 @@ namespace Shinn
 
     public class AsyncOperationTools : MonoBehaviour
     {
-
-        static AsyncOperationTools s_Instance;
+        private static AsyncOperationTools s_Instance;
 
         [ReadOnly, SerializeField]
         private int CurrentLevel = 0;
