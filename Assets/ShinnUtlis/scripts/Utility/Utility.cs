@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Linq;
+using System.IO;
 
 namespace Shinn
 {
@@ -145,6 +146,29 @@ namespace Shinn
             return result;
         }
         #endregion
+        
+            
+        // Convert object data to txt, 讀取Obj用
+        public void WritetoTxt(string filepath, string content)
+        {
+            byte[] bytes = System.Convert.FromBase64String(content);
+            File.WriteAllBytes(filepath, bytes);
+        }
+
+        // 讀取 txt檔, 供讀取模型使用
+        public string LoadTxt(string path)
+        {
+            string myobj;
+            using (StreamReader r = new StreamReader(path))
+            {
+                myobj = r.ReadToEnd();
+                //print("myobj: " + myobj);
+                return myobj;
+            }
+        }
+        
+        
+    
     }
 
 }
