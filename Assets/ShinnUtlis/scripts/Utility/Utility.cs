@@ -158,11 +158,9 @@ namespace Shinn
         // 讀取 txt檔, 供讀取模型使用
         public string LoadTxt(string path)
         {
-            string myobj;
             using (StreamReader r = new StreamReader(path))
             {
-                myobj = r.ReadToEnd();
-                //print("myobj: " + myobj);
+                string myobj = r.ReadToEnd();
                 return myobj;
             }
         }
