@@ -148,15 +148,15 @@ namespace Shinn
         #endregion
         
             
-        // Convert object data to txt, 讀取Obj用
-        public void WritetoTxt(string filepath, string content)
+        // Convert object data to txt, 將String存成文字檔
+        public static void WritetoTxt(string filepath, string content)
         {
             byte[] bytes = System.Convert.FromBase64String(content);
             File.WriteAllBytes(filepath, bytes);
         }
 
-        // 讀取 txt檔, 供讀取模型使用
-        public string LoadTxt(string path)
+        // 讀取 txt檔
+        public static string LoadTxt(string path)
         {
             using (StreamReader r = new StreamReader(path))
             {
