@@ -6,9 +6,12 @@ using ZXing;
 using ZXing.QrCode;
 using EasyButtons;
 
+// This script use www method.
+// Suggestion modify www to UnityRequest.
+
 namespace Shinn
 {
-    public class UploadAndQrcode : MonoBehaviour
+    public class UploadAndGenerateQrcode : MonoBehaviour
     {
         //----Generate QRcode
         public Image qrcodeCont;
