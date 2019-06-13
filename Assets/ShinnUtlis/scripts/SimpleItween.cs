@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Events;
 
 namespace Shinn
@@ -345,6 +346,11 @@ namespace Shinn
             {
                 SpriteRenderer sp = GetComponent<SpriteRenderer>();
                 sp.color = new Color(sp.color.r, sp.color.g, sp.color.b, newvalue);
+            }
+            else if (GetComponent<Image>() != null)
+            {
+                Image img = GetComponent<Image>();
+                img.color = new Color(img.color.r, img.color.g, img.color.b, newvalue);
             }
         }
 
