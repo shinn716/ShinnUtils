@@ -8,7 +8,7 @@ public class GifController : MonoBehaviour {
 
     public Record record;
     public Recorder recorder;
-    public UploadAndQrcode upload;   
+    public UploadAndGenerateQrcode upload;   
     public KeyCode RecordKey = KeyCode.R;
     [ReadOnly]
     public float RecorderTime = 3;

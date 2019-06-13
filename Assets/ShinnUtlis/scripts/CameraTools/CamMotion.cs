@@ -6,7 +6,7 @@ using EasyButtons;
 namespace Shinn
 {
 
-    public class CamMotionv3 : MonoBehaviour
+    public class CamMotion : MonoBehaviour
     {
 
         [Space]
