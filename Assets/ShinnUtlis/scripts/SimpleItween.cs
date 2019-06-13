@@ -15,6 +15,7 @@ namespace Shinn
             shakePosition,
             punchPosition,
             scaleTo,
+            scaleFrom,
             moveTo,
             moveToPx,
             moveToPy,
@@ -91,17 +92,9 @@ namespace Shinn
         public Vector3 vector3value;
         public Color colorvalue;
         #endregion
-        
-        private void OnEnable()
-        {
 
-            if (target == null)
-                target = gameObject;
 
-            if (AutoStart)
-                Select();
-        }
-
+        #region public function
         public void CallStart()
         {
             Select();
@@ -121,6 +114,24 @@ namespace Shinn
         {
             iTween.Stop(gameObject);
         }
+
+        public void SetScale(Vector3 sclvalue)
+        {
+            transform.localScale = sclvalue;
+        }
+        #endregion
+
+        #region private function
+        private void OnEnable()
+        {
+
+            if (target == null)
+                target = gameObject;
+
+            if (AutoStart)
+                Select();
+        }
+
 
         private void Select()
         {
@@ -147,7 +158,7 @@ namespace Shinn
                     break;
 
                 case state.SP_fadeTo:
-                    iTween.ValueTo(target, iTween.Hash("from", fadeStart, "to", fadeEnd, "onupdate", "fadeto1",
+                    iTween.ValueTo(target, iTween.Hash("from", fadeStart, "to", fadeEnd, "onupdate", "Fadeto1",
                                                                 "time", time, "delay", delay,
                                                                 "easetype", ease, "looptype", loop,
                                                                 "islocal", islocal, "ignoretimescale", ignoreTimeScalest,
@@ -164,6 +175,16 @@ namespace Shinn
                                                                 "oncomplete", "Complete", "oncompletetarget", gameObject,
                                                                 "orienttopath", orienttopathst, "lookahead", lookaheadValue
                                                             ));
+                    break;
+
+                case state.scaleFrom:
+                    iTween.ScaleFrom(target, iTween.Hash("scale", scaleValue,
+                                            "time", time, "delay", delay,
+                                            "easetype", ease, "looptype", loop,
+                                            "islocal", islocal, "ignoretimescale", ignoreTimeScalest,
+                                            "oncomplete", "Complete", "oncompletetarget", gameObject,
+                                            "orienttopath", orienttopathst, "lookahead", lookaheadValue
+                                        ));
                     break;
 
                 case state.moveTo:
@@ -318,7 +339,7 @@ namespace Shinn
             }
         }
 
-        private void fadeto1(float newvalue)
+        private void Fadeto1(float newvalue)
         {
             if (GetComponent<SpriteRenderer>() != null)
             {
@@ -361,10 +382,9 @@ namespace Shinn
                 Destroy(itween);
         }
 
-        public void SetScale(Vector3 value)
-        {
-            transform.localScale = value;
-        }
+        #endregion
+
+
 
     }
 
