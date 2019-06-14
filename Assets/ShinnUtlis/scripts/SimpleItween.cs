@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Events;
 
 namespace Shinn
 {
@@ -11,7 +8,7 @@ namespace Shinn
     {
 
         #region Itween
-        public enum state
+        public enum State
         {
             shakePosition,
             punchPosition,
@@ -27,7 +24,7 @@ namespace Shinn
             rotationToAndMoveTo,
         }
 
-        public state mystate;
+        public State mystate;
 
         [Header("ItweenSetting")]
         public GameObject target;
@@ -98,7 +95,7 @@ namespace Shinn
         #region public function
         public void CallStart()
         {
-            Select();
+            StartSimpleItweenFunction();
         }
 
         public void Pause()
@@ -125,20 +122,19 @@ namespace Shinn
         #region private function
         private void OnEnable()
         {
-
             if (target == null)
                 target = gameObject;
 
             if (AutoStart)
-                Select();
+                StartSimpleItweenFunction();
         }
 
 
-        private void Select()
+        private void StartSimpleItweenFunction()
         {
             switch (mystate)
             {
-                case state.shakePosition:
+                case State.shakePosition:
                     iTween.ShakePosition(target, iTween.Hash("x", shakePos.x, "y", shakePos.y, "z", shakePos.z,
                                                                 "time", time, "delay", delay,
                                                                 "easetype", ease, "looptype", loop,
@@ -148,7 +144,7 @@ namespace Shinn
                                                              ));
                     break;
 
-                case state.punchPosition:
+                case State.punchPosition:
                     iTween.PunchPosition(target, iTween.Hash("x", punchPos.x, "y", punchPos.y, "z", punchPos.z,
                                                                 "time", time, "delay", delay,
                                                                 "easetype", ease, "looptype", loop,
@@ -158,7 +154,7 @@ namespace Shinn
                                                             ));
                     break;
 
-                case state.SP_fadeTo:
+                case State.SP_fadeTo:
                     iTween.ValueTo(target, iTween.Hash("from", fadeStart, "to", fadeEnd, "onupdate", "Fadeto1",
                                                                 "time", time, "delay", delay,
                                                                 "easetype", ease, "looptype", loop,
@@ -168,7 +164,7 @@ namespace Shinn
                                                             ));
                     break;
 
-                case state.scaleTo:
+                case State.scaleTo:
                     iTween.ScaleTo(target, iTween.Hash("scale", scaleValue,
                                                                 "time", time, "delay", delay,
                                                                 "easetype", ease, "looptype", loop,
@@ -178,7 +174,7 @@ namespace Shinn
                                                             ));
                     break;
 
-                case state.scaleFrom:
+                case State.scaleFrom:
                     iTween.ScaleFrom(target, iTween.Hash("scale", scaleValue,
                                             "time", time, "delay", delay,
                                             "easetype", ease, "looptype", loop,
@@ -188,7 +184,7 @@ namespace Shinn
                                         ));
                     break;
 
-                case state.moveTo:
+                case State.moveTo:
                     if (islocal)
                         iTween.MoveTo(target, iTween.Hash("position", moveloc.localPosition,
                                                                     "time", time, "delay", delay,
@@ -209,7 +205,7 @@ namespace Shinn
                     break;
 
 
-                case state.moveToPx:
+                case State.moveToPx:
                     if (islocal)
                         iTween.MoveTo(target, iTween.Hash("x", moveloc.localPosition.x,
                                                           "time", time, "delay", delay,
@@ -229,7 +225,7 @@ namespace Shinn
 
                     break;
 
-                case state.moveToPy:
+                case State.moveToPy:
                     if (islocal)
                         iTween.MoveTo(target, iTween.Hash("y", moveloc.localPosition.y,
                                                           "time", time, "delay", delay,
@@ -249,7 +245,7 @@ namespace Shinn
 
                     break;
 
-                case state.moveToPz:
+                case State.moveToPz:
                     if (islocal)
                         iTween.MoveTo(target, iTween.Hash("z", moveloc.localPosition.z,
                                                           "time", time, "delay", delay,
@@ -270,7 +266,7 @@ namespace Shinn
                     break;
 
 
-                case state.rotationTo:
+                case State.rotationTo:
                     iTween.RotateTo(target, iTween.Hash("rotation", rotvalue,
                                                                 "time", time, "delay", delay,
                                                                 "easetype", ease, "looptype", loop,
@@ -282,7 +278,7 @@ namespace Shinn
 
 
 
-                case state.colorTo:
+                case State.colorTo:
                     iTween.ColorTo(target, iTween.Hash("color", endColor,
                                                                 "time", time, "delay", delay,
                                                                 "easetype", ease, "looptype", loop,
@@ -293,7 +289,7 @@ namespace Shinn
                     break;
 
 
-                case state.rotationToAndMoveTo:
+                case State.rotationToAndMoveTo:
 
                     if (islocal)
                     {
@@ -331,11 +327,6 @@ namespace Shinn
                                                             "orienttopath", orienttopathst, "lookahead", lookaheadValue
                                                        ));
                     }
-
-                    break;
-
-
-                default:
                     break;
             }
         }
@@ -345,12 +336,20 @@ namespace Shinn
             if (GetComponent<SpriteRenderer>() != null)
             {
                 SpriteRenderer sp = GetComponent<SpriteRenderer>();
-                sp.color = new Color(sp.color.r, sp.color.g, sp.color.b, newvalue);
+                Color orgCol = sp.color;
+                sp.color = new Color(orgCol.r, orgCol.g, orgCol.b, newvalue);
             }
             else if (GetComponent<Image>() != null)
             {
                 Image img = GetComponent<Image>();
-                img.color = new Color(img.color.r, img.color.g, img.color.b, newvalue);
+                Color orgCol = img.color;
+                img.color = new Color(orgCol.r, orgCol.g, orgCol.b, newvalue);
+            }
+            else if (GetComponent<Text>() != null)
+            {
+                Text text = GetComponent<Text>();
+                Color orgCol = text.color;
+                text.color = new Color(orgCol.r, orgCol.g, orgCol.b, newvalue);
             }
         }
 
