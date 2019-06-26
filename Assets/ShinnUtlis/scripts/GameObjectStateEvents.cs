@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 
@@ -35,7 +35,7 @@ public class GameObjectStateEvents : MonoBehaviour
     }
 
     [ContextMenu("SetPosition")]
-    public void SetPosition()
+    public void SetLocalPosition()
     {
         RectTransform rect = GetComponent<RectTransform>();
         if (rect == null)
@@ -58,13 +58,13 @@ public class GameObjectStateEvents : MonoBehaviour
 
         if (sp != null)
             sp.color = color;
-            
+
         else if (img != null)
             img.color = color;
     }
 
     [ContextMenu("SetRotation")]
-    public void SetRotation()
+    public void SetLocalRotation()
     {
         transform.localEulerAngles = rotation;
     }
