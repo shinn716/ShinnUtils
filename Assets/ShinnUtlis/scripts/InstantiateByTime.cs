@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InstantiateTime : MonoBehaviour {
+public class InstantiateByTime : MonoBehaviour {
 
     public bool autoStart = true;
     public Vector2Int instTimeRange = new Vector2Int(5, 10);
