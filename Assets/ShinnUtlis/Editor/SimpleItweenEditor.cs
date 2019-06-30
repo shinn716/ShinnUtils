@@ -129,7 +129,7 @@ public class SimpleItweenEditor : Editor {
 
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("-----------------------");
-        script.mystate = (SimpleItween.state)EditorGUILayout.EnumPopup("Simple Itween Fuction", script.mystate);
+        script.mystate = (SimpleItween.State)EditorGUILayout.EnumPopup("Simple Itween Fuction", script.mystate);
 
         EditorGUILayout.Space();
         SelectType();
@@ -143,50 +143,50 @@ public class SimpleItweenEditor : Editor {
         switch (script.mystate)
         {
 
-            case SimpleItween.state.colorTo:
+            case SimpleItween.State.colorTo:
                 script.endColor = EditorGUILayout.ColorField("EndColor", script.endColor);
                 break;
 
-            case SimpleItween.state.moveTo:
+            case SimpleItween.State.moveTo:
                 script.moveloc = (Transform) EditorGUILayout.ObjectField("Target loc", script.moveloc, typeof(Transform), true);
                 break;
 
 
-            case SimpleItween.state.moveToPx:
+            case SimpleItween.State.moveToPx:
                 script.moveloc = (Transform)EditorGUILayout.ObjectField("Target loc", script.moveloc, typeof(Transform), true);
                 break;
 
-            case SimpleItween.state.moveToPy:
+            case SimpleItween.State.moveToPy:
                 script.moveloc = (Transform)EditorGUILayout.ObjectField("Target loc", script.moveloc, typeof(Transform), true);
                 break;
 
-            case SimpleItween.state.moveToPz:
+            case SimpleItween.State.moveToPz:
                 script.moveloc = (Transform)EditorGUILayout.ObjectField("Target loc", script.moveloc, typeof(Transform), true);
                 break;
 
 
-            case SimpleItween.state.rotationTo:
+            case SimpleItween.State.rotationTo:
                 script.rotvalue = EditorGUILayout.Vector3Field("Euler angles", script.rotvalue);
                 break;
 
-            case SimpleItween.state.scaleTo:
+            case SimpleItween.State.scaleTo:
                 script.scaleValue = EditorGUILayout.Vector3Field("Scale value", script.scaleValue);
                 break;
 
-            case SimpleItween.state.shakePosition:
+            case SimpleItween.State.shakePosition:
                 script.shakePos = EditorGUILayout.Vector3Field("Shake value", script.shakePos);
                 break;
 
-            case SimpleItween.state.punchPosition:
+            case SimpleItween.State.punchPosition:
                 script.punchPos = EditorGUILayout.Vector3Field("Punch value", script.punchPos);
                 break;
 
-            case SimpleItween.state.SP_fadeTo:
+            case SimpleItween.State.SP_fadeTo:
                 script.fadeStart = EditorGUILayout.Slider("Sprite fade start", script.fadeStart, 0, 1);
                 script.fadeEnd = EditorGUILayout.Slider("Sprite fade end", script.fadeEnd, 0, 1);
                 break;
 
-            case SimpleItween.state.rotationToAndMoveTo:
+            case SimpleItween.State.rotationToAndMoveTo:
                 script.moveloc = (Transform)EditorGUILayout.ObjectField("Target loc", script.moveloc, typeof(Transform), true);
                 break;
 
