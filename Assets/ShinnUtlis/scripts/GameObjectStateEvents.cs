@@ -68,4 +68,12 @@ public class GameObjectStateEvents : MonoBehaviour
     {
         transform.localEulerAngles = rotation;
     }
+
+    [ContextMenu("SetReset")]
+    public void SetReset()
+    {
+        transform.localScale = Vector3.one;
+        transform.localRotation = Quaternion.identity;
+        transform.localPosition = Vector3.zero;
+    }
 }

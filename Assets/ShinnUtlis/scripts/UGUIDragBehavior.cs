@@ -22,7 +22,6 @@ public class UGUIDragBehavior : MonoBehaviour, IBeginDragHandler, IDragHandler, 
     {
         drag = true;
         endPoint = eventData.position;
-        print(endPoint);
     }
 
     public void OnEndDrag(PointerEventData eventData)
