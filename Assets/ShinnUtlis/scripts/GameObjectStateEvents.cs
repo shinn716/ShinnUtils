@@ -41,7 +41,7 @@ public class GameObjectStateEvents : MonoBehaviour
         if (rect == null)
             transform.localPosition = position;
         else
-            rect.localPosition = position;
+            rect.anchoredPosition = position;
     }
 
     [ContextMenu("SetScale")]
