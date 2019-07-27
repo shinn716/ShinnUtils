@@ -382,7 +382,7 @@ namespace Shinn
 
         private void OnDisable()
         {
-            var itween = GetComponent<iTween>();
+            var itween = target.GetComponent<iTween>();
             if (itween != null)
                 Destroy(itween);
         }
