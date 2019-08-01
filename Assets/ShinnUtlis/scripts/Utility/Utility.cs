@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Linq;
 using System.IO;
+using System.Diagnostics;
+using System;
 
 namespace Shinn
 {
@@ -29,7 +31,7 @@ namespace Shinn
             int end = total - 1;
             for (int i = 0; i < total; i++)
             {
-                int num = Random.Range(0, end + 1);
+                int num = UnityEngine.Random.Range(0, end + 1);
                 output[i] = sequence[num];
                 sequence[num] = sequence[end];
                 end--;
@@ -164,8 +166,22 @@ namespace Shinn
                 return myobj;
             }
         }
-        
-        
+
+        /// <summary>
+        /// Path sample "f:/temp/data.txt"
+        /// </summary>
+        /// <param name="path"></param>
+        public static void OpenFilesOutOfUnity(string path)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start(path);
+            }
+            catch (Exception e)
+            {
+                UnityEngine.Debug.LogWarning(e);
+            }
+        }
     
     }
 
