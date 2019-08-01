@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using EasyButtons;
@@ -11,10 +11,11 @@ namespace Shinn
 
         public iTweenPath ipath;
 
+        public bool experimentFirstObjectUpdate;
+
         [Space]
         public List<Transform> node = new List<Transform>();
-        Vector3[] pos;
-
+        private Vector3[] pos;
 
         [Button]
         public void RemoveAllNode()
@@ -30,7 +31,7 @@ namespace Shinn
         }
 
 
-        IEnumerator CallItweenPath()
+        private IEnumerator CallItweenPath()
         {
             ipath.nodeCount = node.Count;
             pos = new Vector3[node.Count];
@@ -40,6 +41,12 @@ namespace Shinn
 
             ipath.nodes.AddRange(pos);
             yield return null;
+        }
+
+        private void LateUpdate()
+        {
+            if (experimentFirstObjectUpdate)
+                ipath.nodes[0] = node[0].transform.position;
         }
     }
 
