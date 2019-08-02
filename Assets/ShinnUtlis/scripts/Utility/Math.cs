@@ -2,7 +2,7 @@
 
 namespace Shinn
 {
-    public class MathUtils
+    public class Math
     {
         /// <summary>
         /// 取偶數, 小數點第N位 (小數點最大第二位)
