@@ -19,8 +19,25 @@ public class GameObjectStateEvents : MonoBehaviour
     public Vector3 scale = Vector3.one;
     public Color color = Color.white;
 
+    private Vector3 originPos;
+    private Color originColor;
+
     [Space]
     public UnityEvent events;
+
+    private void Start()
+    {
+        originPos = transform.localPosition;
+
+
+        SpriteRenderer sp = GetComponent<SpriteRenderer>();
+        Image img = GetComponent<Image>();
+
+        if (sp != null)
+            originColor = sp.color;
+        else if (img != null)
+            originColor = img.color;
+    }
 
     private void OnDisable()
     {
@@ -75,5 +92,21 @@ public class GameObjectStateEvents : MonoBehaviour
         transform.localScale = Vector3.one;
         transform.localRotation = Quaternion.identity;
         transform.localPosition = Vector3.zero;
+    }
+
+    public void ResetLocationPosition()
+    {
+        transform.localPosition = originPos;
+    }
+
+    public void ResetSpriteImageColor()
+    {
+        SpriteRenderer sp = GetComponent<SpriteRenderer>();
+        Image img = GetComponent<Image>();
+
+        if (sp != null)
+            sp.color = originColor;
+        else if (img != null)
+            img.color = originColor;
     }
 }
