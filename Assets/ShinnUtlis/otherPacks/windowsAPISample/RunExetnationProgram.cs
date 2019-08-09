@@ -13,7 +13,7 @@ public class RunExetnationProgram : MonoBehaviour
 
         try
         {
-            string m_readPath = Path.Combine(Application.dataPath, configName);
+            string m_readPath = Path.Combine(Application.streamingAssetsPath, configName);
 
             try
             {
