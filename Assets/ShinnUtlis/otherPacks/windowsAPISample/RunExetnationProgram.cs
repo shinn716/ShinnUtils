@@ -3,7 +3,7 @@ using UnityEngine;
 using System;
 using System.IO;
 
-public class RunExetnationProgram : MonoBehaviour
+public class RunExtensionProgram : MonoBehaviour
 {
     private readonly string configName = "ExetnationPath.txt";
 
