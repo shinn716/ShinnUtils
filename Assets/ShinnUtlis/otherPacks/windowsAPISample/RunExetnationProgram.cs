@@ -5,7 +5,7 @@ using System.IO;
 
 public class RunExtensionProgram : MonoBehaviour
 {
-    private readonly string configName = "ExetnationPath.txt";
+    private readonly string configName = "ExtensionPath.txt";
 
     private IEnumerator Start()
     {
