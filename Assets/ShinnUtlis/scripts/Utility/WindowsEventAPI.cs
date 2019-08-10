@@ -1,9 +1,12 @@
-﻿/// Author : shinn716
+using System;
+/// Author : shinn716
 /// Only for windows.
 /// https://docs.microsoft.com/zh-tw/dotnet/api/system.diagnostics.processwindowstyle?view=netframework-4.8
 
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
+using UnityEngine;
 
 public static class WindowsEventAPI
 {
@@ -29,7 +32,7 @@ public static class WindowsEventAPI
         string file = Path.Combine(path, fileName);
         Process.Start(file);
     }
-    
+
     /// <summary>
     /// 搜尋目前正在執行的程式
     /// </summary>
@@ -87,6 +90,13 @@ public static class WindowsEventAPI
 
         myProcess.StartInfo.WindowStyle = Select(windowStyle);
         myProcess.Start();
+
+
+        /// Click on screen center.
+        SetCursorPos(Screen.width / 2, Screen.height / 2);
+        //System.Threading.Thread.Sleep(100);
+        mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
+        mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
     }
     #endregion
 
@@ -105,5 +115,18 @@ public static class WindowsEventAPI
                 return ProcessWindowStyle.Normal;
         }
     }
+
+    [DllImport("user32")]
+    public static extern int SetCursorPos(int x, int y);
+
+    private const int MOUSEEVENTF_MOVE = 0x0001; /* mouse move */
+    private const int MOUSEEVENTF_LEFTDOWN = 0x0002; /* left button down */
+    private const int MOUSEEVENTF_LEFTUP = 0x0004; /* left button up */
+    private const int MOUSEEVENTF_RIGHTDOWN = 0x0008; /* right button down */
+
+    [DllImport("user32.dll",
+        CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
+    public static extern void mouse_event(int dwFlags, int dx, int dy, int cButtons,
+    int dwExtraInfo);
     #endregion
 }
