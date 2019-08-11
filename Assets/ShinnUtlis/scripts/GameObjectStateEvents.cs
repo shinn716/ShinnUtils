@@ -19,17 +19,23 @@ public class GameObjectStateEvents : MonoBehaviour
     public Vector3 scale = Vector3.one;
     public Color color = Color.white;
 
-    private Vector3 originPos;
+    public Vector3 originPos;
+    private Quaternion originRot;
+    private Vector3 originScl;
     private Color originColor;
 
     [Space]
     public UnityEvent events;
 
-    private void Start()
+    private void Awake()
     {
         originPos = transform.localPosition;
+        originRot = transform.localRotation;
+        originScl = transform.localScale;
+    }
 
-
+    private void Start()
+    {
         SpriteRenderer sp = GetComponent<SpriteRenderer>();
         Image img = GetComponent<Image>();
 
@@ -92,6 +98,13 @@ public class GameObjectStateEvents : MonoBehaviour
         transform.localScale = Vector3.one;
         transform.localRotation = Quaternion.identity;
         transform.localPosition = Vector3.zero;
+    }
+
+    public void SetDefaultTransform()
+    {
+        transform.localPosition = originPos;
+        transform.localRotation = originRot;
+        transform.localScale = originScl;
     }
 
     public void ResetLocationPosition()
