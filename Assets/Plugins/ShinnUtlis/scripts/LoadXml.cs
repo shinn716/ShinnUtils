@@ -1,26 +1,27 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 using System.Xml;
 using System.IO;
 using System;
 
-namespace Shinn{
+namespace Shinn
+{
 
-	public class LoadXml : MonoBehaviour {
+    public class LoadXml : MonoBehaviour
+    {
 
-        public enum path {
-            Application_streamingAssetsPath,
-            Application_persistentDataPath,
+        public enum Path
+        {
+            ApplicationStreamingAssetsPath,
+            ApplicationPersistentDataPath,
             absolute
         }
 
-        public path pathstate;
-		public string filepath = "C:/Users/Shinn/Desktop/";
+        public Path pathstate = Path.ApplicationStreamingAssetsPath;
+        public string filepath = "C:/Users/Shinn/Desktop/";
         public string filename = "EmailSetting.xml";
 
         [Space, ReadOnly]
-		public string temp_client;
+        public string temp_client;
         [ReadOnly]
         public string temp_port;
         [ReadOnly]
@@ -37,36 +38,21 @@ namespace Shinn{
         [ReadOnly]
         public string temp_fileloc;
 
-        private int PathSelect()
+        private void Awake()
         {
             switch (pathstate)
             {
-                case path.Application_streamingAssetsPath:
-                    return 0;
-                case path.Application_persistentDataPath:
-                    return 1;
-                case path.absolute:
-                    return 2;
+                case Path.ApplicationStreamingAssetsPath:
+                    filepath = (Application.streamingAssetsPath + "/");
+                    LoadFromXml(filepath + filename);
+                    break;
+                case Path.ApplicationPersistentDataPath:
+                    filepath = (Application.persistentDataPath + "/");
+                    LoadFromXml(filepath + filename);
+                    break;
                 default:
-                    return 2;
-            }
-        }
-
-        void Awake()
-        {
-            if (PathSelect() == 0)
-            {
-                filepath = (Application.streamingAssetsPath + "/").ToString();
-                LoadFromXml(filepath + filename);
-            }
-            else if (PathSelect() == 1)
-            {
-                filepath = (Application.persistentDataPath + "/").ToString();
-                LoadFromXml(filepath + filename);
-            }
-            else
-            {
-                LoadFromXml(filepath + filename);
+                    LoadFromXml(filepath + filename);
+                    break;
             }
         }
 
@@ -74,7 +60,7 @@ namespace Shinn{
         {
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.Load(path);
-            
+
             if (File.Exists(path))
             {
                 print("Load XML Success..");
@@ -104,9 +90,9 @@ namespace Shinn{
             else
             {
                 Debug.LogWarning("Not find xml");
-            }      
+            }
         }
 
-	}
+    }
 
 }

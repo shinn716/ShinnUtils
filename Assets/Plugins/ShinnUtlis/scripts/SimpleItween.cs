@@ -24,56 +24,56 @@ namespace Shinn
             rotationToAndMoveTo,
         }
 
-        public State mystate;
+        public State mystate = State.moveTo;
 
-        [Header("ItweenSetting")]
+        //[Header("ItweenSetting")]
         public GameObject target;
         public float time;
-        public float delay = 0;
+        public float delay;
         public iTween.EaseType ease;
         public iTween.LoopType loop;
-        public bool islocal = false;
-        public bool ignoreTimeScalest = false;
+        public bool islocal;
+        public bool ignoreTimeScalest;
         public bool AutoStart = true;
-        public bool orienttopathst = false;
+        public bool orienttopathst;
         public float lookaheadValue = .05f;
 
-        [Header("ShakePosition")]
+        //[Header("ShakePosition")]
         public Vector3 shakePos;
 
-        [Header("PunchPosition")]
+        //[Header("PunchPosition")]
         public Vector3 punchPos;
 
-        [Header("ScaleState")]
+        //[Header("ScaleState")]
         public Vector3 scaleValue;
 
-        [Header("MoveTo")]
+        //[Header("MoveTo")]
         public Transform moveloc;
 
-        [Header("RotationTo")]
+        //[Header("RotationTo")]
         public Vector3 rotvalue;
 
-        [Header("ColorTo")]
+        //[Header("ColorTo")]
         public Color startColor;
         public Color endColor;
 
-        [Header("FadeTo")]
-        public float fadeStart = 0;
+        //[Header("FadeTo")]
+        public float fadeStart;
         public float fadeEnd = 1;
 
-        [Header("CompleteEvent")]
-        public bool startComplete = false;
+        //[Header("CompleteEvent")]
+        public bool startComplete;
 
         #endregion
 
         #region UnityEvents
-        public bool EnableBool = false;
-        public bool EnableInt = false;
-        public bool EnableFloat = false;
-        public bool EnableFloatArray = false;
-        public bool EnableVector3 = false;
-        public bool EnableColor = false;
-        public bool EnableVoid = false;
+        public bool EnableBool;
+        public bool EnableInt;
+        public bool EnableFloat;
+        public bool EnableFloatArray;
+        public bool EnableVector3;
+        public bool EnableColor;
+        public bool EnableVoid;
 
         public VoidEvent voidevents;
         public BoolEvent boolevents;
@@ -333,21 +333,21 @@ namespace Shinn
 
         private void Fadeto1(float newvalue)
         {
-            if (GetComponent<SpriteRenderer>() != null)
+            if (target.GetComponent<SpriteRenderer>() != null)
             {
-                SpriteRenderer sp = GetComponent<SpriteRenderer>();
+                SpriteRenderer sp = target.GetComponent<SpriteRenderer>();
                 Color orgCol = sp.color;
                 sp.color = new Color(orgCol.r, orgCol.g, orgCol.b, newvalue);
             }
-            else if (GetComponent<Image>() != null)
+            else if (target.GetComponent<Image>() != null)
             {
-                Image img = GetComponent<Image>();
+                Image img = target.GetComponent<Image>();
                 Color orgCol = img.color;
                 img.color = new Color(orgCol.r, orgCol.g, orgCol.b, newvalue);
             }
-            else if (GetComponent<Text>() != null)
+            else if (target.GetComponent<Text>() != null)
             {
-                Text text = GetComponent<Text>();
+                Text text = target.GetComponent<Text>();
                 Color orgCol = text.color;
                 text.color = new Color(orgCol.r, orgCol.g, orgCol.b, newvalue);
             }

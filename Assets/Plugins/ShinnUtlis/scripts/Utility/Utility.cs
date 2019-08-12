@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Linq;
 using System.IO;
-using System.Diagnostics;
 using System;
 
 namespace Shinn
@@ -148,8 +147,9 @@ namespace Shinn
             return result;
         }
         #endregion
-        
-            
+
+
+        #region ReadFile (txt)
         // Convert object data(String) to txt
         public static void WriteDataToFiles(string filepath, string content)
         {
@@ -166,23 +166,8 @@ namespace Shinn
                 return myobj;
             }
         }
+        #endregion
 
-        /// <summary>
-        /// Path sample "f:/temp/data.txt"
-        /// </summary>
-        /// <param name="path"></param>
-        public static void OpenFilesOutOfUnity(string path)
-        {
-            try
-            {
-                System.Diagnostics.Process.Start(path);
-            }
-            catch (Exception e)
-            {
-                UnityEngine.Debug.LogWarning(e);
-            }
-        }
-    
     }
 
 }

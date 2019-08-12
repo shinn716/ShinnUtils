@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System.IO.Ports;                                  //Api compatibikityLevel .NET 2.0
-using System.Threading;
 
 public class SimpleSerialWrite : MonoBehaviour {
     
@@ -19,8 +16,8 @@ public class SimpleSerialWrite : MonoBehaviour {
             sp.Open();
             sp.ReadTimeout = 50;
         }
-        catch (System.IO.IOException e) { }
-        catch (System.InvalidOperationException e) { }
+        catch (System.IO.IOException) { }
+        catch (System.InvalidOperationException) { }
     }
 
     private void Update () {
@@ -49,7 +46,7 @@ public class SimpleSerialWrite : MonoBehaviour {
 
     public void Write(byte data)
     {
-        byte[] senddata = new byte[] {data, 2 };
+        byte[] senddata = {data, 2 };
         sp.Write(senddata, 0, senddata.Length);
     }
 
