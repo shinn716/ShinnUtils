@@ -9,7 +9,7 @@ namespace Shinn
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public static float Even(float input, int n = 1)
+        public static float GetEven(float input, int n = 1)
         {
             input = (float)((int)(input * Mathf.Pow(10, n)) / Mathf.Pow(10, n));
             input *= Mathf.Pow(10, n);
@@ -21,9 +21,20 @@ namespace Shinn
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public static int Even(int input)
+        public static int GetEven(int input)
         {
             return input % 2 == 0 ? input : (input + 1);
+        }
+        
+        /// <summary>
+        /// 取 除數 數值
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="divisor"></param>
+        /// <returns></returns>
+        public static int GetCustomValue(int input, int divisor)
+        {
+            return input % divisor == 0 ? input : input - (input % divisor);
         }
     }
 }
