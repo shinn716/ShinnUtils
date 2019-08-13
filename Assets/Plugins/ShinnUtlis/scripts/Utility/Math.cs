@@ -36,5 +36,26 @@ namespace Shinn
         {
             return input % divisor == 0 ? input : input - (input % divisor);
         }
+        
+        /// <summary>
+        /// String 轉換成 int
+        /// </summary>
+        /// <param name="hexValue"></param>
+        /// <returns></returns>
+        public static int ConvertHexToInt(string hexValue)
+        {
+            return (int) System.Convert.ToInt64(hexValue, 16);
+        }
+
+        /// <summary>
+        /// Int 轉換成 String
+        /// </summary>
+        /// <param name="decValue"></param>
+        /// <returns></returns>
+        public static string ConvertIntToHex(int decValue)
+        {
+            return string.Format("{0:x}", decValue); ;
+        }
+        
     }
 }
