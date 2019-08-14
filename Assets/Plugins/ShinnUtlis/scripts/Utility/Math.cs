@@ -57,5 +57,14 @@ namespace Shinn
             return string.Format("{0:x}", decValue); ;
         }
         
+        // byte array to string
+        // byte[] mac_id;
+        // string mac_str = Encoding.ASCII.GetString(mac_id);
+        
+        // string to bype arry
+        // string mac ="ff:03:56:19:7c:de";
+        // byte[] bArray = Encoding.UTF8.GetBytes(mac);
+        // byte[] bArray = Encoding.ASCII.GetBytes(mac);
+        
     }
 }
