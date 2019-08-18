@@ -124,9 +124,7 @@ public static class WindowsEventAPI
     private const int MOUSEEVENTF_LEFTUP = 0x0004; /* left button up */
     private const int MOUSEEVENTF_RIGHTDOWN = 0x0008; /* right button down */
 
-    [DllImport("user32.dll",
-        CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
-    public static extern void mouse_event(int dwFlags, int dx, int dy, int cButtons,
-    int dwExtraInfo);
+    [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
+    public static extern void mouse_event(int dwFlags, int dx, int dy, int cButtons, int dwExtraInfo);
     #endregion
 }
