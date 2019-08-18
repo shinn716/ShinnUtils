@@ -98,6 +98,30 @@ public static class WindowsEventAPI
         mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
         mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
     }
+    
+    [DllImport("user32.dll", EntryPoint = "FindWindow", SetLastError = true)]
+    static extern IntPtr FindWindowByCaption(IntPtr ZeroOnly, string lpWindowName);
+    [DllImport("user32")]
+    public static extern int ShowWindow(int hwnd, int nCmdShow);
+    [DllImport("user32.dll", CharSet = CharSet.Auto)]
+    static extern IntPtr SendMessage(IntPtr hWnd, UInt32 Msg, IntPtr wParam, IntPtr lParam);
+    const UInt32 WM_CLOSE = 0x0010;
+
+    /// <summary>
+    /// Close Application CloseWindow(Kinect)
+    /// </summary>
+    /// <param name="windowsName"></param>
+    public static void CloseWindow(string windowsName)
+    {
+        IntPtr windowPtr = FindWindowByCaption(IntPtr.Zero, windowsName);
+        if (windowPtr == IntPtr.Zero)
+        {
+            UnityEngine.Debug.LogError("'" + windowsName + "' not found!");
+            return;
+        }
+
+        SendMessage(windowPtr, WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
+    }
     #endregion
 
     #region Private function

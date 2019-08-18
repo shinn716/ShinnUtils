@@ -36,5 +36,35 @@ namespace Shinn
         {
             return input % divisor == 0 ? input : input - (input % divisor);
         }
+        
+        /// <summary>
+        /// String 轉換成 int
+        /// </summary>
+        /// <param name="hexValue"></param>
+        /// <returns></returns>
+        public static int ConvertHexToInt(string hexValue)
+        {
+            return (int) System.Convert.ToInt64(hexValue, 16);
+        }
+
+        /// <summary>
+        /// Int 轉換成 String
+        /// </summary>
+        /// <param name="decValue"></param>
+        /// <returns></returns>
+        public static string ConvertIntToHex(int decValue)
+        {
+            return string.Format("{0:x}", decValue); ;
+        }
+        
+        // byte array to string
+        // byte[] mac_id;
+        // string mac_str = Encoding.ASCII.GetString(mac_id);
+        
+        // string to bype arry
+        // string mac ="ff:03:56:19:7c:de";
+        // byte[] bArray = Encoding.UTF8.GetBytes(mac);
+        // byte[] bArray = Encoding.ASCII.GetBytes(mac);
+        
     }
 }
