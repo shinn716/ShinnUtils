@@ -54,20 +54,20 @@ namespace Shinn{
         [Button]
         public void Fadein()
         {
-            iTween.ValueTo(gameObject, iTween.Hash("from", 0, "to", 1, "time", fadeinTime, "delay", fadeinDelay, "onupdate", "processed2", "easetype", ease, "oncomplete", "complete", "oncompletetarget", gameObject));
+            iTween.ValueTo(gameObject, iTween.Hash("from", 0, "to", 1, "time", fadeinTime, "delay", fadeinDelay, "onupdate", "Processed2", "easetype", ease, "oncomplete", "Complete", "oncompletetarget", gameObject));
         }
 
         [Button]
         public void Fadeout()
         {
             guiColor = new Color(r, g, b, 0);
-            iTween.ValueTo(gameObject, iTween.Hash("from", 1, "to", 0, "time", fadeoutTime, "delay", fadeoutDelay, "onupdate", "processed1", "easetype", ease, "oncomplete", "complete", "oncompletetarget", gameObject));
+            iTween.ValueTo(gameObject, iTween.Hash("from", 1, "to", 0, "time", fadeoutTime, "delay", fadeoutDelay, "onupdate", "Processed1", "easetype", ease, "oncomplete", "Complete", "oncompletetarget", gameObject));
         }
 
         [Button]
         public void InAndOut()
         {
-            iTween.ValueTo(gameObject, iTween.Hash("from", 0, "to", 1, "time", fadeinTime, "delay", fadeinDelay, "onupdate", "processed1", "easetype", ease, "oncomplete", "completeInAndOut", "oncompletetarget", gameObject));
+            iTween.ValueTo(gameObject, iTween.Hash("from", 0, "to", 1, "time", fadeinTime, "delay", fadeinDelay, "onupdate", "Processed1", "easetype", ease, "oncomplete", "CompleteInAndOut", "oncompletetarget", gameObject));
         }
 
         private void OnGUI()
@@ -77,22 +77,22 @@ namespace Shinn{
             GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), tmp2d);
         }
 
-        private void processed1(float newvalue)
+        private void Processed1(float newvalue)
         {
             _alpha = newvalue;
         }
 
-        private void processed2(float newvalue)
+        private void Processed2(float newvalue)
         {
             _alpha = newvalue;
         }
 
-        private void complete()
+        private void Complete()
         {
             _event.Invoke();
         }
 
-        private void completeInAndOut()
+        private void CompleteInAndOut()
         {
             Fadeout();
         }

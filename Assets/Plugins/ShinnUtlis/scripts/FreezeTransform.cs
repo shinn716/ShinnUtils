@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Shinn
 {
@@ -17,23 +15,23 @@ namespace Shinn
         public UpdateState state = UpdateState.FixedUpdate;
 
         [Header("Position")]
-        public bool freezePosX = false;
-        public bool freezePosY = false;
-        public bool freezePosZ = false;
+        public bool freezePosX;
+        public bool freezePosY;
+        public bool freezePosZ;
 
         public Vector3 LimitPosValue;
 
         [Header("Rotation")]
-        public bool freezeRotX = false;
-        public bool freezeRotY = false;
-        public bool freezeRotZ = false;
+        public bool freezeRotX;
+        public bool freezeRotY;
+        public bool freezeRotZ;
 
         public Vector3 LimitRotValue;
 
         [Header("Scale")]
-        public bool freezeSclX = false;
-        public bool freezeSclY = false;
-        public bool freezeSclZ = false;
+        public bool freezeSclX;
+        public bool freezeSclY;
+        public bool freezeSclZ;
 
         public Vector3 LimitSclValue = Vector3.one;
 

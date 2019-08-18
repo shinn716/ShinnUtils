@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class InstantiateByTime : MonoBehaviour {
@@ -61,7 +59,7 @@ public class InstantiateByTime : MonoBehaviour {
                 timeRangevalue = UnityEngine.Random.Range(instTimeRange.x, instTimeRange.y);
                 value = 0;
 
-                GameObject go = (GameObject)Instantiate(prefabs[UnityEngine.Random.Range(0, prefabs.Length)]);
+                GameObject go = Instantiate(prefabs[UnityEngine.Random.Range(0, prefabs.Length)]);
                 float posx = transform.position.x + UnityEngine.Random.Range(posxRange.x, posxRange.y);
                 float posy = transform.position.y + UnityEngine.Random.Range(posyRange.x, posyRange.y);
                 float posz = transform.position.z + UnityEngine.Random.Range(poszRange.x, poszRange.y);

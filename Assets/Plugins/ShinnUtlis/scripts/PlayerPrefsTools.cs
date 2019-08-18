@@ -38,41 +38,41 @@ public class PlayerPrefsTools : MonoBehaviour {
 	public void Save () {
 
 		for (int i = 0; i < fvalue.Length; i++)
-			PlayerPrefs.SetFloat (("fvalue" + i).ToString (), fvalue[i]);
+			PlayerPrefs.SetFloat (("fvalue" + i), fvalue[i]);
 
 		for (int i = 0; i < ivalue.Length; i++)
-			PlayerPrefs.SetInt (("ivalue" + i).ToString (), ivalue[i]);
+			PlayerPrefs.SetInt (("ivalue" + i), ivalue[i]);
 
 		for (int i = 0; i < svalue.Length; i++)
-			PlayerPrefs.SetString (("svalue" + i).ToString (), svalue[i]);
+			PlayerPrefs.SetString (("svalue" + i), svalue[i]);
 	}
 
 	public void Default () {
 		
 		for (int i = 0; i < fvalue.Length; i++)
-			PlayerPrefs.SetFloat (("fvalue" + i).ToString (), 0);
+			PlayerPrefs.SetFloat (("fvalue" + i), 0);
 
 		for (int i = 0; i < ivalue.Length; i++)
-			PlayerPrefs.SetInt (("ivalue" + i).ToString (), 0);
+			PlayerPrefs.SetInt (("ivalue" + i), 0);
 
 		for (int i = 0; i < svalue.Length; i++)
-			PlayerPrefs.SetString (("svalue" + i).ToString (), null);
+			PlayerPrefs.SetString (("svalue" + i), null);
 	}
 
 	public void Load () {
 
 		for (int i = 0; i < fvalue.Length; i++) {
-			fvalue [i] = PlayerPrefs.GetFloat (("fvalue" + i).ToString ());
+			fvalue [i] = PlayerPrefs.GetFloat (("fvalue" + i));
 			Debug.Log("f-value: " + fvalue[i]);
 		}
 
 		for (int i = 0; i < ivalue.Length; i++) {
-			ivalue [i] = PlayerPrefs.GetInt (("ivalue" + i).ToString ());
+			ivalue [i] = PlayerPrefs.GetInt (("ivalue" + i));
 			Debug.Log("i-value: " + ivalue[i]);
 		}
 
 		for (int i = 0; i < svalue.Length; i++) {
-			svalue [i] = PlayerPrefs.GetString (("svalue" + i).ToString ());
+			svalue [i] = PlayerPrefs.GetString (("svalue" + i));
 			Debug.Log("s-value: " + svalue[i]);
 		}
 

@@ -16,6 +16,7 @@ public class TcpServer : MonoBehaviour
 
     //以下默認都是私有的成員
     public int port = 5566;
+
     Socket serverSocket; //伺服器端socket
     Socket clientSocket; //用戶端socket
     IPEndPoint ipEnd; //偵聽埠

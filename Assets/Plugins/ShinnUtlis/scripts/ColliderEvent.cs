@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
-namespace Shinn {
+namespace Shinn
+{
 
     [RequireComponent(typeof(Rigidbody))]
     public class ColliderEvent : MonoBehaviour {

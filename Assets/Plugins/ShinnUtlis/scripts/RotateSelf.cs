@@ -25,9 +25,9 @@ namespace Shinn{
                     break;
                 case Type.Noise:
                     transform.Rotate(new Vector3(
-                                BaseValue.x + speed * Mathf.PerlinNoise(Time.time * NoiseSpeed, NoiseSeed1),
-                                BaseValue.y + speed * Mathf.PerlinNoise(Time.time * NoiseSpeed, NoiseSeed2),
-                                BaseValue.z + speed * Mathf.PerlinNoise(Time.time * NoiseSpeed, NoiseSeed3)
+                                BaseValue.x + (speed * Mathf.PerlinNoise(Time.time * NoiseSpeed, NoiseSeed1)),
+                                BaseValue.y + (speed * Mathf.PerlinNoise(Time.time * NoiseSpeed, NoiseSeed2)),
+                                BaseValue.z + (speed * Mathf.PerlinNoise(Time.time * NoiseSpeed, NoiseSeed3))
                     ));
                     break;
                 default:
@@ -98,5 +98,5 @@ namespace Shinn{
 				transform.localEulerAngles = new Vector3 (transform.localEulerAngles.x, transform.localEulerAngles.y, RotzOrg);
 		}
 
-	}
+    }
 }

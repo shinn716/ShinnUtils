@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Shinn
@@ -15,14 +14,14 @@ namespace Shinn
 
         private AudioSource AS;
 
-        void Start()
+        private void Start()
         {
             float delaytime = Random.Range(delayTimeRange.x, delayTimeRange.y);
             AS = GetComponent<AudioSource>();
             StartCoroutine(Play(delaytime));
         }
 
-        IEnumerator Play(float time)
+        private IEnumerator Play(float time)
         {
             yield return new WaitForSeconds(time);
             int randindex = Random.Range(0, clip.Length);

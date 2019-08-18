@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,14 +10,14 @@ namespace Shinn
         private static AsyncOperationTools s_Instance;
 
         [ReadOnly, SerializeField]
-        private int CurrentLevel = 0;
+        private int CurrentLevel;
 
         public KeyCode nextKey = KeyCode.N;
-        public bool DontDestroy = false;
-        public bool ShowProcess = false;
+        public bool DontDestroy;
+        public bool ShowProcess;
 
-        private bool processGUI = false;
-        private bool finish = false;
+        private bool processGUI;
+        private bool finish;
 
         private AsyncOperation asyncOperation;
 
@@ -80,7 +79,7 @@ namespace Shinn
                 else
                     GUILayout.Label("Loading progress " + processValue.ToString() + "%");
             }
-            UnityEngine.GUI.DragWindow();
+            GUI.DragWindow();
         }
 
         private void Update()

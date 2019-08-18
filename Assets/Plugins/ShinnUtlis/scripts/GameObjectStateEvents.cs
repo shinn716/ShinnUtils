@@ -5,13 +5,13 @@ using UnityEngine.Events;
 public class GameObjectStateEvents : MonoBehaviour
 {
 
-    public enum state
+    public enum State
     {
         Enable,
         Disable
     }
 
-    public state mystate;
+    public State mystate;
 
     [Header("Events")]
     public Vector3 position = Vector3.zero;
@@ -47,13 +47,13 @@ public class GameObjectStateEvents : MonoBehaviour
 
     private void OnDisable()
     {
-        if (mystate == state.Disable)
+        if (mystate == State.Disable)
             events.Invoke();
     }
 
     private void OnEnable()
     {
-        if (mystate == state.Enable)
+        if (mystate == State.Enable)
             events.Invoke();
     }
 
@@ -100,6 +100,7 @@ public class GameObjectStateEvents : MonoBehaviour
         transform.localPosition = Vector3.zero;
     }
 
+    [ContextMenu("SetDefaultTransform")]
     public void SetDefaultTransform()
     {
         transform.localPosition = originPos;
@@ -107,11 +108,13 @@ public class GameObjectStateEvents : MonoBehaviour
         transform.localScale = originScl;
     }
 
+    [ContextMenu("ResetLocationPosition")]
     public void ResetLocationPosition()
     {
         transform.localPosition = originPos;
     }
 
+    [ContextMenu("ResetSpriteImageColor")]
     public void ResetSpriteImageColor()
     {
         SpriteRenderer sp = GetComponent<SpriteRenderer>();

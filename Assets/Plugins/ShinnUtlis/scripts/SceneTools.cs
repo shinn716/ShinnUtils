@@ -1,8 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-//using RenderHeads.Media.AVProVideo;
+
+#if AVProPligin
+using RenderHeads.Media.AVProVideo;
+#endif
 
 namespace Shinn
 {
@@ -17,7 +18,9 @@ namespace Shinn
 
         [Header("Pause")]
         public KeyCode PauseKey = KeyCode.P;
-        //private MediaPlayer[] mediaplayer;
+#if AVProPligin
+        private MediaPlayer[] mediaplayer;
+#endif
         private bool pause = false;
 
         [Header("Screen Resolutuin setting")]
@@ -39,7 +42,7 @@ namespace Shinn
         public GUIStyle myStyle;
 
         protected Rect viewWindow;
-        
+
         private void Awake()
         {
             if (Dontdestroy)
@@ -66,11 +69,13 @@ namespace Shinn
         {
             timeleft = updateInterval;
             viewWindow = new Rect(10, 10, 150, 50);
-        
+
+#if AVProPligin
             // Need Avpro Packages
-            //var allmedia = Resources.FindObjectsOfTypeAll<MediaPlayer>();
-            //mediaplayer = new MediaPlayer[allmedia.Length];
-            //mediaplayer = allmedia;
+            var allmedia = Resources.FindObjectsOfTypeAll<MediaPlayer>();
+            mediaplayer = new MediaPlayer[allmedia.Length];
+            mediaplayer = allmedia;
+#endif
         }
 
         void Update()
@@ -115,13 +120,13 @@ namespace Shinn
                 GUILayout.Label("FPS                " + fps, myStyle);
                 GUILayout.Label("Play time         " + Time.time.ToString("f0"), myStyle);
             }
-            UnityEngine.GUI.DragWindow();
+            GUI.DragWindow();
         }
 
 
         private void OnGUI()
         {
-            if(showInfo)
+            if (showInfo)
                 using (new GUILayout.HorizontalScope())
                 {
                     viewWindow = GUILayout.Window(GetInstanceID(), viewWindow, Window, "System Info");
@@ -133,22 +138,26 @@ namespace Shinn
         {
             Time.timeScale = 0;
 
-            //if (mediaplayer == null)
-            //    return;
+#if AVProPligin
+            if (mediaplayer == null)
+                return;
 
-            //for (int i = 0; i < mediaplayer.Length; i++)
-            //    mediaplayer[i].Pause();
+            for (int i = 0; i < mediaplayer.Length; i++)
+                mediaplayer[i].Pause();
+#endif
         }
 
         private void Resume()
         {
             Time.timeScale = 1;
 
-            //if (mediaplayer == null)
-            //    return;
+#if AVProPligin
+            if (mediaplayer == null)
+                return;
 
-            //for (int i = 0; i < mediaplayer.Length; i++)
-            //    mediaplayer[i].Play();
+            for (int i = 0; i < mediaplayer.Length; i++)
+                mediaplayer[i].Play();
+#endif
         }
     }
 }

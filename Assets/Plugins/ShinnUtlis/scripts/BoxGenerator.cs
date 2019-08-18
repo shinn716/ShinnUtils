@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using EasyButtons;
 
 [ExecuteInEditMode]
@@ -39,7 +37,7 @@ public class BoxGenerator : MonoBehaviour {
         int childs = transform.childCount;
         for (int i = childs - 1; i >= 0; i--)
         {
-            GameObject.DestroyImmediate(transform.GetChild(i).gameObject);
+            DestroyImmediate(transform.GetChild(i).gameObject);
         }
 
     }

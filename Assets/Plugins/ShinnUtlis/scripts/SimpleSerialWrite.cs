@@ -20,8 +20,8 @@ public class SimpleSerialWrite : MonoBehaviour {
         catch (System.InvalidOperationException) { }
     }
 
-    private void Update () {
-
+    private void Update()
+    {
         if (!sp.IsOpen) { return; }
 
 

@@ -35,16 +35,16 @@ namespace Shinn
 
         private void ObjFadeout()
         {
-            iTween.ValueTo(gameObject, iTween.Hash("from", 1, "to", 0, "easetype", ease, "delay", delay, "time", time, "onupdate", "process", "oncomplete", "complete", "oncompletetarget", gameObject));
+            iTween.ValueTo(gameObject, iTween.Hash("from", 1, "to", 0, "easetype", ease, "delay", delay, "time", time, "onupdate", "Process", "oncomplete", "Complete", "oncompletetarget", gameObject));
         }
 
-        private void process(float newvalue)
+        private void Process(float newvalue)
         {
             for (int i = 0; i < fadeObjs.Length; i++)
                 fadeObjs[i].material.color = new Color(fadeObjs[i].material.color.r, fadeObjs[i].material.color.g, fadeObjs[i].material.color.b, newvalue);
         }
 
-        private void complete()
+        private void Complete()
         {
             if (completeEvent)
                 unityevent.Invoke();

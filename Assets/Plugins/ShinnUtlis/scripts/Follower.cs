@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Shinn
@@ -30,10 +28,10 @@ namespace Shinn
         public float stopDist = 2;
 
         [Header("Freeze RotY")]
-        public bool onTheGround = false;
+        public bool onTheGround;
 
         [Header("Animator")]
-        public bool enableAnimation = false;
+        public bool enableAnimation;
         public Animator anim;
         public string moveAnimName = "walk";
         public string encounterAnimName = "attack";
