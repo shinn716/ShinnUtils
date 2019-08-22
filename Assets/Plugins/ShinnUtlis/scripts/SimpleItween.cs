@@ -3,12 +3,10 @@ using UnityEngine.UI;
 
 namespace Shinn
 {
-
     public class SimpleItween : MonoBehaviour
     {
-
         #region Itween
-        public enum State
+        [SerializeField] private enum State
         {
             shakePosition,
             punchPosition,
@@ -23,74 +21,53 @@ namespace Shinn
             colorTo,
             rotationToAndMoveTo,
         }
-
-        public State mystate = State.moveTo;
-
-        //[Header("ItweenSetting")]
-        public GameObject target;
-        public float time;
-        public float delay;
-        public iTween.EaseType ease;
-        public iTween.LoopType loop;
-        public bool islocal;
-        public bool ignoreTimeScalest;
-        public bool AutoStart = true;
-        public bool orienttopathst;
-        public float lookaheadValue = .05f;
-
-        //[Header("ShakePosition")]
-        public Vector3 shakePos;
-
-        //[Header("PunchPosition")]
-        public Vector3 punchPos;
-
-        //[Header("ScaleState")]
-        public Vector3 scaleValue;
-
-        //[Header("MoveTo")]
-        public Transform moveloc;
-
-        //[Header("RotationTo")]
-        public Vector3 rotvalue;
-
-        //[Header("ColorTo")]
-        public Color startColor;
-        public Color endColor;
-
-        //[Header("FadeTo")]
-        public float fadeStart;
-        public float fadeEnd = 1;
-
-        //[Header("CompleteEvent")]
-        public bool startComplete;
-
+        [SerializeField] State mystate = State.moveTo;
+        [SerializeField] GameObject target;
+        [SerializeField] float time;
+        [SerializeField] float delay;
+        [SerializeField] iTween.EaseType ease;
+        [SerializeField] iTween.LoopType loop;
+        [SerializeField] bool islocal;
+        [SerializeField] bool ignoreTimeScalest;
+        [SerializeField] bool AutoStart = true;
+        [SerializeField] bool orienttopathst;
+        [SerializeField] float lookaheadValue = .05f;
+        [SerializeField] Vector3 shakePos;
+        [SerializeField] Vector3 punchPos;
+        [SerializeField] Vector3 scaleValue;
+        [SerializeField] Transform moveloc;
+        [SerializeField] Vector3 rotvalue;
+        [SerializeField] Color startColor;
+        [SerializeField] Color endColor;
+        [Range(0,1)] [SerializeField] float fadeStart;
+        [Range(0, 1)] [SerializeField] float fadeEnd = 1;
+        [SerializeField] bool startComplete;
         #endregion
 
         #region UnityEvents
-        public bool EnableBool;
-        public bool EnableInt;
-        public bool EnableFloat;
-        public bool EnableFloatArray;
-        public bool EnableVector3;
-        public bool EnableColor;
-        public bool EnableVoid;
+        [SerializeField] bool EnableBool;
+        [SerializeField] bool EnableInt;
+        [SerializeField] bool EnableFloat;
+        [SerializeField] bool EnableFloatArray;
+        [SerializeField] bool EnableVector3;
+        [SerializeField] bool EnableColor;
+        [SerializeField] bool EnableVoid;
 
-        public VoidEvent voidevents;
-        public BoolEvent boolevents;
-        public IntEvent intevents;
-        public FloatEvent floatevents;
-        public FloatArrayEvent floatarratevents;
-        public Vector3Event vector3events;
-        public ColorEvent colorevents;
+        [SerializeField] VoidEvent voidevents;
+        [SerializeField] BoolEvent boolevents;
+        [SerializeField] IntEvent intevents;
+        [SerializeField] FloatEvent floatevents;
+        [SerializeField] FloatArrayEvent floatarratevents;
+        [SerializeField] Vector3Event vector3events;
+        [SerializeField] ColorEvent colorevents;
 
-        public bool boolvalue;
-        public int intvalue;
-        public float floatvalue;
-        public float[] floatarrayvalue;
-        public Vector3 vector3value;
-        public Color colorvalue;
+        [SerializeField] bool boolvalue;
+        [SerializeField] int intvalue;
+        [SerializeField] float floatvalue;
+        [SerializeField] Vector3 vector3value;
+        [SerializeField] Color colorvalue;
+        [SerializeField] float[] floatarrayvalue;
         #endregion
-
 
         #region public function
         public void CallStart()
@@ -120,6 +97,12 @@ namespace Shinn
         #endregion
 
         #region private function
+        private void Start()
+        {
+            if (target == null)
+                target = gameObject;
+        }
+
         private void OnEnable()
         {
             if (target == null)
@@ -128,7 +111,6 @@ namespace Shinn
             if (AutoStart)
                 StartSimpleItweenFunction();
         }
-
 
         private void StartSimpleItweenFunction()
         {
@@ -388,9 +370,6 @@ namespace Shinn
         }
 
         #endregion
-
-
-
     }
 
 }
