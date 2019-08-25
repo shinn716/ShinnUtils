@@ -1,14 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
+//
+//  SimpleItween.cs
+//  SimpleItween
+//  itween http://www.pixelplacement.com/itween/index.php
+//
+//  Created by Shinn on 2019/8/25.
+//  Copyright © 2019 Shinn. All rights reserved.
+//
+
 using UnityEngine;
 using UnityEditor;
-using UnityEngine.Events;
 using Shinn;
 
 [CustomEditor(typeof(SimpleItween)), CanEditMultipleObjects]
 public class SimpleItweenEditor : Editor
 {
     private bool showItweenSettings = true;
+    private bool showItweenPathSettings;
+
     private SerializedProperty myState;
 
     private SerializedProperty target;
@@ -157,7 +165,7 @@ public class SimpleItweenEditor : Editor
         fadeEnd = serializedObject.FindProperty("fadeEnd");
 
 
-        label_myState = new GUIContent("myState");
+        label_myState = new GUIContent(" - myState");
 
         label_Target = new GUIContent("Target");
         label_Time = new GUIContent("Time");
@@ -168,18 +176,18 @@ public class SimpleItweenEditor : Editor
         label_IsLocal = new GUIContent("IsLocal");
         label_IgnoreTimeScalest = new GUIContent("IgnoreTimeScale");
         label_AutoStart = new GUIContent("AutoStart");
-        label_Orienttopathst = new GUIContent("Orienttopath");
-        label_LookaheadValue = new GUIContent("LookaheadValue");
+        label_Orienttopathst = new GUIContent("  - Orienttopath");
+        label_LookaheadValue = new GUIContent("  - LookaheadValue");
 
         label_startComplete = new GUIContent("Complete Event");
 
-        label_bvoidEvt = new GUIContent("Void Event");
-        label_bboolEvt = new GUIContent("Bool Event");
-        label_bintEvt = new GUIContent("Int Event");
-        label_bfloatEvt = new GUIContent("Float Event");
-        label_bfloatArrayEvt = new GUIContent("FloatArray Event");
-        label_bvector3Evt = new GUIContent("Vector3 Event");
-        label_bcolorEvt = new GUIContent("Color Event");
+        label_bvoidEvt = new GUIContent(" - Void Event");
+        label_bboolEvt = new GUIContent(" - Bool Event");
+        label_bintEvt = new GUIContent(" - Int Event");
+        label_bfloatEvt = new GUIContent(" - Float Event");
+        label_bfloatArrayEvt = new GUIContent(" - FloatArray Event");
+        label_bvector3Evt = new GUIContent(" - Vector3 Event");
+        label_bcolorEvt = new GUIContent(" - Color Event");
 
         label_voidEvt = new GUIContent("Void Event");
         label_boolEvt = new GUIContent("Bool Event");
@@ -189,22 +197,22 @@ public class SimpleItweenEditor : Editor
         label_vector3Evt = new GUIContent("Vector3 Event");
         label_colorEvt = new GUIContent("Color Event");
 
-        label_startColor = new GUIContent("Start color");
-        label_endColor = new GUIContent("End color");
-        label_shakePos = new GUIContent("Shake position");
-        label_punchPos = new GUIContent("Pounch position");
-        label_scaleValue = new GUIContent("Scale to/from");
-        label_moveloc = new GUIContent("Move/Rotate to obj/px/py/pz");
-        label_rotvalue = new GUIContent("Rotation to");
-        label_fadeStart = new GUIContent("Fade start");
-        label_fadeEnd = new GUIContent("Fade end");
+        label_startColor = new GUIContent(" - Start color");
+        label_endColor = new GUIContent(" - End color");
+        label_shakePos = new GUIContent(" - Shake position");
+        label_punchPos = new GUIContent(" - Pounch position");
+        label_scaleValue = new GUIContent(" - Scale to/from");
+        label_moveloc = new GUIContent(" - Move/Rotate to obj/px/py/pz");
+        label_rotvalue = new GUIContent(" - Rotation to");
+        label_fadeStart = new GUIContent(" - Fade start");
+        label_fadeEnd = new GUIContent(" - Fade end");
 
-        label_boolvalue = new GUIContent("Set boolean value.");
-        label_intvalue = new GUIContent("Set int value");
-        label_floatvalue = new GUIContent("Set float value");
+        label_boolvalue = new GUIContent(" - Set boolean value.");
+        label_intvalue = new GUIContent(" - Set int value");
+        label_floatvalue = new GUIContent(" - Set float value");
         //label_floatarrayvalue = new GUIContent("Set float array value");
-        label_vector3value = new GUIContent("Set vector3 value");
-        label_colorvalue = new GUIContent("Set color value");
+        label_vector3value = new GUIContent(" - Set vector3 value");
+        label_colorvalue = new GUIContent(" - Set color value");
     }
 
 
@@ -215,44 +223,51 @@ public class SimpleItweenEditor : Editor
 
         EditorGUILayout.Space();
         EditorGUILayout.Space();
-        showItweenSettings = EditorGUILayout.Foldout(showItweenSettings, "Itween");
+        showItweenSettings = EditorGUILayout.Foldout(showItweenSettings, "SimpleiTween - Itween inspector controller");
+        EditorGUILayout.Space();
+
         if (showItweenSettings)
         {
-            //EditorGUILayout.Space();
-            //EditorGUILayout.Space();
+            showItweenPathSettings = EditorGUILayout.Foldout(showItweenPathSettings, "  Itween path function (Only be used for iTweenPath.)");
+            if (showItweenPathSettings)
+            {
+                EditorGUILayout.PropertyField(orienttopathst, label_Orienttopathst);
+                EditorGUILayout.Slider(lookaheadValue, 0, 1, label_LookaheadValue);
+            }
+
+            EditorGUILayout.Space();
             EditorGUILayout.PropertyField(target, label_Target);
-            //EditorGUILayout.Space();
+
             EditorGUILayout.PropertyField(time, label_Time);
             EditorGUILayout.Slider(delay, 0, 60, label_Delay);
-            //EditorGUILayout.Space();
+
             EditorGUILayout.PropertyField(ease, label_EaseType);
             EditorGUILayout.PropertyField(loop, label_Looptype);
-            //EditorGUILayout.Space();
-            EditorGUILayout.PropertyField(islocal, label_IsLocal);
+
             EditorGUILayout.PropertyField(ignoreTimeScalest, label_IgnoreTimeScalest);
-            //EditorGUILayout.Space();
-            EditorGUILayout.PropertyField(orienttopathst, label_Orienttopathst);
-            EditorGUILayout.Slider(lookaheadValue, 0, 1, label_LookaheadValue);
-            //EditorGUILayout.Space();
+
+            EditorGUILayout.PropertyField(islocal, label_IsLocal);
+
             EditorGUILayout.PropertyField(AutoStart, label_AutoStart);
 
-            //EditorGUILayout.Space();
             EditorGUILayout.PropertyField(startComplete, label_startComplete);
 
             if (startComplete.boolValue)
             {
-                //EditorGUILayout.Space();
-                EditorGUILayout.LabelField("-----------------------");
 
+                EditorGUILayout.Space();
                 EditorGUILayout.PropertyField(bool_voidEvt, label_bvoidEvt);
                 if (bool_voidEvt.boolValue)
+                {
                     EditorGUILayout.PropertyField(voidEvt, label_voidEvt);
-
+                    EditorGUILayout.Space();
+                }
                 EditorGUILayout.PropertyField(bool_intEvt, label_bintEvt);
                 if (bool_intEvt.boolValue)
                 {
                     EditorGUILayout.PropertyField(intEvt, label_intEvt);
                     EditorGUILayout.PropertyField(intvalue, label_intvalue);
+                    EditorGUILayout.Space();
                 }
 
                 EditorGUILayout.PropertyField(bool_floatEvt, label_bfloatEvt);
@@ -260,6 +275,7 @@ public class SimpleItweenEditor : Editor
                 {
                     EditorGUILayout.PropertyField(floatEvt, label_floatEvt);
                     EditorGUILayout.PropertyField(floatvalue, label_floatvalue);
+                    EditorGUILayout.Space();
                 }
 
                 EditorGUILayout.PropertyField(bool_floatArrayEvt, label_bfloatArrayEvt);
@@ -267,7 +283,7 @@ public class SimpleItweenEditor : Editor
                 {
                     EditorGUILayout.PropertyField(floatArrayEvt, label_floatArrayEvt);
                     ListIterator("floatarrayvalue");
-                    //EditorGUILayout.PropertyField(floatarrayvalue, label_floatarrayvalue);
+                    EditorGUILayout.Space();
                 }
 
                 EditorGUILayout.PropertyField(bool_vector3Evt, label_bvector3Evt);
@@ -275,6 +291,7 @@ public class SimpleItweenEditor : Editor
                 {
                     EditorGUILayout.PropertyField(vector3Evt, label_vector3Evt);
                     EditorGUILayout.PropertyField(vector3value, label_vector3value);
+                    EditorGUILayout.Space();
                 }
 
                 EditorGUILayout.PropertyField(bool_colorEvt, label_bcolorEvt);
@@ -282,6 +299,7 @@ public class SimpleItweenEditor : Editor
                 {
                     EditorGUILayout.PropertyField(colorEvt, label_colorEvt);
                     EditorGUILayout.PropertyField(colorvalue, label_colorvalue);
+                    EditorGUILayout.Space();
                 }
 
                 EditorGUILayout.PropertyField(bool_booleanEvt, label_bboolEvt);
@@ -289,12 +307,13 @@ public class SimpleItweenEditor : Editor
                 {
                     EditorGUILayout.PropertyField(booleanEvt, label_boolEvt);
                     EditorGUILayout.PropertyField(boolvalue, label_boolvalue);
+                    EditorGUILayout.Space();
                 }
             }
         }
 
         EditorGUILayout.Space();
-        EditorGUILayout.LabelField("-----------------------");
+        EditorGUILayout.LabelField("Type: ");
 
         EditorGUILayout.PropertyField(myState, label_myState);
         SelectType(myState.enumValueIndex);

@@ -1,3 +1,12 @@
+//
+//  SimpleItween.cs
+//  SimpleItween
+//  itween http://www.pixelplacement.com/itween/index.php
+//
+//  Created by Shinn on 2019/8/25.
+//  Copyright © 2019 Shinn. All rights reserved.
+//
+
 using UnityEngine;
 using UnityEngine.UI;
 

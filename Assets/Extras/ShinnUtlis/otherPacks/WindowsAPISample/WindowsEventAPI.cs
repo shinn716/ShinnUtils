@@ -1,8 +1,8 @@
-using System;
 /// Author : shinn716
 /// Only for windows.
 /// https://docs.microsoft.com/zh-tw/dotnet/api/system.diagnostics.processwindowstyle?view=netframework-4.8
 
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
