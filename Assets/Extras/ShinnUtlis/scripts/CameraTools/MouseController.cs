@@ -33,7 +33,9 @@ namespace Shinn.CameraTools
                 case MouseSate.RightDrag:
                     h = speed * 30 * -Input.GetAxis("Mouse Y");
                     v = speed * 30 * Input.GetAxis("Mouse X");
-                    transform.Rotate(h, v, 0);
+                    Quaternion q = transform.rotation * Quaternion.Euler(h, v, 0);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, q, Time.time *.5f);
+                    //transform.Rotate(h, v, 0);
                     break;
                 case MouseSate.CenterDrag:
                     h = speed * -Input.GetAxis("Mouse X");
@@ -41,7 +43,7 @@ namespace Shinn.CameraTools
                     transform.Translate(h, v, 0);
                     break;
                 case MouseSate.WheelRoll:
-                    transform.Translate(0, 0, ScrollWheel);
+                    transform.Translate(0, 0, ScrollWheel*1.25f);
                     break;
                 default:
                     break;
