@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace Shinn.CameraTools
 {
@@ -14,6 +14,8 @@ namespace Shinn.CameraTools
         private MouseSate mouseSate;
 
         private float speed = .1f;
+
+        public bool FreezeYaw = true;
 
         public float ScrollWheel { get { return Input.GetAxis("Mouse ScrollWheel"); } }
 
@@ -54,6 +56,9 @@ namespace Shinn.CameraTools
                 StateSelect(MouseSate.CenterDrag);
             else
                 StateSelect(MouseSate.WheelRoll);
+
+            if(FreezeYaw)
+                transform.localEulerAngles = Vector3.Scale(new Vector3(1,1,0), transform.localEulerAngles);
         }
     }
 }
