@@ -1,8 +1,8 @@
 using UnityEngine;
 
 [RequireComponent(typeof(OSC))]
-	public class OSC_receiver : MonoBehaviour {
-	
+public class OSC_Receiver : MonoBehaviour
+{	
 	[Header("OSC Setting")]
     public OSC osc;
     public string address = "/test";
