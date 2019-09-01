@@ -1,13 +1,10 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using ZXing;
 using ZXing.QrCode;
-using EasyButtons;
-
-// This script use www method.
-// Suggestion modify www to UnityRequest.
+using UnityEngine.Networking;
+using System.IO;
 
 namespace Shinn
 {
@@ -15,7 +12,6 @@ namespace Shinn
     {
         //----Generate QRcode
         public Image qrcodeCont;
-
         protected Texture2D encoded;
 
         //----Upload
@@ -42,13 +38,13 @@ namespace Shinn
             //----Generate Qrcode
             string QRCodeURL;
             QRCodeURL = serverIP + ServerFilesLoc +  fileName;
-            Color32[] color32 = useEncode(QRCodeURL, encoded.width, encoded.height);                                                            //儲存產生的QR Code
+            Color32[] color32 = UseEncode(QRCodeURL, encoded.width, encoded.height);                                                            //儲存產生的QR Code
             encoded.SetPixels32(color32);                                                                                                       //設定要顯示的圖片像素
             encoded.Apply();                                                                                                                    //申請顯示圖片
             qrcodeCont.sprite = Sprite.Create(encoded, new Rect(0, 0, encoded.width, encoded.height), Vector2.zero);
         }
 
-        private Color32[] useEncode(string textForEncoding, int width, int height)
+        private Color32[] UseEncode(string textForEncoding, int width, int height)
         {
             //開始進行編碼動作
             BarcodeWriter writer = new BarcodeWriter
@@ -65,32 +61,25 @@ namespace Shinn
 
         private IEnumerator UploadFileCo(string localFileName, string uploadURL)
         {
-            Debug.Log("localFileName " + localFileName);
-            Debug.Log("uploadURL " + uploadURL);
+            //Debug.Log("localFileName " + localFileName);
+            //Debug.Log("uploadURL " + uploadURL);
 
-            WWW localFile = new WWW("file:///" + localFileName);
-            yield return localFile;
+            byte[] data = File.ReadAllBytes(localFileName);                         // "file://"
+            if (data==null)
+                Debug.Log("Open file error: " + localFileName);
 
-            if (localFile.error == null)
-                Debug.Log("Loaded file successfully");
-            else
-            {
-                Debug.Log("Open file error: " + localFile.error);
-                yield break; // stop the coroutine here
-            }
             WWWForm postForm = new WWWForm();
             // version 1
             //postForm.AddBinaryData("theFile",localFile.bytes);
             // version 2
-            postForm.AddBinaryData("theFile", localFile.bytes, localFileName, "text/plain");
-            WWW upload = new WWW(uploadURL, postForm);
+            postForm.AddBinaryData("theFile", data, localFileName, "text/plain");
+            UnityWebRequest www = UnityWebRequest.Post(uploadURL, postForm);
+            yield return www.SendWebRequest();
 
-            yield return upload;
-
-            if (upload.error == null)
-                Debug.Log("upload done :" + upload.text);
+            if (www.isNetworkError || www.isHttpError)
+                Debug.Log(www.error);
             else
-                Debug.Log("Error during upload: " + upload.error);
+                Debug.Log("From upload complete!");
         }
 
         private void UploadFile(string localFileName, string uploadURL)
