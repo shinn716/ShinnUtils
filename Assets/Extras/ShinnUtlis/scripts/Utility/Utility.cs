@@ -13,7 +13,7 @@ namespace Shinn
         {
             return (v == a) ? x : (v - a) * (y - x) / (b - a) + x;
         }
-        
+
         /// <summary>
         /// 不重覆亂數 (int) 0 ~ length
         /// </summary>
@@ -24,7 +24,7 @@ namespace Shinn
 
             for (int i = 0; i < total; i++)
                 sequence[i] = i;
-            
+
 
             int end = total - 1;
             for (int i = 0; i < total; i++)
@@ -166,7 +166,7 @@ namespace Shinn
             }
         }
         #endregion
-            
+
         public static Quaternion StringToQuaternion(string sQuaternion)
         {
             // Remove the parentheses
@@ -184,7 +184,6 @@ namespace Shinn
                 float.Parse(sArray[2]),
                 float.Parse(sArray[3]));
             return result;
-            }
         }
     }
 }
