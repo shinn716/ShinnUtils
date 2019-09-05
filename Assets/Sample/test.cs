@@ -15,16 +15,16 @@ public class test : MonoBehaviour
         mouseController = new MouseController();
         mouseController.Init(this);
 
-        //loadXml_Email = new LoadXml(new List<string> { "SMTP_Client", "SMTP_Port", "USER", "USER_Pass", "To", "Subject", "Body", "AttachFile" });
-        //loadXml_Email.Load(ShUnityPath.ApplicationStreamingAssetsPath, "EmailSetting.xml");
+        loadXml_Email = new LoadXml(new List<string> { "SMTP_Client", "SMTP_Port", "USER", "USER_Pass", "To", "Subject", "Body", "AttachFile" });
+        loadXml_Email.Load(ShUnityPath.ApplicationStreamingAssetsPath, "EmailSetting.xml");
 
         server = new UDPServer();
         server.Init();
 
         client = new UDPClient();
 
-        //LoadFile.LoadAllFiles(ShUnityPath.ApplicationStreamingAssetsPath, ShExtension.XML);
-        //print(LoadFile.GetContents[0]);
+        LoadFile.LoadAllFiles(ShUnityPath.ApplicationStreamingAssetsPath, ShExtension.XML);
+        print(LoadFile.GetContents[0]);
     }
 
     // Update is called once per frame
