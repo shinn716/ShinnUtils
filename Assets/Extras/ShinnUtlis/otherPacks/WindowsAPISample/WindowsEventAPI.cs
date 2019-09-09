@@ -1,6 +1,8 @@
-/// Author : shinn716
-/// Only for windows.
-/// https://docs.microsoft.com/zh-tw/dotnet/api/system.diagnostics.processwindowstyle?view=netframework-4.8
+// Author : Shinn
+// Date : 20190905
+// Only for windows.
+// https://docs.microsoft.com/zh-tw/dotnet/api/system.diagnostics.processwindowstyle?view=netframework-4.8
+// 
 
 using System;
 using System.Diagnostics;
@@ -72,43 +74,47 @@ public static class WindowsEventAPI
     public static void SetWindowEvent(string path, string fileName, WindowsStyle windowStyle = WindowsStyle.Normal)
     {
         string file = Path.Combine(path, fileName);
-        Process myProcess = new Process();
-        myProcess.StartInfo.UseShellExecute = true;
-        myProcess.StartInfo.FileName = file;
-        myProcess.StartInfo.CreateNoWindow = false;
+        using (Process myProcess = new Process())
+        {
+            myProcess.StartInfo.UseShellExecute = true;
+            myProcess.StartInfo.FileName = file;
+            myProcess.StartInfo.CreateNoWindow = false;
 
-        myProcess.StartInfo.WindowStyle = Select(windowStyle);
-        myProcess.Start();
+            myProcess.StartInfo.WindowStyle = Select(windowStyle);
+            myProcess.Start();
+        }
     }
 
     public static void SetWindowEvent(string file, WindowsStyle windowStyle = WindowsStyle.Normal)
     {
-        Process myProcess = new Process();
-        myProcess.StartInfo.UseShellExecute = true;
-        myProcess.StartInfo.FileName = file;
-        myProcess.StartInfo.CreateNoWindow = false;
+        using (Process myProcess = new Process())
+        {
+            myProcess.StartInfo.UseShellExecute = true;
+            myProcess.StartInfo.FileName = file;
+            myProcess.StartInfo.CreateNoWindow = false;
 
-        myProcess.StartInfo.WindowStyle = Select(windowStyle);
-        myProcess.Start();
+            myProcess.StartInfo.WindowStyle = Select(windowStyle);
+            myProcess.Start();
+        }
 
 
         /// Click on screen center.
         SetCursorPos(Screen.width / 2, Screen.height / 2);
         //System.Threading.Thread.Sleep(100);
-        mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
-        mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
+        Mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
+        Mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
     }
-    
+
     [DllImport("user32.dll", EntryPoint = "FindWindow", SetLastError = true)]
     static extern IntPtr FindWindowByCaption(IntPtr ZeroOnly, string lpWindowName);
     [DllImport("user32")]
     public static extern int ShowWindow(int hwnd, int nCmdShow);
     [DllImport("user32.dll", CharSet = CharSet.Auto)]
-    static extern IntPtr SendMessage(IntPtr hWnd, UInt32 Msg, IntPtr wParam, IntPtr lParam);
-    const UInt32 WM_CLOSE = 0x0010;
+    static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+    const uint WM_CLOSE = 0x0010;
 
     /// <summary>
-    /// Close Application CloseWindow(Kinect)
+    /// Close Application CloseWindow(Kinect). No need filename extension.
     /// </summary>
     /// <param name="windowsName"></param>
     public static void CloseWindow(string windowsName)
@@ -149,6 +155,6 @@ public static class WindowsEventAPI
     private const int MOUSEEVENTF_RIGHTDOWN = 0x0008; /* right button down */
 
     [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
-    public static extern void mouse_event(int dwFlags, int dx, int dy, int cButtons, int dwExtraInfo);
+    public static extern void Mouse_event(int dwFlags, int dx, int dy, int cButtons, int dwExtraInfo);
     #endregion
 }

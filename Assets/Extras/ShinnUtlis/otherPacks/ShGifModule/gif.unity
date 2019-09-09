@@ -292,7 +292,7 @@ MonoBehaviour:
   serverIP: https://shinnyid.000webhostapp.com
   UploadPHPLoc: /test/api/upload.php
   ServerFilesLoc: /test/api/upload/
-  LocalDataLoc: /Users/shinn716/GithubPublic/ShinnUtils/Assets/StreamingAssets/gif/
+  LocalDataLoc: /Users/shinn716/GithubPublic/ShinnUtils/Assets/StreamingAssets/gifOutput/
 --- !u!114 &302735857
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -329,7 +329,7 @@ MonoBehaviour:
   m_Repeat: 0
   m_Quality: 15
   m_BufferSize: 2
-  mypath: /Users/shinn716/GithubPublic/ShinnUtils/Assets/StreamingAssets/gif/
+  mypath: /Users/shinn716/GithubPublic/ShinnUtils/Assets/StreamingAssets/gifOutput/
   outPutname: 
   WorkerPriority: 1
 --- !u!114 &302735859
