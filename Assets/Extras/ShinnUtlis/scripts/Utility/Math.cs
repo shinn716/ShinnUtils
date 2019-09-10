@@ -86,7 +86,7 @@ namespace Shinn
         /// <returns></returns>
         public static float GetQ2EulerAngle(Quaternion qBase, Quaternion qTarget)
         {
-            Quaternion qDiff = qBase * qTarget;
+            Quaternion qDiff = Quaternion.Inverse(qBase) * qTarget;
             Vector3 vEuler = qDiff.eulerAngles;
             float yaw = vEuler.y;
             if (yaw > 180)
