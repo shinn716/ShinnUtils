@@ -78,7 +78,21 @@ namespace Shinn
             return encodeType == EncodeType.ASCII ? Encoding.ASCII.GetBytes(str) : Encoding.UTF8.GetBytes(str);
         }
 
-
+        /// <summary>
+        /// 兩四元數 求夾角 
+        /// </summary>
+        /// <param name="qBase"></param>
+        /// <param name="qTarget"></param>
+        /// <returns></returns>
+        public static float GetQ2EulerAngle(Quaternion qBase, Quaternion qTarget)
+        {
+            Quaternion qDiff = qBase * qTarget;
+            Vector3 vEuler = qDiff.eulerAngles;
+            float yaw = vEuler.y;
+            if (yaw > 180)
+                yaw -= 360;
+            return yaw;
+        }
         
     }
 }
