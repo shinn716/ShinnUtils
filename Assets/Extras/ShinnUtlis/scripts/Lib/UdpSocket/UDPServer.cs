@@ -48,13 +48,21 @@ namespace Shinn.Commom
         {
             //Debug.Log("Dispose");
             threadStart = false;
-            udpClient.Dispose();
-            udpClient.Close();
-            udpClient = null;
 
-            receiveThread.Join();
-            receiveThread.Abort();
-            receiveThread = null;
+            if (udpClient != null)
+            {
+                ((System.IDisposable)udpClient).Dispose();
+                udpClient.Close();
+                udpClient = null;
+            }
+
+            if (receiveThread != null)
+            {
+                receiveThread.Join();
+                receiveThread = null;
+            }
+
+            System.GC.SuppressFinalize(this);
         }
 
         /// <summary>
