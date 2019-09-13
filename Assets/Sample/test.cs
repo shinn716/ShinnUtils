@@ -9,6 +9,7 @@ public class test : MonoBehaviour
     private LoadXml loadXml_Email;
     private UDPServer server;
     private UDPClient client;
+    private CsvTools csvTools;
 
     void Start()
     {
@@ -24,7 +25,10 @@ public class test : MonoBehaviour
         client = new UDPClient();
 
         LoadFile.LoadAllFiles(ShUnityPath.ApplicationStreamingAssetsPath, ShExtension.XML);
-        print(LoadFile.GetContents[0]);
+
+
+        string[] title = { "A", "B", "C", "D" };
+        csvTools = new CsvTools(title);
     }
 
     // Update is called once per frame
@@ -33,21 +37,26 @@ public class test : MonoBehaviour
         mouseController.Loop();
     }
 
-    
+
     private void OnApplicationQuit()
     {
         mouseController.Dispose();
-		//loadXml_Email.Dispose();
+        loadXml_Email.Dispose();
         server.Dispose();
         client.Dispose();
-
-
+        csvTools.Dispose();
     }
 
     [ContextMenu("Test_ClientSocket")]
     private void Test_ClientSocket()
     {
         client.SendData("Hello");
+    }
+
+    [ContextMenu("Test_WriteToCsv")]
+    private void Test_WriteToCsv()
+    {
+        csvTools.WriteToCsv();
     }
 
 }
