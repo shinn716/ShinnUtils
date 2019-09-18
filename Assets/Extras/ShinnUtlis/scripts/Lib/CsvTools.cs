@@ -65,7 +65,7 @@ namespace Shinn.Common
         private string GetPath()
         {
 #if UNITY_EDITOR
-            return Application.streamingAssetsPath + "/csv/" + "saveName.csv";
+            return Application.streamingAssetsPath + "/csv/" + saveName + ".csv";
 // #elif UNITY_ANDROID
 //         return Application.persistentDataPath+"Saved_data.csv";
 // #elif UNITY_IPHONE
