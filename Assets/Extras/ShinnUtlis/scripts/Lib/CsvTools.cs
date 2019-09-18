@@ -17,10 +17,12 @@ namespace Shinn.Common
 
         private string[] csvContent;
         private List<string[]> rowData = new List<string[]>();
-
-        public CsvTools(string[] content)
+        private string saveName;
+        
+        public CsvTools(string[] content, string name)
         {
             csvContent = content;
+            saveName = name;
         }
 
 
@@ -63,13 +65,13 @@ namespace Shinn.Common
         private string GetPath()
         {
 #if UNITY_EDITOR
-            return Application.streamingAssetsPath + "/csv/" + "data.csv";
-#elif UNITY_ANDROID
-        return Application.persistentDataPath+"Saved_data.csv";
-#elif UNITY_IPHONE
-        return Application.persistentDataPath+"/"+"Saved_data.csv";
-#else
-        return Application.dataPath +"/"+"Saved_data.csv";
+            return Application.streamingAssetsPath + "/csv/" + "saveName.csv";
+// #elif UNITY_ANDROID
+//         return Application.persistentDataPath+"Saved_data.csv";
+// #elif UNITY_IPHONE
+//         return Application.persistentDataPath+"/"+"Saved_data.csv";
+// #else
+//         return Application.dataPath +"/"+"Saved_data.csv";
 #endif
         }
     }
