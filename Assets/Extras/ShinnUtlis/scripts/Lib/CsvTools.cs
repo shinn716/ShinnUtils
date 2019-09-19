@@ -103,7 +103,7 @@ namespace Shinn.Common
             outStream.Close();
         }
 
-        public void Dispose()
+        public void Clear()
         {
             rowData.Clear();
         }
@@ -113,12 +113,12 @@ namespace Shinn.Common
         {
 #if UNITY_EDITOR
             return Application.streamingAssetsPath + "/csv/" + name + ".csv";
-#elif UNITY_ANDROID
-        return Application.persistentDataPath+"Saved_data.csv";
-#elif UNITY_IPHONE
-        return Application.persistentDataPath+"/"+"Saved_data.csv";
-#else
-        return Application.dataPath +"/"+"Saved_data.csv";
+// #elif UNITY_ANDROID
+//         return Application.persistentDataPath+"Saved_data.csv";
+// #elif UNITY_IPHONE
+//         return Application.persistentDataPath+"/"+"Saved_data.csv";
+// #else
+//         return Application.dataPath +"/"+"Saved_data.csv";
 #endif
         }
     }
