@@ -3,11 +3,11 @@
 // Reference : http://kimdicks.blogspot.com/2017/11/unityudp.html
 // 
 
-using UnityEngine;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 
-namespace Shinn.Commom
+namespace Shinn.Common
 {
     public class UDPClient
     {
@@ -16,7 +16,7 @@ namespace Shinn.Commom
         private byte[] sendByte;
 
         /// <summary>
-        /// No need to Init
+        /// Default ip = "127.0.0.1", port = 10000
         /// </summary>
         /// <param name="ip"></param>
         /// <param name="port"></param>
@@ -33,7 +33,7 @@ namespace Shinn.Commom
         /// <param name="tempData"></param>
         public void SendData(string tempData)
         {
-            sendByte = System.Text.Encoding.UTF8.GetBytes(tempData);
+            sendByte = Encoding.UTF8.GetBytes(tempData);
             udpClient.Send(sendByte, sendByte.Length, ipEndPoint);
         }
 
@@ -42,9 +42,13 @@ namespace Shinn.Commom
         /// </summary>
         public void Dispose()
         {
-            udpClient.Dispose();
-            udpClient.Close();
-            udpClient = null;
+            if (udpClient != null)
+            {
+                udpClient.Dispose();
+                udpClient.Close();
+                udpClient = null;
+            }
         }
+
     }
 }

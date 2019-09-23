@@ -10,7 +10,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace Shinn.Commom
+namespace Shinn.Common
 {
     public class Upload : Singleton<Upload>
     {

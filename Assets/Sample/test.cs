@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using Shinn.CameraTools;
-using Shinn.Commom;
+using Shinn.Common;
+using System.Threading;
 
 public class test : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class test : MonoBehaviour
     private UDPServer server;
     private UDPClient client;
     private CsvTools csvTools;
+    private Thread receiveData;
 
     void Start()
     {
@@ -19,16 +21,17 @@ public class test : MonoBehaviour
         loadXml_Email = new LoadXml(new List<string> { "SMTP_Client", "SMTP_Port", "USER", "USER_Pass", "To", "Subject", "Body", "AttachFile" });
         loadXml_Email.Load(ShUnityPath.ApplicationStreamingAssetsPath, "EmailSetting.xml");
 
+
         server = new UDPServer();
-        server.Init();
+        receiveData = new Thread(new ThreadStart(server.ReceiveData));
+        receiveData.Start();
+        server.callback += Getres;
 
         client = new UDPClient();
 
         LoadFile.LoadAllFiles(ShUnityPath.ApplicationStreamingAssetsPath, ShExtension.XML);
 
-
-        string[] title = { "A", "B", "C", "D" };
-        csvTools = new CsvTools(title);
+        csvTools = new CsvTools();
     }
 
     // Update is called once per frame
@@ -37,14 +40,19 @@ public class test : MonoBehaviour
         mouseController.Loop();
     }
 
+    private void Getres()
+    {
+        Debug.Log ("result " + server.CallbackEvent());
+    }
 
     private void OnApplicationQuit()
     {
         mouseController.Dispose();
-        loadXml_Email.Dispose();
+        loadXml_Email.Clear();
+
+        server.callback -= Getres;
         server.Dispose();
         client.Dispose();
-        csvTools.Dispose();
     }
 
     [ContextMenu("Test_ClientSocket")]
@@ -56,7 +64,9 @@ public class test : MonoBehaviour
     [ContextMenu("Test_WriteToCsv")]
     private void Test_WriteToCsv()
     {
-        csvTools.WriteToCsv();
+
+        string[] title = { "A", "B", "C", "D" };
+        csvTools.WriteToCsv(title, "test");
     }
 
 }

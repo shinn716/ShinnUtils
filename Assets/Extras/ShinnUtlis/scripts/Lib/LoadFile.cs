@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 
-namespace Shinn.Commom
+namespace Shinn.Common
 {
     public static class LoadFile
     {

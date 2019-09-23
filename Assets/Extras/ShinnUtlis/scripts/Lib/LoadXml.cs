@@ -18,7 +18,7 @@ using UnityEngine;
 using System.Xml;
 using System.Collections.Generic;
 
-namespace Shinn.Commom
+namespace Shinn.Common
 {
     public class LoadXml
     {
@@ -65,7 +65,7 @@ namespace Shinn.Commom
         /// <summary>
         /// Dispose
         /// </summary>
-        public void Dispose()
+        public void Clear()
         {
             SetTagName = null;
             GetXmlData = null;
