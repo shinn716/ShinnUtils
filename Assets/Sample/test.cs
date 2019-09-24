@@ -51,6 +51,12 @@ public class test : MonoBehaviour
         loadXml_Email.Clear();
 
         server.callback -= Getres;
+        if (receiveData != null)
+        {
+            receiveData.Interrupt();
+            receiveData.Abort();
+        }
+        
         server.Dispose();
         client.Dispose();
     }
