@@ -185,5 +185,16 @@ namespace Shinn
                 float.Parse(sArray[3]));
             return result;
         }
+        /// <summary>
+        /// Value from -180 to 180.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static float GetDegree(float value)
+        {
+            value %= 360;
+            value = value > 180 ? value - 360 : value;
+            return value;
+        }
     }
 }
