@@ -1,6 +1,6 @@
 // Author : Shinn
 // Date : 20190905
-// Reference :  http://kimdicks.blogspot.com/2017/11/unityudp.html
+// Reference : http://kimdicks.blogspot.com/2017/11/unityudp.html
 //
 // server = new UDPServer();
 // t = new Thread(new ThreadStart(server.ReceiveData));
