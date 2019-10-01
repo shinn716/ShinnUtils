@@ -197,7 +197,7 @@ namespace Shinn
             return value;
         }
         
-        public GameObject FindInActiveObjectByName(string name)
+        public static GameObject FindInActiveObjectByName(string name)
         {
             Transform[] objs = Resources.FindObjectsOfTypeAll<Transform>() as Transform[];
             for (int i = 0; i < objs.Length; i++)
