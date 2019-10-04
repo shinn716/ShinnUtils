@@ -46,7 +46,11 @@ namespace Shinn.Common
             {
                 receiveByte = udpClient.Receive(ref ipEndPoint);
                 receiveData = Encoding.UTF8.GetString(receiveByte);
-                callback?.Invoke();
+
+                //if (callback != null)                 // net 2.0
+                //    callback.Invoke();
+
+                callback?.Invoke();                     // net 4.0
             }
         }
 
