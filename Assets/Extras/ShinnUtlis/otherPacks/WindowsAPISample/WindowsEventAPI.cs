@@ -49,18 +49,11 @@ public static class WindowsEventAPI
     /// 尋找目前正在運行的 processName 程式
     /// </summary>
     /// <param name="processName"></param>
-    public static void SearchProgram(string processName)
+    public static void SearchProgram()
     {
         Process[] p1 = Process.GetProcesses();
-        foreach (Process pro in p1)
-        {
-            //UnityEngine.Debug.Log(pro.ProcessName);
-            if (pro.ProcessName.ToUpper().Contains(processName) || pro.ProcessName.Contains(processName))
-            {
-                UnityEngine.Debug.Log("Got it: " + processName);
-                //pro.CloseMainWindow();
-            }
-        }
+        foreach (Process pro in p1)        
+            UnityEngine.Debug.Log(pro.ProcessName);        
     }
 
     /// <summary>
