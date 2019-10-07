@@ -1,5 +1,5 @@
 // Author : Shinn
-// Date : 20190905
+// Date : 20191007
 // Only for windows.
 // https://docs.microsoft.com/zh-tw/dotnet/api/system.diagnostics.processwindowstyle?view=netframework-4.8
 // 
@@ -54,9 +54,11 @@ public static class WindowsEventAPI
         Process[] p1 = Process.GetProcesses();
         foreach (Process pro in p1)
         {
-            if (pro.ProcessName.ToUpper().Contains(processName))
+            //UnityEngine.Debug.Log(pro.ProcessName);
+            if (pro.ProcessName.ToUpper().Contains(processName) || pro.ProcessName.Contains(processName))
             {
                 UnityEngine.Debug.Log("Got it: " + processName);
+                //pro.CloseMainWindow();
             }
         }
     }
@@ -113,20 +115,34 @@ public static class WindowsEventAPI
     static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
     const uint WM_CLOSE = 0x0010;
 
-    /// <summary>
-    /// Close Application CloseWindow(Kinect). No need filename extension.
-    /// </summary>
-    /// <param name="windowsName"></param>
-    public static void CloseWindow(string windowsName)
-    {
-        IntPtr windowPtr = FindWindowByCaption(IntPtr.Zero, windowsName);
-        if (windowPtr == IntPtr.Zero)
-        {
-            UnityEngine.Debug.LogError("'" + windowsName + "' not found!");
-            return;
-        }
+    ///// <summary>
+    ///// Close Application CloseWindow(Kinect). No need filename extension.
+    ///// </summary>
+    ///// <param name="windowsName"></param>
+    //public static void CloseWindow(string windowsName)
+    //{
+    //    IntPtr windowPtr = FindWindowByCaption(IntPtr.Zero, windowsName);
+    //    if (windowPtr == IntPtr.Zero)
+    //    {
+    //        UnityEngine.Debug.LogError("'" + windowsName + "' not found!");
+    //        return;
+    //    }
 
-        SendMessage(windowPtr, WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
+    //    SendMessage(windowPtr, WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
+    //}
+
+    /// <summary>
+    /// Close Application CloseWindow(Kinect), no need filename extension.
+    /// </summary>
+    /// <param name="processName"></param>
+    public static void CloseWindow(string processName)
+    {
+        Process[] p1 = Process.GetProcesses();
+        foreach (Process pro in p1)
+        {
+            if (pro.ProcessName.ToUpper().Contains(processName) || pro.ProcessName.Contains(processName))
+                pro.CloseMainWindow();
+        }
     }
     #endregion
 
