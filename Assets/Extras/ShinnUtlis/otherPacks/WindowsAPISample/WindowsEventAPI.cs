@@ -137,6 +137,15 @@ public static class WindowsEventAPI
                 pro.CloseMainWindow();
         }
     }
+    
+    /// <summary>
+    /// Open file explorer.
+    /// </summary>
+    /// <param name="path"></param>
+    public static void OpenExplorer(string path = "c:/")
+    {
+        Process.Start(@path);
+    }
     #endregion
 
     #region Private function
