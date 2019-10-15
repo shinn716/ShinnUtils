@@ -77,7 +77,7 @@ namespace Shinn.Common
         {
             string filePath = GetPath(saveName);
             StreamWriter outStream = File.CreateText(filePath);
-            outStream.WriteLine(sb);
+            outStream.WriteLine(csvContent);
             outStream.Close();
         }
 
