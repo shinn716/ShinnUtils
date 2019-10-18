@@ -76,9 +76,15 @@ namespace Shinn.Common
         public void WriteToCsvStr(string csvContent, string saveName)
         {
             string filePath = GetPath(saveName);
-            StreamWriter outStream = File.CreateText(filePath);
-            outStream.WriteLine(csvContent);
-            outStream.Close();
+            using (StreamWriter sw = new StreamWriter(filePath, false, Encoding.UTF8))
+            {
+                sw.WriteLine(csvContent);
+                sw.Close();
+            }
+            
+//             StreamWriter outStream = File.CreateText(filePath);
+//             outStream.WriteLine(csvContent);
+//             outStream.Close();
         }
 
         public void WriteToCsv(string[] csvContent, string saveName)
@@ -105,10 +111,14 @@ namespace Shinn.Common
             }
 
             string filePath = GetPath(saveName);
-
-            StreamWriter outStream = File.CreateText(filePath);
-            outStream.WriteLine(sb);
-            outStream.Close();
+            using (StreamWriter sw = new StreamWriter(filePath, false, Encoding.UTF8))
+            {
+                sw.WriteLine(csvContent);
+                sw.Close();
+            }
+//             StreamWriter outStream = File.CreateText(filePath);
+//             outStream.WriteLine(sb);
+//             outStream.Close();
         }
 
         public void Clear()
