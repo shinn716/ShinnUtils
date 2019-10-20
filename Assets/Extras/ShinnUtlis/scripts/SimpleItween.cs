@@ -205,21 +205,83 @@ namespace Shinn
 
                 case State.moveToPos:
                     if (islocal)
-                        iTween.MoveTo(target, iTween.Hash("position", posVect,
-                                                          "time", time, "delay", delay,
-                                                          "easetype", ease, "looptype", loop,
-                                                          "islocal", islocal, "ignoretimescale", ignoreTimeScalest,
-                                                          "oncomplete", "Complete", "oncompletetarget", gameObject,
-                                                          "orienttopath", orienttopathst, "lookahead", lookaheadValue
-                                                          ));
+                    {
+                        if (target.GetComponent<RectTransform>() != null)
+                        {
+                            Vector2 rect = target.GetComponent<RectTransform>().anchoredPosition;
+                            //print(target.GetComponent<RectTransform>().anchoredPosition);
+                            iTween.ValueTo(target, iTween.Hash(
+                            "from", rect.x,
+                            "to", posVect.x,
+                            "time", time, "delay", delay,
+                            "easetype", ease, "looptype", loop,
+                            "islocal", islocal, "ignoretimescale", ignoreTimeScalest,
+                            "oncomplete", "Complete", "oncompletetarget", gameObject,
+                            "orienttopath", orienttopathst, "lookahead", lookaheadValue,
+                            "onupdatetarget", gameObject, "onupdate", "RectMoveToX"
+                            ));
+
+                            iTween.ValueTo(target, iTween.Hash(
+                            "from", rect.y,
+                            "to", posVect.y,
+                            "time", time, "delay", delay,
+                            "easetype", ease, "looptype", loop,
+                            "islocal", islocal, "ignoretimescale", ignoreTimeScalest,
+                            "oncomplete", "Complete", "oncompletetarget", gameObject,
+                            "orienttopath", orienttopathst, "lookahead", lookaheadValue,
+                            "onupdatetarget", gameObject, "onupdate", "RectMoveToY"
+                            ));
+                        }
+                        else
+                        {
+                            iTween.MoveTo(target, iTween.Hash("position", posVect,
+                                      "time", time, "delay", delay,
+                                      "easetype", ease, "looptype", loop,
+                                      "islocal", islocal, "ignoretimescale", ignoreTimeScalest,
+                                      "oncomplete", "Complete", "oncompletetarget", gameObject,
+                                      "orienttopath", orienttopathst, "lookahead", lookaheadValue
+                                      ));
+                        }
+                    }
                     else
-                        iTween.MoveTo(target, iTween.Hash("position", posVect,
-                                                          "time", time, "delay", delay,
-                                                          "easetype", ease, "looptype", loop,
-                                                          "islocal", islocal, "ignoretimescale", ignoreTimeScalest,
-                                                          "oncomplete", "Complete", "oncompletetarget", gameObject,
-                                                          "orienttopath", orienttopathst, "lookahead", lookaheadValue
-                                                           ));
+                    {
+                        if (target.GetComponent<RectTransform>() != null)
+                        {
+                            Vector2 rect = target.GetComponent<RectTransform>().anchoredPosition;
+                            //print(target.GetComponent<RectTransform>().anchoredPosition);
+                            iTween.ValueTo(target, iTween.Hash(
+                            "from", rect.x,
+                            "to", posVect.x,
+                            "time", time, "delay", delay,
+                            "easetype", ease, "looptype", loop,
+                            "islocal", islocal, "ignoretimescale", ignoreTimeScalest,
+                            "oncomplete", "Complete", "oncompletetarget", gameObject,
+                            "orienttopath", orienttopathst, "lookahead", lookaheadValue,
+                            "onupdatetarget", gameObject, "onupdate", "RectMoveToX"
+                            ));
+
+                            iTween.ValueTo(target, iTween.Hash(
+                            "from", rect.y,
+                            "to", posVect.y,
+                            "time", time, "delay", delay,
+                            "easetype", ease, "looptype", loop,
+                            "islocal", islocal, "ignoretimescale", ignoreTimeScalest,
+                            "oncomplete", "Complete", "oncompletetarget", gameObject,
+                            "orienttopath", orienttopathst, "lookahead", lookaheadValue,
+                            "onupdatetarget", gameObject, "onupdate", "RectMoveToY"
+                            ));
+                        }
+                        else
+                        {
+                            iTween.MoveTo(target, iTween.Hash("position", posVect,
+                              "time", time, "delay", delay,
+                              "easetype", ease, "looptype", loop,
+                              "islocal", islocal, "ignoretimescale", ignoreTimeScalest,
+                              "oncomplete", "Complete", "oncompletetarget", gameObject,
+                              "orienttopath", orienttopathst, "lookahead", lookaheadValue
+                               ));
+                        }
+                    }
 
                     break;
 
@@ -407,6 +469,30 @@ namespace Shinn
             var itween = target.GetComponent<iTween>();
             if (itween != null)
                 Destroy(itween);
+        }
+
+        private void RectMoveToX(float px)
+        {
+            try
+            {
+                target.GetComponent<RectTransform>().anchoredPosition = new Vector2(px, target.GetComponent<RectTransform>().anchoredPosition.y);
+            }
+            catch (System.Exception e)
+            {
+                print(e);
+            }
+        }
+
+        private void RectMoveToY(float py)
+        {
+            try
+            {
+                target.GetComponent<RectTransform>().anchoredPosition = new Vector2(target.GetComponent<RectTransform>().anchoredPosition.x, py);
+            }
+            catch (System.Exception e)
+            {
+                print(e);
+            }
         }
 
         #endregion
