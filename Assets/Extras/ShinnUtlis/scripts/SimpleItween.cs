@@ -15,21 +15,24 @@ namespace Shinn
     public class SimpleItween : MonoBehaviour
     {
         #region Itween
-        [SerializeField] private enum State
+        [SerializeField]
+        private enum State
         {
             shakePosition,
             punchPosition,
             scaleTo,
             scaleFrom,
             moveTo,
-            moveToPx,
-            moveToPy,
-            moveToPz,
+            moveToPxObj,
+            moveToPyObj,
+            moveToPzObj,
             rotationTo,
             SP_fadeTo,
             colorTo,
             rotationToAndMoveTo,
+            moveToPos
         }
+
         [SerializeField] State mystate = State.moveTo;
         [SerializeField] GameObject target;
         [SerializeField] float time;
@@ -46,11 +49,12 @@ namespace Shinn
         [SerializeField] Vector3 scaleValue;
         [SerializeField] Transform moveloc;
         [SerializeField] Vector3 rotvalue;
-        [SerializeField] Color startColor;
-        [SerializeField] Color endColor;
-        [Range(0,1)] [SerializeField] float fadeStart;
+        //[SerializeField] Color startColor = Color.white;
+        [SerializeField] Color endColor = Color.white;
+        [Range(0, 1)] [SerializeField] float fadeStart;
         [Range(0, 1)] [SerializeField] float fadeEnd = 1;
         [SerializeField] bool startComplete;
+        [SerializeField] Vector3 posVect;
         #endregion
 
         #region UnityEvents
@@ -75,7 +79,7 @@ namespace Shinn
         [SerializeField] float floatvalue;
         [SerializeField] Vector3 vector3value;
         [SerializeField] Color colorvalue;
-        [SerializeField] float[] floatarrayvalue;
+        //[SerializeField] float[] floatarrayvalue;
         #endregion
 
         #region public function
@@ -196,7 +200,34 @@ namespace Shinn
                     break;
 
 
-                case State.moveToPx:
+
+
+
+                case State.moveToPos:
+                    if (islocal)
+                        iTween.MoveTo(target, iTween.Hash("position", posVect,
+                                                          "time", time, "delay", delay,
+                                                          "easetype", ease, "looptype", loop,
+                                                          "islocal", islocal, "ignoretimescale", ignoreTimeScalest,
+                                                          "oncomplete", "Complete", "oncompletetarget", gameObject,
+                                                          "orienttopath", orienttopathst, "lookahead", lookaheadValue
+                                                          ));
+                    else
+                        iTween.MoveTo(target, iTween.Hash("position", posVect,
+                                                          "time", time, "delay", delay,
+                                                          "easetype", ease, "looptype", loop,
+                                                          "islocal", islocal, "ignoretimescale", ignoreTimeScalest,
+                                                          "oncomplete", "Complete", "oncompletetarget", gameObject,
+                                                          "orienttopath", orienttopathst, "lookahead", lookaheadValue
+                                                           ));
+
+                    break;
+
+
+
+
+
+                case State.moveToPxObj:
                     if (islocal)
                         iTween.MoveTo(target, iTween.Hash("x", moveloc.localPosition.x,
                                                           "time", time, "delay", delay,
@@ -216,7 +247,7 @@ namespace Shinn
 
                     break;
 
-                case State.moveToPy:
+                case State.moveToPyObj:
                     if (islocal)
                         iTween.MoveTo(target, iTween.Hash("y", moveloc.localPosition.y,
                                                           "time", time, "delay", delay,
@@ -236,7 +267,7 @@ namespace Shinn
 
                     break;
 
-                case State.moveToPz:
+                case State.moveToPzObj:
                     if (islocal)
                         iTween.MoveTo(target, iTween.Hash("z", moveloc.localPosition.z,
                                                           "time", time, "delay", delay,
@@ -357,8 +388,8 @@ namespace Shinn
                 if (EnableFloat)
                     floatevents.Invoke(floatvalue);
 
-                if (EnableFloatArray)
-                    floatarratevents.Invoke(floatarrayvalue);
+                //if (EnableFloatArray)
+                //    floatarratevents.Invoke(floatarrayvalue);
 
                 if (EnableVector3)
                     vector3events.Invoke(vector3value);
