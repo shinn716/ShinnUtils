@@ -56,7 +56,7 @@ public class SimpleItweenEditor : Editor
     private SerializedProperty vector3value;
     private SerializedProperty colorvalue;
 
-    private SerializedProperty startColor;
+    //private SerializedProperty startColor;
     private SerializedProperty endColor;
     private SerializedProperty shakePos;
     private SerializedProperty punchPos;
@@ -65,6 +65,8 @@ public class SimpleItweenEditor : Editor
     private SerializedProperty rotvalue;
     private SerializedProperty fadeStart;
     private SerializedProperty fadeEnd;
+
+    private SerializedProperty posVectValue;
 
     GUIContent label_myState;
 
@@ -114,6 +116,8 @@ public class SimpleItweenEditor : Editor
     GUIContent label_fadeStart;
     GUIContent label_fadeEnd;
 
+    GUIContent label_posVect;
+
     private void OnEnable()
     {
         myState = serializedObject.FindProperty("mystate");
@@ -154,7 +158,7 @@ public class SimpleItweenEditor : Editor
         vector3value = serializedObject.FindProperty("vector3value");
         colorvalue = serializedObject.FindProperty("colorvalue");
 
-        startColor = serializedObject.FindProperty("startColor");
+        //startColor = serializedObject.FindProperty("startColor");
         endColor = serializedObject.FindProperty("endColor");
         shakePos = serializedObject.FindProperty("shakePos");
         punchPos = serializedObject.FindProperty("punchPos");
@@ -163,6 +167,8 @@ public class SimpleItweenEditor : Editor
         rotvalue = serializedObject.FindProperty("rotvalue");
         fadeStart = serializedObject.FindProperty("fadeStart");
         fadeEnd = serializedObject.FindProperty("fadeEnd");
+
+        posVectValue = serializedObject.FindProperty("posVect");
 
 
         label_myState = new GUIContent(" - myState");
@@ -213,6 +219,8 @@ public class SimpleItweenEditor : Editor
         //label_floatarrayvalue = new GUIContent("Set float array value");
         label_vector3value = new GUIContent(" - Set vector3 value");
         label_colorvalue = new GUIContent(" - Set color value");
+
+        label_posVect = new GUIContent(" - Set position");
     }
 
 
@@ -278,13 +286,13 @@ public class SimpleItweenEditor : Editor
                     EditorGUILayout.Space();
                 }
 
-                EditorGUILayout.PropertyField(bool_floatArrayEvt, label_bfloatArrayEvt);
-                if (bool_floatArrayEvt.boolValue)
-                {
-                    EditorGUILayout.PropertyField(floatArrayEvt, label_floatArrayEvt);
-                    ListIterator("floatarrayvalue");
-                    EditorGUILayout.Space();
-                }
+                //EditorGUILayout.PropertyField(bool_floatArrayEvt, label_bfloatArrayEvt);
+                //if (bool_floatArrayEvt.boolValue)
+                //{
+                //    EditorGUILayout.PropertyField(floatArrayEvt, label_floatArrayEvt);
+                //    ListIterator("floatarrayvalue");
+                //    EditorGUILayout.Space();
+                //}
 
                 EditorGUILayout.PropertyField(bool_vector3Evt, label_bvector3Evt);
                 if (bool_vector3Evt.boolValue)
@@ -363,12 +371,16 @@ public class SimpleItweenEditor : Editor
 
 
             case 10:
-                EditorGUILayout.PropertyField(startColor, label_startColor);
+                //EditorGUILayout.PropertyField(startColor, label_startColor);
                 EditorGUILayout.PropertyField(endColor, label_endColor);
                 break;
 
             case 11:
                 EditorGUILayout.PropertyField(moveloc, label_moveloc);
+                break;
+
+            case 12:
+                EditorGUILayout.PropertyField(posVectValue, label_posVect);
                 break;
 
         }
