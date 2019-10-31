@@ -4,6 +4,31 @@ using System.IO;
 
 namespace Shinn
 {
+    #region Write And Read Data
+    public class txtUtils
+    {
+        public static void WriteToTxt(string data, string dataPath, bool addDatatoFiles = true)
+        {
+            using (StreamWriter outputFile = new StreamWriter(dataPath, addDatatoFiles))
+            {
+                outputFile.WriteLine(data);
+            }
+        }
+
+        public static string[] ReadLines(string dataPath)
+        {
+            string[] lines = File.ReadAllLines(dataPath);
+            return lines;
+        }
+
+        public static string ReadText(string dataPath)
+        {
+            string allstr = File.ReadAllText(dataPath);
+            return allstr;
+        }
+    }
+    #endregion
+    
     public class Utility
     {
         /// <summary>
