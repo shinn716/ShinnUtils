@@ -238,6 +238,20 @@ namespace Shinn
             return null;
         }
         
+    /// <summary>
+    /// Check MAC address
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>  
+      public static bool CheckMac(string input)
+      {
+        input = input.Replace(" ", "").Replace(":", "").Replace("-", "");
+        Regex r = new Regex("^(?:[0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}|(?:[0-9a-fA-F]{2}-){5}[0-9a-fA-F]{2}|(?:[0-9a-fA-F]{2}){5}[0-9a-fA-F]{2}$");
+        if (r.IsMatch(input))
+            return true;        
+        else        
+            return false;
+      }
         
     }
 }
