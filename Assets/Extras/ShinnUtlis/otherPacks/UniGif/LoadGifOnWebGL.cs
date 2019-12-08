@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
+using System;
 
 public class LoadGifOnWebGL : MonoBehaviour
 {
@@ -28,8 +29,9 @@ public class LoadGifOnWebGL : MonoBehaviour
                 uniGifImage.Play();
             }
         }
-        catch
+        catch(Exception e)
         {
+            print(e);
             // handle failure
         }
 
