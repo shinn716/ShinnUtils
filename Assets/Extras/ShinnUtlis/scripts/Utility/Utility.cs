@@ -2,13 +2,11 @@ using UnityEngine;
 using System.Linq;
 using System.IO;
 using System.Text.RegularExpressions;
-using System.Text;
-using System;
 
 namespace Shinn
 {
     #region Write And Read Data
-    public class TxtTools
+    public class txtUtils
     {
         public static void WriteToTxt(string data, string dataPath, bool addDatatoFiles = true)
         {
@@ -29,29 +27,10 @@ namespace Shinn
             string allstr = File.ReadAllText(dataPath);
             return allstr;
         }
-
-        //#region ReadFile (txt)
-        //// Convert object data(String) to txt
-        //public static void WriteDataToFiles(string filepath, string content)
-        //{
-        //    byte[] bytes = System.Convert.FromBase64String(content);
-        //    File.WriteAllBytes(filepath, bytes);
-        //}
-
-        //// Read txt files
-        //public static string LoadTxtFiles(string path)
-        //{
-        //    using (StreamReader r = new StreamReader(path))
-        //    {
-        //        string myobj = r.ReadToEnd();
-        //        return myobj;
-        //    }
-        //}
-        //#endregion
     }
     #endregion
-
-    public class ConvertTools
+    
+    public class UniCodeTools
     {
         public static string Unicode2String(string source)
         {
@@ -69,77 +48,6 @@ namespace Shinn
             }
             return stringBuilder.ToString();
         }
-
-        /// <summary>
-        ///  HexString to Bytes
-        /// </summary>
-        /// <param name="bytes"></param>
-        /// <returns></returns>
-        public static byte[] StringToBytes(string s)
-        {
-            //string s = "4321000000000000000000000000000000000000";
-            //byte[] bytes = Encoding.ASCII.GetBytes(s);
-
-            byte[] s_bytes = new byte[s.Length / 2];
-            for (int i = 0; i < s.Length; i = i + 2)
-            {
-                //每2位16進位數字轉換為一個10進位整數
-                s_bytes[i / 2] = Convert.ToByte(s.Substring(i, 2), 16);
-            }
-            return s_bytes;
-        }
-
-        /// <summary>
-        /// Show Bytes
-        /// </summary>
-        /// <param name="bytes"></param>
-        /// <returns></returns>
-        public static string BytesToString(byte[] bytes)
-        {
-            string result = "";
-
-            foreach (var b in bytes)
-                result += b.ToString("X2");
-
-            return result;
-        }
-
-        /// <summary>
-        /// Int 轉換成 String
-        /// </summary>
-        /// <param name="decValue"></param>
-        /// <returns></returns>
-        public static string ConvertInt2Hex(int decValue)
-        {
-            return string.Format("{0:x}", decValue);
-        }
-
-        /// <summary>
-        /// String 轉換成 int
-        /// </summary>
-        /// <param name="hexValue"></param>
-        /// <returns></returns>
-        public static int ConvertHex2Int(string hexValue)
-        {
-            return (int)Convert.ToInt64(hexValue, 16);
-        }
-
-        //public enum EncodeType
-        //{
-        //    ASCII,
-        //    UTF8
-        //}
-        ///// byte array to string
-        //public static string ByteArray2String(byte[] vs, EncodeType encodeType = EncodeType.ASCII)
-        //{
-        //    return encodeType == EncodeType.ASCII ? Encoding.ASCII.GetString(vs) : Encoding.UTF8.GetString(vs);
-        //}
-
-        //// string to bype arry
-        //public static byte[] String2ByteArray(string str, EncodeType encodeType = EncodeType.ASCII)
-        //{
-        //    return encodeType == EncodeType.ASCII ? Encoding.ASCII.GetBytes(str) : Encoding.UTF8.GetBytes(str);
-        //}
     }
 
     public class Utility
@@ -176,11 +84,12 @@ namespace Shinn
         }
 
         /// <summary>
-        /// String to float
+        /// String to float, 無法轉換 out defaultValue
         /// </summary>
-        public static float StringToFloat(string stringValue)
+        public static float StringToFloat(string stringValue, float defaultValue = 0)
         {
-            float.TryParse(stringValue, out float result);
+            float result = defaultValue;
+            float.TryParse(stringValue, out result);
             return result;
         }
 
@@ -284,11 +193,26 @@ namespace Shinn
         }
         #endregion
 
-        /// <summary>
-        /// String to quaternion, likes log
-        /// </summary>
-        /// <param name="sQuaternion"></param>
-        /// <returns></returns>
+
+        #region ReadFile (txt)
+        // Convert object data(String) to txt
+        public static void WriteDataToFiles(string filepath, string content)
+        {
+            byte[] bytes = System.Convert.FromBase64String(content);
+            File.WriteAllBytes(filepath, bytes);
+        }
+
+        // Read txt files
+        public static string LoadTxtFiles(string path)
+        {
+            using (StreamReader r = new StreamReader(path))
+            {
+                string myobj = r.ReadToEnd();
+                return myobj;
+            }
+        }
+        #endregion
+
         public static Quaternion StringToQuaternion(string sQuaternion)
         {
             // Remove the parentheses
@@ -307,7 +231,6 @@ namespace Shinn
                 float.Parse(sArray[3]));
             return result;
         }
-
         /// <summary>
         /// Value from -180 to 180.
         /// </summary>
@@ -320,11 +243,6 @@ namespace Shinn
             return value;
         }
 
-        /// <summary>
-        /// Find inactive object
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
         public static GameObject FindInActiveObjectByName(string name)
         {
             Transform[] objs = Resources.FindObjectsOfTypeAll<Transform>() as Transform[];
@@ -355,5 +273,6 @@ namespace Shinn
             else
                 return false;
         }
+
     }
 }

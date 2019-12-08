@@ -3,8 +3,16 @@ using UnityEngine;
 
 namespace Shinn
 {
+    public enum EncodeType
+    {
+        ASCII,
+        UTF8
+    }
+
     public static class Math
     {
+
+
         /// <summary>
         /// 取偶數, 小數點第N位 (小數點最大第二位)
         /// </summary>
@@ -36,6 +44,38 @@ namespace Shinn
         public static int GetCustomValue(int input, int divisor)
         {
             return input % divisor == 0 ? input : input - (input % divisor);
+        }
+
+        /// <summary>
+        /// String 轉換成 int
+        /// </summary>
+        /// <param name="hexValue"></param>
+        /// <returns></returns>
+        public static int ConvertHex2Int(string hexValue)
+        {
+            return (int)System.Convert.ToInt64(hexValue, 16);
+        }
+
+        /// <summary>
+        /// Int 轉換成 String
+        /// </summary>
+        /// <param name="decValue"></param>
+        /// <returns></returns>
+        public static string ConvertInt2Hex(int decValue)
+        {
+            return string.Format("{0:x}", decValue);
+        }
+
+        /// byte array to string
+        public static string ByteArray2String(byte[] vs, EncodeType encodeType = EncodeType.ASCII)
+        {
+            return encodeType == EncodeType.ASCII ? Encoding.ASCII.GetString(vs) : Encoding.UTF8.GetString(vs);
+        }
+
+        // string to bype arry
+        public static byte[] String2ByteArray(string str, EncodeType encodeType = EncodeType.ASCII)
+        {
+            return encodeType == EncodeType.ASCII ? Encoding.ASCII.GetBytes(str) : Encoding.UTF8.GetBytes(str);
         }
 
         /// <summary>
