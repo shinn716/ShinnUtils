@@ -7,6 +7,16 @@
 // t.Start();
 // server.callback += getres;
 // server.callback -= getres;
+// 
+// Close thread 
+// try {}
+// catch (ThreadAbortException e) {}
+// catch (Exception e) { print(e); }
+// finally
+// {
+//     // isRun = false; // disable while loop
+//     thread.Abort();
+// }
 
 using System.Net;
 using System.Net.Sockets;
