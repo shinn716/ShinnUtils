@@ -3,8 +3,8 @@
 // Reference : http://kimdicks.blogspot.com/2017/11/unityudp.html
 //
 // server = new UDPServer();
-// t = new Thread(new ThreadStart(server.ReceiveData));
-// t.Start();
+// thread = new Thread(new ThreadStart(server.ReceiveData));
+// thread.Start();
 // server.callback += getres;
 // server.callback -= getres;
 // 
