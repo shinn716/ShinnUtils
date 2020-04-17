@@ -144,6 +144,16 @@ namespace Shinn
 
     public class Utility
     {
+        public static Texture2D ToTexture2D(Texture texture)
+        {
+            return Texture2D.CreateExternalTexture(
+            texture.width,
+            texture.height,
+            TextureFormat.RGB24,
+            false, false,
+            texture.GetNativeTexturePtr());
+        }
+        
         /// <summary>
         /// Mapping 
         /// </summary>
