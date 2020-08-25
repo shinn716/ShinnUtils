@@ -12,9 +12,9 @@ using UnityEngine.UI;
 public class UniGifTest : MonoBehaviour
 {
     [SerializeField]
-    private InputField m_inputField;
+    private InputField m_inputField = null;
     [SerializeField]
-    private UniGifImage m_uniGifImage;
+    private UniGifImage m_uniGifImage = null;
 
     private bool m_mutex;
 

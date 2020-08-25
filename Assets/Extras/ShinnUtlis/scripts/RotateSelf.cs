@@ -44,12 +44,12 @@ namespace Shinn{
 		[SerializeField, Range(-3, 3)] float pz;		
 
 		[Header("Random Rotate")]
-		[SerializeField] Vector2 RotatePxRange;
-		[SerializeField] Vector2 RotatePyRange;
-		[SerializeField] Vector2 RotatePzRange;
+		[SerializeField] Vector2 RotatePxRange = Vector2.zero;
+		[SerializeField] Vector2 RotatePyRange = Vector2.zero;
+		[SerializeField] Vector2 RotatePzRange = Vector2.zero;
 
         [Header("Noise Rotate")]
-        [SerializeField] Vector3 BaseValue;
+        [SerializeField] Vector3 BaseValue = Vector3.zero;
         [SerializeField, Range(0, 1)] float NoiseSpeed=1;
 
         [Header("Freeze Rotation")]

@@ -10,8 +10,7 @@ public class UGUIDragBehavior : MonoBehaviour, IBeginDragHandler, IDragHandler, 
     [SerializeField]
     Vector2 endPoint;
 
-    [SerializeField]
-    bool drag;
+    public bool drag;
 
     void IBeginDragHandler.OnBeginDrag(PointerEventData eventData)
     {

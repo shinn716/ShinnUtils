@@ -23,9 +23,6 @@ public class ShSkin : MonoBehaviour {
 	public float GrowMinTime = .5f;
 	public float GrowMaxTime = 3f;
 
-
-	bool StartGrow = false;
-
 	float timevalue;
 	float _time;
 

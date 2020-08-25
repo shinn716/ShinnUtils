@@ -27,7 +27,7 @@ namespace Shinn{
         public iTween.EaseType ease;
 
         [Header("Unity Events")]
-        [SerializeField] UnityEvent _event;
+        public UnityEvent _event;
 
         private Color32 guiColor;
         private Texture2D tmp2d;

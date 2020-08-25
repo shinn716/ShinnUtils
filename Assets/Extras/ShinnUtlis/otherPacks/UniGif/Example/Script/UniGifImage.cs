@@ -33,7 +33,7 @@ public class UniGifImage : MonoBehaviour
     private RawImage m_rawImage;
     // Image Aspect Controller
     [SerializeField]
-    private UniGifImageAspectController m_imgAspectCtrl;
+    private UniGifImageAspectController m_imgAspectCtrl = null;
     // Textures filter mode
     [SerializeField]
     private FilterMode m_filterMode = FilterMode.Point;
@@ -42,16 +42,16 @@ public class UniGifImage : MonoBehaviour
     private TextureWrapMode m_wrapMode = TextureWrapMode.Clamp;
     // Load from url on start
     [SerializeField]
-    private bool m_loadOnStart;
+    private bool m_loadOnStart = false;
     // GIF image url (WEB or StreamingAssets path)
     [SerializeField]
-    private string m_loadOnStartUrl;
+    private string m_loadOnStartUrl = string.Empty;
     // Rotating on loading
     [SerializeField]
-    private bool m_rotateOnLoading;
+    private bool m_rotateOnLoading = false;
     // Debug log flag
     [SerializeField]
-    private bool m_outputDebugLog;
+    private bool m_outputDebugLog = false;
 
     // Decoded GIF texture list
     private List<UniGif.GifTexture> m_gifTextureList;
@@ -213,7 +213,9 @@ public class UniGifImage : MonoBehaviour
         }
 
         // Load file
+#pragma warning disable CS0618 // 類型或成員已經過時
         using (WWW www = new WWW(path))
+#pragma warning restore CS0618 // 類型或成員已經過時
         {
             yield return www;
 

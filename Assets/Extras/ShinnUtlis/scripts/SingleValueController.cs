@@ -42,17 +42,11 @@ namespace Shinn
         public bool startRand = true;
         public float stopTime = 0;
         bool startperlin = false;
-        int mytime = 0;
-
+        
         void OnEnable()
         {
-
-
             if (target == null)
                 target = gameObject;
-
-
-            // if (isfloatevents)
 
             if(autoStart)
                 Go();

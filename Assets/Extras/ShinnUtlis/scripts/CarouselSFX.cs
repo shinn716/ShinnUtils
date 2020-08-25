@@ -6,7 +6,7 @@ namespace Shinn
     public class CarouselSFX : MonoBehaviour
     {
 
-        [SerializeField] AudioClip[] clip;
+        [SerializeField] AudioClip[] clip = null;
         private AudioSource AS { get; set; }
 
         [SerializeField]

@@ -19,7 +19,7 @@ public class SimpleItweenEditor : Editor
 
     private SerializedProperty myState;
 
-    private SerializedProperty target;
+    private new SerializedProperty target;
     private SerializedProperty time;
     private SerializedProperty delay;
     private SerializedProperty ease;

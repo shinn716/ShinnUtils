@@ -44,10 +44,10 @@ using UnityEngine;
 /// - A list of value(s) being sent to or from that device. The list of values is optional.
 /// 
 /// From the perspective of OSC addresses, the Make Controller Kit is organized into a hierarchy of two or three layers:
-/// - subsystems ñ classes of device, such as analog inputs, servo controllers, and digital outputs.
-/// - devices ñ the index of a specific device within a subsystem.  
+/// - subsystems ?classes of device, such as analog inputs, servo controllers, and digital outputs.
+/// - devices ?the index of a specific device within a subsystem.  
 /// If there is only one device in a subsystem, the device is not included in the OSC address.
-/// - properties ñ different devices have different properties, such as the value of an analog input, 
+/// - properties ?different devices have different properties, such as the value of an analog input, 
 /// the position of a servo motor, or the state of an LED. 
 /// 
 /// OSC messages always begin with a slash, and use a slash to delimit each element in the address, 
@@ -72,7 +72,7 @@ using UnityEngine;
 /// \section sendingdata Sending Data
 /// As previously mentioned, the Make Controller Kit can communicate over both 
 /// Ethernet and USB.  Messages are sent as packets, both over USB and UDP, and 
-/// corresponding structures are used ñ UsbPacket and UdpPacket.  Once youíve created 
+/// corresponding structures are used ?UsbPacket and UdpPacket.  Once youíve created 
 /// a packet, you can simply call its Send() method, with the OscMessage youíd like to send.  
 /// There are helper methods to create an OscMessage from a string, or you can pass in the OscMessage itself. 
 /// 
@@ -438,7 +438,9 @@ public class OSC : MonoBehaviour
         ReadThread.Start();
 
 #if UNITY_EDITOR
+#pragma warning disable CS0618 // Ãþ«¬©Î¦¨­û¤w¸g¹L®É
         UnityEditor.EditorApplication.playmodeStateChanged = HandleOnPlayModeChanged;
+#pragma warning restore CS0618 // Ãþ«¬©Î¦¨­û¤w¸g¹L®É
 #endif
 
     }

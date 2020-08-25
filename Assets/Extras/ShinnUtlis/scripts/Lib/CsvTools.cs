@@ -31,11 +31,11 @@ namespace Shinn.Common
             }
             catch (System.NullReferenceException e)
             {
-                Debug.Log("資料格式錯誤");
+                Debug.Log("資料格式錯誤 " + e);
             }
             catch (System.Exception e)
             {
-                Debug.Log("The file could not be read:");
+                Debug.Log("The file could not be read: " + e);
             }
             return text;
         }
@@ -54,11 +54,11 @@ namespace Shinn.Common
             }
             catch (System.NullReferenceException e)
             {
-                Debug.Log("資料格式錯誤");
+                Debug.Log("資料格式錯誤 " + e);
             }
             catch (System.Exception e)
             {
-                Debug.Log("The file could not be read:");
+                Debug.Log("The file could not be read: " + e);
             }
 
             string[] dataStr = text.Trim().Split('\n');

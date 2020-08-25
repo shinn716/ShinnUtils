@@ -34,51 +34,51 @@ namespace Shinn
         }
 
         [SerializeField] State mystate = State.moveTo;
-        [SerializeField] GameObject target;
-        [SerializeField] float time;
-        [SerializeField] float delay;
-        [SerializeField] iTween.EaseType ease;
-        [SerializeField] iTween.LoopType loop;
-        [SerializeField] bool islocal;
-        [SerializeField] bool ignoreTimeScalest;
+        [SerializeField] GameObject target = null;
+        [SerializeField] float time = 0;
+        [SerializeField] float delay = 0;
+        [SerializeField] iTween.EaseType ease = iTween.EaseType.easeOutQuad;
+        [SerializeField] iTween.LoopType loop = iTween.LoopType.none;
+        [SerializeField] bool islocal = false;
+        [SerializeField] bool ignoreTimeScalest = false;
         [SerializeField] bool AutoStart = true;
-        [SerializeField] bool orienttopathst;
+        [SerializeField] bool orienttopathst = false;
         [SerializeField] float lookaheadValue = .05f;
-        [SerializeField] Vector3 shakePos;
-        [SerializeField] Vector3 punchPos;
-        [SerializeField] Vector3 scaleValue;
-        [SerializeField] Transform moveloc;
-        [SerializeField] Vector3 rotvalue;
+        [SerializeField] Vector3 shakePos = Vector3.zero;
+        [SerializeField] Vector3 punchPos = Vector3.zero;
+        [SerializeField] Vector3 scaleValue = Vector3.zero;
+        [SerializeField] Transform moveloc = null;
+        [SerializeField] Vector3 rotvalue = Vector3.zero;
         //[SerializeField] Color startColor = Color.white;
         [SerializeField] Color endColor = Color.white;
-        [Range(0, 1)] [SerializeField] float fadeStart;
+        [Range(0, 1)] [SerializeField] float fadeStart = 0;
         [Range(0, 1)] [SerializeField] float fadeEnd = 1;
-        [SerializeField] bool startComplete;
-        [SerializeField] Vector3 posVect;
+        [SerializeField] bool startComplete = false;
+        [SerializeField] Vector3 posVect = Vector3.zero;
         #endregion
 
         #region UnityEvents
-        [SerializeField] bool EnableBool;
-        [SerializeField] bool EnableInt;
-        [SerializeField] bool EnableFloat;
-        [SerializeField] bool EnableFloatArray;
-        [SerializeField] bool EnableVector3;
-        [SerializeField] bool EnableColor;
-        [SerializeField] bool EnableVoid;
+        [SerializeField] bool EnableBool = false;
+        [SerializeField] bool EnableInt = false;
+        [SerializeField] bool EnableFloat = false;
+        //[SerializeField] bool EnableFloatArray = false;
+        [SerializeField] bool EnableVector3 = false;
+        [SerializeField] bool EnableColor = false;
+        [SerializeField] bool EnableVoid = false;
 
-        [SerializeField] VoidEvent voidevents;
-        [SerializeField] BoolEvent boolevents;
-        [SerializeField] IntEvent intevents;
-        [SerializeField] FloatEvent floatevents;
-        [SerializeField] FloatArrayEvent floatarratevents;
-        [SerializeField] Vector3Event vector3events;
-        [SerializeField] ColorEvent colorevents;
+        [SerializeField] VoidEvent voidevents = null;
+        [SerializeField] BoolEvent boolevents = null;
+        [SerializeField] IntEvent intevents = null;
+        [SerializeField] FloatEvent floatevents = null;
+        //[SerializeField] FloatArrayEvent floatarratevents = null;
+        [SerializeField] Vector3Event vector3events = null;
+        [SerializeField] ColorEvent colorevents = null;
 
-        [SerializeField] bool boolvalue;
-        [SerializeField] int intvalue;
-        [SerializeField] float floatvalue;
-        [SerializeField] Vector3 vector3value;
-        [SerializeField] Color colorvalue;
+        [SerializeField] bool boolvalue = false;
+        [SerializeField] int intvalue = 0;
+        [SerializeField] float floatvalue = 0;
+        [SerializeField] Vector3 vector3value = Vector3.zero;
+        [SerializeField] Color colorvalue = Color.white;
         //[SerializeField] float[] floatarrayvalue;
         #endregion
 

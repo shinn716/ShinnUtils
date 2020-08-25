@@ -86,11 +86,13 @@ public class iTweenPathEditor : Editor
 	void OnSceneGUI(){
 		if(_target.enabled) { // dkoontz
 			if(_target.nodes.Count > 0){
-				//allow path adjustment undo:
-				Undo.SetSnapshotTarget(_target,"Adjust iTween Path");
-				
-				//path begin and end labels:
-				Handles.Label(_target.nodes[0], "'" + _target.pathName + "' Begin", style);
+                //allow path adjustment undo:
+#pragma warning disable CS0618 // 類型或成員已經過時
+                Undo.SetSnapshotTarget(_target,"Adjust iTween Path");
+#pragma warning restore CS0618 // 類型或成員已經過時
+
+                //path begin and end labels:
+                Handles.Label(_target.nodes[0], "'" + _target.pathName + "' Begin", style);
 				Handles.Label(_target.nodes[_target.nodes.Count-1], "'" + _target.pathName + "' End", style);
 				
 				//node handle display:

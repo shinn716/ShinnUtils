@@ -5,43 +5,38 @@ using UnityEngine.Events;
 
 public class iPathWalk : MonoBehaviour {
 
-    public bool autostart = false;
-    public string whitchPath = "New Path 1";
+    [SerializeField] bool autostart = false;
+    [SerializeField] string whitchPath = "New Path 1";
 
     [Header("Itween Setting")]
-    public float time;
-    public float delay = 0;
-    public iTween.EaseType ease;
-    public iTween.LoopType loop;
-    public bool islocal = false;
-    public bool ignoreTimeScalest = false;
-    public bool orienttopathst = false;
-    public float lookaheadValue = .05f;
+    [SerializeField] float time = 1;
+    [SerializeField] float delay = 0;
+    [SerializeField] iTween.EaseType ease = iTween.EaseType.easeInQuad;
+    [SerializeField] iTween.LoopType loop = iTween.LoopType.none;
+    [SerializeField] bool islocal = false;
+    [SerializeField] bool ignoreTimeScalest = false;
+    [SerializeField] bool orienttopathst = false;
+    [SerializeField] float lookaheadValue = .05f;
 
     [Header("CompleteEvent")]
-    public UnityEvent unityevent;
+    [SerializeField] UnityEvent unityevent = null;
 
-    void Start () {
-
+    void Start ()
+    {
         if (autostart)
             itweenGo();
-
-
     }
 
 
     public void itweenGo()
     {
-        iTween.MoveTo(gameObject, iTween.Hash("path", iTweenPath.GetPath(whitchPath), 
+        iTween.MoveTo(gameObject, iTween.Hash("path", iTweenPath.GetPath(whitchPath),
                                   "time", time, "delay", delay,
                                   "easetype", ease, "looptype", loop,
                                   "islocal", islocal, "ignoretimescale", ignoreTimeScalest,
                                   "oncomplete", "Complete", "oncompletetarget", gameObject,
                                   "orienttopath", orienttopathst, "lookahead", lookaheadValue
                      ));
-
-
-       
     }
 
     void Complete()

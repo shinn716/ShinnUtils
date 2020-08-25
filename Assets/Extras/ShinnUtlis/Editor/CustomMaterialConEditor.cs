@@ -19,7 +19,9 @@ public class CustomMaterialConEditor : Editor {
         EditorGUILayout.Space();
 
 
+#pragma warning disable CS0618 // 類型或成員已經過時
         EditorGUIUtility.LookLikeInspector();
+#pragma warning restore CS0618 // 類型或成員已經過時
         SerializedProperty tps = serializedObject.FindProperty("render");
         EditorGUI.BeginChangeCheck();
         EditorGUILayout.PropertyField(tps, true);
@@ -43,7 +45,9 @@ public class CustomMaterialConEditor : Editor {
         if (script.complete)
         {
             SerializedProperty onCheck = serializedObject.FindProperty("unityevent");
+#pragma warning disable CS0618 // 類型或成員已經過時
             EditorGUIUtility.LookLikeControls();
+#pragma warning restore CS0618 // 類型或成員已經過時
             EditorGUILayout.PropertyField(onCheck);
 
             if (GUI.changed)

@@ -90,7 +90,7 @@ public class SystemLock : MonoBehaviour {
         }
         catch (Exception e)
         {
-            print("quit");
+            print("quit " + e);
             Application.Quit();
         }
     }
@@ -111,7 +111,7 @@ public class SystemLock : MonoBehaviour {
         }
         catch (Exception e)
         {
-            print("quit");
+            print("quit " + e);
             Application.Quit();
         }
     }
