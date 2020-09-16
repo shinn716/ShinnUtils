@@ -81,10 +81,6 @@ namespace Shinn.Common
                 sw.WriteLine(csvContent);
                 sw.Close();
             }
-            
-//             StreamWriter outStream = File.CreateText(filePath);
-//             outStream.WriteLine(csvContent);
-//             outStream.Close();
         }
 
         public void WriteToCsv(string[] csvContent, string saveName)
@@ -116,9 +112,6 @@ namespace Shinn.Common
                 sw.WriteLine(csvContent);
                 sw.Close();
             }
-//             StreamWriter outStream = File.CreateText(filePath);
-//             outStream.WriteLine(sb);
-//             outStream.Close();
         }
 
         public void Clear()
@@ -129,7 +122,7 @@ namespace Shinn.Common
         // Following method is used to retrive the relative path as device platform
         private string GetPath(string name)
         {
-#if UNITY_EDITOR
+#if UNITY_STANDALONE
             return Application.streamingAssetsPath + "/csv/" + name + ".csv";
 // #elif UNITY_ANDROID
 //         return Application.persistentDataPath+"Saved_data.csv";
