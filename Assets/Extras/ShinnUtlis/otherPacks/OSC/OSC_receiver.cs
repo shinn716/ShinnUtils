@@ -1,14 +1,14 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(OSC))]
 public class OSC_Receiver : MonoBehaviour
-{	
-	[Header("OSC Setting")]
+{
+    [Header("OSC Setting")]
     public OSC osc;
     public string address = "/test";
-	
+
     [ReadOnly]
-	public string ReveiveData = "NULL";
+    public string ReveiveData = "NULL";
 
     [Header("Reveive Data")]
     public StringEvent stringEvents;

@@ -64,7 +64,7 @@ public class test : MonoBehaviour
     [ContextMenu("Test_ClientSocket")]
     private void Test_ClientSocket()
     {
-        client.SendData("Hello");
+        client.SendData_String("Hello");
     }
 
     [ContextMenu("Test_WriteToCsv")]

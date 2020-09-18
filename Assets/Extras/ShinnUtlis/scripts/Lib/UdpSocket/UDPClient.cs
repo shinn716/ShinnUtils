@@ -27,13 +27,25 @@ namespace Shinn.Common
             udpClient = new UdpClient();
         }
 
+
         /// <summary>
         /// Send Data -> string
         /// </summary>
         /// <param name="tempData"></param>
-        public void SendData(string tempData)
+        public void SendData_String(string tempData)
         {
             sendByte = Encoding.UTF8.GetBytes(tempData);
+            udpClient.Send(sendByte, sendByte.Length, ipEndPoint);
+        }
+
+        /// <summary>
+        /// Send Data -> string
+        /// </summary>
+        /// <param name="tempData"></param>
+        public void SendData_Byte(string tempData)
+        {
+            var bytes = Encoding.UTF8.GetBytes(tempData);
+            sendByte = bytes;
             udpClient.Send(sendByte, sendByte.Length, ipEndPoint);
         }
 
