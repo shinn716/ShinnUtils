@@ -12,8 +12,15 @@ using UnityEngine.Networking;
 
 namespace Shinn.Common
 {
-    public class Upload : Singleton<Upload>
+    public class Upload : MonoBehaviour
     {
+        public static Upload instance;
+
+        private void Awake()
+        {
+            instance = this;
+        }
+
         private IEnumerator UploadFileCo(string uploadURL, byte[] dataByteArray, string dataName)
         {
             //Debug.Log("uploadURL " + uploadURL);
