@@ -1,16 +1,19 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CullingGroupCamera : MonoBehaviour
 {
+    [SerializeField] LayerMask layer;
     [SerializeField] float fov = 2;
-    [SerializeField] Transform[] targets = null;
 
     private CullingGroup m_group = null;
-    private BoundingSphere[] m_bounds;
+    private GameObject[] targets = null;
+    private BoundingSphere[] m_bounds = null;
 
-    void Start()
+    #region Main
+    private void Start()
     {
         m_group = new CullingGroup();
 
@@ -21,13 +24,15 @@ public class CullingGroupCamera : MonoBehaviour
         // 1：1米2：5米3：10米，4：30米，5：100米或更長：看不見的處理
         m_group.SetDistanceReferencePoint(Camera.main.transform);
         m_group.SetBoundingDistances(new float[] { 1, 5, 10, 30, 100 });
+        
+        // Search layer of all gameobjects in hierarchy.
+        var array = Shinn.Utility.Bitmask2Array(layer.value);
+        targets = FindGameObjectsWithLayer(array);
 
         // 設置列表以執行可見性確定
         m_bounds = new BoundingSphere[targets.Length];
         for (int i = 0; i < m_bounds.Length; i++)
-        {
             m_bounds[i].radius = 1.5f;
-        }
 
         // 註冊對列表的引用
         m_group.SetBoundingSpheres(m_bounds);
@@ -37,33 +42,17 @@ public class CullingGroupCamera : MonoBehaviour
         m_group.onStateChanged = OnChange;
     }
 
-    void Update()
+    private void Update()
     {
-        // 更新已註冊對象的座標
         for (int i = 0; i < m_bounds.Length; i++)
-        {
-            m_bounds[i].position = targets[i].position;
-        }
+            m_bounds[i].position = targets[i].transform.position;
     }
 
-    void OnDestroy()
+    private void OnDestroy()
     {
-        // 清理工作
         m_group.onStateChanged -= OnChange;
         m_group.Dispose();
         m_group = null;
-    }
-
-    void OnChange(CullingGroupEvent ev)
-    {
-        // 僅激活不在視圖中的對象
-        targets[ev.index].gameObject.SetActive(ev.isVisible);
-
-        // 如果範圍是2m或更多，則取消激活
-        if (ev.currentDistance > fov)
-        {
-            targets[ev.index].gameObject.SetActive(false);
-        }
     }
 
     private void OnDrawGizmos()
@@ -71,5 +60,28 @@ public class CullingGroupCamera : MonoBehaviour
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, fov * 5.5f);
     }
+    #endregion
 
+    #region PRIAVTE
+    private void OnChange(CullingGroupEvent ev)
+    {
+        targets[ev.index].gameObject.SetActive(ev.isVisible);
+        
+        if (ev.currentDistance > fov)
+            targets[ev.index].gameObject.SetActive(false);
+    }
+
+    private GameObject[] FindGameObjectsWithLayer(int[] layer)
+    {
+        var goArray = FindObjectsOfType<GameObject>();
+        List<GameObject> goList = new List<GameObject>();
+
+        for (int i = 0; i < layer.Length; i++)
+            for (int j=0; j< goArray.Length; j++)
+                if (goArray[j].layer.Equals(layer[i]))
+                    goList.Add(goArray[j]);
+        
+        return goList.ToArray();
+    }
+    #endregion
 }

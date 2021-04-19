@@ -44,15 +44,30 @@ namespace Shinn
         /// <param name="qBase"></param>
         /// <param name="qTarget"></param>
         /// <returns></returns>
-        public static float GetQ2EulerAngle(Quaternion qBase, Quaternion qTarget)
+        public static float GetQ2Euler(Quaternion qBase, Quaternion qtarget)
         {
-            Quaternion qDiff = Quaternion.Inverse(qBase) * qTarget;
+            Quaternion qDiff = Quaternion.Inverse(qBase) * qtarget;
             Vector3 vEuler = qDiff.eulerAngles;
             float yaw = vEuler.y;
             if (yaw > 180)
                 yaw -= 360;
             return yaw;
         }
-        
+
+        // qbase = Quaternion.identity
+        public static float GetQ2Ground(Quaternion qcurr, Quaternion qbase)
+        {
+            Quaternion qv1 = new Quaternion(1, 0, 0, 0);
+            Quaternion qbaseinv = qbase;
+            qbaseinv = Quaternion.Inverse(qbaseinv);
+            Quaternion qrot = qcurr * qbaseinv;
+            Quaternion qrotinv = qrot;
+            qrotinv = Quaternion.Inverse(qrotinv);
+            Quaternion qv2 = qrot * qv1 * qrotinv;
+            double Angle = Mathf.Acos(-qv2.z) * 180 / Mathf.PI;
+            if (Angle.Equals(float.NaN))
+                Angle = 0;
+            return (float)Angle;
+        }
     }
 }

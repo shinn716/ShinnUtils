@@ -109,13 +109,6 @@ namespace Shinn.Common
             }
         }
 
-        // Convert object data to txt, 讀取Obj用
-        //private void WritetoTxt(string filepath, string content)
-        //{
-        //    byte[] bytes = System.Convert.FromBase64String(content);
-        //    File.WriteAllBytes(filepath, bytes);
-        //}
-
         // 讀取 txt檔, 供讀取模型使用
         private static string LoadTxt(string path)
         {

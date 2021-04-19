@@ -4,53 +4,50 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Text;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Shinn
 {
     #region Write And Read Data
     public class TxtTools
     {
+        /// <summary>
+        /// 寫入文字 (addDatatoFiles 重負寫入)
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="dataPath"></param>
+        /// <param name="addDatatoFiles"></param>
         public static void WriteToTxt(string data, string dataPath, bool addDatatoFiles = true)
         {
             using (StreamWriter outputFile = new StreamWriter(dataPath, addDatatoFiles))
-            {
                 outputFile.WriteLine(data);
-            }
         }
 
+        /// <summary>
+        /// 讀取文字檔, 各別行數
+        /// </summary>
+        /// <param name="dataPath"></param>
+        /// <returns></returns>
         public static string[] ReadLines(string dataPath)
         {
             string[] lines = File.ReadAllLines(dataPath);
             return lines;
         }
 
+        /// <summary>
+        /// 讀取文字檔
+        /// </summary>
+        /// <param name="dataPath"></param>
+        /// <returns></returns>
         public static string ReadText(string dataPath)
         {
             string allstr = File.ReadAllText(dataPath);
             return allstr;
         }
-
-        //#region ReadFile (txt)
-        //// Convert object data(String) to txt
-        //public static void WriteDataToFiles(string filepath, string content)
-        //{
-        //    byte[] bytes = System.Convert.FromBase64String(content);
-        //    File.WriteAllBytes(filepath, bytes);
-        //}
-
-        //// Read txt files
-        //public static string LoadTxtFiles(string path)
-        //{
-        //    using (StreamReader r = new StreamReader(path))
-        //    {
-        //        string myobj = r.ReadToEnd();
-        //        return myobj;
-        //    }
-        //}
-        //#endregion
     }
     #endregion
-
+    
     public class ConvertTools
     {
         public static string Unicode2String(string source)
@@ -64,9 +61,8 @@ namespace Shinn
             byte[] bytes = Encoding.Unicode.GetBytes(source);
             StringBuilder stringBuilder = new StringBuilder();
             for (int i = 0; i < bytes.Length; i += 2)
-            {
                 stringBuilder.AppendFormat("\\u{0}{1}", bytes[i + 1].ToString("x").PadLeft(2, '0'), bytes[i].ToString("x").PadLeft(2, '0'));
-            }
+
             return stringBuilder.ToString();
         }
 
@@ -123,28 +119,16 @@ namespace Shinn
         {
             return (int)Convert.ToInt64(hexValue, 16);
         }
-
-        //public enum EncodeType
-        //{
-        //    ASCII,
-        //    UTF8
-        //}
-        ///// byte array to string
-        //public static string ByteArray2String(byte[] vs, EncodeType encodeType = EncodeType.ASCII)
-        //{
-        //    return encodeType == EncodeType.ASCII ? Encoding.ASCII.GetString(vs) : Encoding.UTF8.GetString(vs);
-        //}
-
-        //// string to bype arry
-        //public static byte[] String2ByteArray(string str, EncodeType encodeType = EncodeType.ASCII)
-        //{
-        //    return encodeType == EncodeType.ASCII ? Encoding.ASCII.GetBytes(str) : Encoding.UTF8.GetBytes(str);
-        //}
     }
 
     public class Utility
     {
-        public static Texture2D ToTexture2D(Texture texture)
+        /// <summary>
+        /// Texture to Texture2D
+        /// </summary>
+        /// <param name="texture"></param>
+        /// <returns></returns>
+        public static Texture2D Texture2Tex2D(Texture texture)
         {
             return Texture2D.CreateExternalTexture(
             texture.width,
@@ -152,6 +136,78 @@ namespace Shinn
             TextureFormat.RGB24,
             false, false,
             texture.GetNativeTexturePtr());
+        }
+
+        /// <summary>
+        /// Texture2D to sprite
+        /// </summary>
+        /// <param name="texture"></param>
+        /// <param name="PixelsPerUnit"></param>
+        /// <param name="spriteType"></param>
+        /// <returns></returns>
+        public static Sprite Tex2D2Sprite(Texture2D texture, float PixelsPerUnit = 100.0f, SpriteMeshType spriteType = SpriteMeshType.Tight)
+        {
+            Sprite NewSprite;
+            NewSprite = Sprite.Create(texture, 
+                new Rect(0, 0, texture.width, texture.height), 
+                new Vector2(0, 0), PixelsPerUnit, 0, spriteType);
+            return NewSprite;
+        }
+
+        /// <summary>
+        /// Load texture2D from file
+        /// </summary>
+        /// <param name="FilePath"></param>
+        /// <returns></returns>
+        public static Texture2D LoadTex2D(string FilePath)
+        {
+            Texture2D Tex2D;
+            byte[] FileData;
+
+            if (File.Exists(FilePath))
+            {
+                FileData = File.ReadAllBytes(FilePath);
+                Tex2D = new Texture2D(2, 2);             // Create new "empty" texture
+                if (Tex2D.LoadImage(FileData))           // Load the imagedata into the texture (size is set automatically)
+                    return Tex2D;                        // If data = readable -> return texture
+            }
+            return null;                                 // Return null if load failed
+        }
+
+        /// <summary>
+        /// Load sprite from file
+        /// </summary>
+        /// <param name="FilePath"></param>
+        /// <param name="PixelsPerUnit"></param>
+        /// <param name="spriteType"></param>
+        /// <returns></returns>
+        public static Sprite LoadSprite(string FilePath, float PixelsPerUnit = 100.0f, SpriteMeshType spriteType = SpriteMeshType.Tight)
+        {
+            Sprite NewSprite;
+            Texture2D SpriteTexture = LoadTex2D(FilePath);
+            NewSprite = Sprite.Create(SpriteTexture, 
+                new Rect(0, 0, SpriteTexture.width, SpriteTexture.height), 
+                new Vector2(0, 0), PixelsPerUnit, 0, spriteType);
+            return NewSprite;
+        }
+
+
+        /// <summary>
+        /// Bitmask to int array
+        /// </summary>
+        /// <param name="mask"></param>
+        /// <returns></returns>
+        public static int[] Bitmask2Array(LayerMask layoutMask)
+        {
+            var bitarray = new BitArray(new[] { layoutMask.value });
+            var att = bitarray.Cast<bool>().ToArray();
+            List<int> returnArray = new List<int>();
+
+            for (int i = 0; i < att.Length; i++)
+                if (att[i])
+                    returnArray.Add(i);
+
+            return returnArray.ToArray();
         }
         
         /// <summary>
@@ -203,22 +259,22 @@ namespace Shinn
             foreach (var ip in host.AddressList)
                 if (ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
                     return ip.ToString();
-            throw new System.Exception("No network adapters with an IPv4 address in the system!");
+
+            throw new Exception("No network adapters with an IPv4 address in the system!");
         }
 
         /// <summary>
         /// CopyComponent function, from https://answers.unity.com/questions/458207/copy-a-component-at-runtime.html
         /// </summary>
-        public Component CopyComponent(Component original, GameObject destination)
+        public static Component CopyComponent(Component original, GameObject destination)
         {
-            System.Type type = original.GetType();
+            Type type = original.GetType();
             Component copy = destination.AddComponent(type);
             // Copied fields can be restricted with BindingFlags
             System.Reflection.FieldInfo[] fields = type.GetFields();
             foreach (System.Reflection.FieldInfo field in fields)
-            {
                 field.SetValue(copy, field.GetValue(original));
-            }
+
             return copy;
         }
 
@@ -228,11 +284,13 @@ namespace Shinn
         /// <param name="Boolean array"></param>
         /// <param name="flag(true or false)"></param>
         /// <returns></returns>
-        public static int FindCountOfStateInBoolArray(bool[] array, bool flag)
+        public static int FindCountOfStateInBoolArray(bool[] array, bool trurorfalse)
         {
             int value = 0;
             for (int i = 0; i < array.Length; i++)
-                if (array[i] == flag) value++;
+                if (array[i].Equals(trurorfalse))
+                    value++;
+
             return value;
         }
 
@@ -303,9 +361,8 @@ namespace Shinn
         {
             // Remove the parentheses
             if (sQuaternion.StartsWith("(") && sQuaternion.EndsWith(")"))
-            {
                 sQuaternion = sQuaternion.Substring(1, sQuaternion.Length - 2);
-            }
+
             // split the items
             string[] sArray = sQuaternion.Split(',');
 
@@ -364,6 +421,15 @@ namespace Shinn
                 return true;
             else
                 return false;
+        }
+
+        /// <summary>
+        /// 產生一組 UUID
+        /// </summary>
+        /// <returns></returns>
+        public static string CreateUUID()
+        {
+            return Guid.NewGuid().ToString("N");
         }
     }
 }

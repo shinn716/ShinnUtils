@@ -8,7 +8,6 @@ namespace Shinn
     [RequireComponent(typeof(iTweenPath))]
     public class iPathCon : MonoBehaviour
     {
-
         public iTweenPath ipath;
 
         public bool experimentFirstObjectUpdate;
