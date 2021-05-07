@@ -5,9 +5,10 @@ Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_Name: contract
-  m_Shader: {fileID: 4800000, guid: ea7ca6e005d24c346bf3b016e7e285b7, type: 3}
+  m_Shader: {fileID: 4800000, guid: 8e8594f03d8e87f488f0ef7678ef1f7d, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -55,6 +56,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - _AffectRange: 0
     - _BumpScale: 1
     - _Contrast: 9.7
     - _Cutoff: 0.5

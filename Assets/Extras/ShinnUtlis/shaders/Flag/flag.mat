@@ -5,9 +5,10 @@ Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_Name: flag
-  m_Shader: {fileID: 4800000, guid: 81b4ee1b47b652f4e96a4bdb914513db, type: 3}
+  m_Shader: {fileID: 4800000, guid: 2a072075ed9888549aef5f97c0b71d85, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
