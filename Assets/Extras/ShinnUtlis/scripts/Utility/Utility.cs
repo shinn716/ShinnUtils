@@ -128,7 +128,7 @@ namespace Shinn
         /// </summary>
         /// <param name="texture"></param>
         /// <returns></returns>
-        public static Texture2D Texture2Tex2D(Texture texture)
+        public static Texture2D Tex2Tex2D(Texture texture)
         {
             return Texture2D.CreateExternalTexture(
             texture.width,
@@ -240,20 +240,11 @@ namespace Shinn
             }
             return output;
         }
-
-        /// <summary>
-        /// String to float
-        /// </summary>
-        public static float StringToFloat(string stringValue)
-        {
-            float.TryParse(stringValue, out float result);
-            return result;
-        }
-
+        
         /// <summary>
         /// Get Ip address
         /// </summary>
-        public static string GetLocalIPAddress()
+        public static string GetLocalIP()
         {
             var host = System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName());
             foreach (var ip in host.AddressList)
@@ -357,7 +348,7 @@ namespace Shinn
         /// </summary>
         /// <param name="sQuaternion"></param>
         /// <returns></returns>
-        public static Quaternion StringToQuaternion(string sQuaternion)
+        public static Quaternion Str2Quaternion(string sQuaternion)
         {
             // Remove the parentheses
             if (sQuaternion.StartsWith("(") && sQuaternion.EndsWith(")"))
@@ -392,7 +383,7 @@ namespace Shinn
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public static GameObject FindInActiveObjectByName(string name)
+        public static GameObject FindInactiveObject(string name)
         {
             Transform[] objs = Resources.FindObjectsOfTypeAll<Transform>() as Transform[];
             for (int i = 0; i < objs.Length; i++)
@@ -407,22 +398,7 @@ namespace Shinn
             }
             return null;
         }
-
-        /// <summary>
-        /// Check MAC address
-        /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>  
-        public static bool CheckMac(string input)
-        {
-            input = input.Replace(" ", "").Replace(":", "").Replace("-", "");
-            Regex r = new Regex("^(?:[0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}|(?:[0-9a-fA-F]{2}-){5}[0-9a-fA-F]{2}|(?:[0-9a-fA-F]{2}){5}[0-9a-fA-F]{2}$");
-            if (r.IsMatch(input))
-                return true;
-            else
-                return false;
-        }
-
+        
         /// <summary>
         /// 產生一組 UUID
         /// </summary>

@@ -10,7 +10,6 @@ using System.IO;
 
 namespace Shinn.Common
 {
-
     public class CsvTools
     {
         private List<string[]> rowData = new List<string[]>();

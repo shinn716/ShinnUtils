@@ -1,129 +1,174 @@
-﻿using System;
+//
+// UDPServer - Unity TCP Socket
+//
+// Copyright (C) 2021 John Tsai
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
-//引入庫
-using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.UI;
 
-public class TcpClient : MonoBehaviour
+namespace Shinn.Common
 {
-    [Serializable]
-    public class StringEvent : UnityEvent<string> { }
-
-    public string serverIP = "127.0.0.1";
-    public int serverPort = 5566;
-
-    string editString = "hello wolrd"; //編輯方塊文字
-    Socket serverSocket;               //伺服器端socket
-    IPAddress ip;                      //主機ip
-    IPEndPoint ipEnd;
-    string recvStr;                    //接收的字串
-    string sendStr;                    //發送的字串
-    byte[] recvData = new byte[1024];  //接收的資料，必須為位元組
-    byte[] sendData = new byte[1024];  //發送的資料，必須為位元組
-    int recvLen;                       //接收的資料長度
-    Thread connectThread;              //連接執行緒
-
-    public StringEvent onReceived;
-    private Queue<string> receivedQueue = new Queue<string>();
-
-    //初始化
-    void InitSocket()
+    public class TCPClient
     {
-        ip = IPAddress.Parse(serverIP); //可以是局域網或互聯網ip，此處是本機
-        ipEnd = new IPEndPoint(ip, serverPort);
-        //開啟一個執行緒連接，必須的，否則主執行緒卡死
-        connectThread = new Thread(new ThreadStart(SocketReceive));
-        connectThread.Start();
-    }
+        public string Ip { get; set; }
+        public int Port { get; set; }
+        
+        public event CallReceiveback eventReceiveCallback;
+        public delegate void CallReceiveback();
+        public event CallSendback eventSendCallback;
+        public delegate void CallSendback();
 
-    void SocketConnet()
-    {
-        if (serverSocket != null)
-            serverSocket.Close();
-        //定義通訊端類型,必須在子執行緒中定義
-        serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-        print("ready to connect");
-        //連接
-        serverSocket.Connect(ipEnd);
-        //輸出初次連接收到的字串
-        recvLen = serverSocket.Receive(recvData);
-        recvStr = Encoding.ASCII.GetString(recvData, 0, recvLen);
-        print(recvStr);
-    }
+        private string m_receive = string.Empty;
+        private string m_echo = string.Empty;
+        private TcpClient socketConnection;
+        private Thread clientReceiveThread;
 
-    void SocketSend(string sendStr)
-    {
-        //清空發送緩存
-        sendData = new byte[1024];
-        //資料類型轉換
-        sendData = Encoding.ASCII.GetBytes(sendStr);
-        //發送
-        serverSocket.Send(sendData, sendData.Length, SocketFlags.None);
-    }
-
-    void SocketReceive()
-    {
-        SocketConnet();
-        //不斷接收伺服器發來的資料
-        while (true)
+        public TCPClient(string _ip = "127.0.0.1", int _port = 6969)
         {
-            recvData = new byte[1024];
-            recvLen = serverSocket.Receive(recvData);
-            if (recvLen == 0)
+            Ip = _ip;
+            Port = _port;
+
+            ConnectToTcpServer();
+            Debug.Log($"Init TCPClient {Ip}/{Port}");
+        }
+
+        /// <summary>
+        /// Close TcpClient
+        /// </summary>
+        public void Dispose()
+        {
+            if (clientReceiveThread != null)
+                clientReceiveThread.Abort();
+
+            if (socketConnection != null)
+                socketConnection.Close();
+        }
+        
+        /// <summary> 	
+        /// Send message to server using socket connection. 	
+        /// </summary> 	
+        public void SendMessage(string message)
+        {
+            m_receive = string.Empty;
+            m_echo = string.Empty;
+
+            if (socketConnection == null)
             {
-                SocketConnet();
-                continue;
+                return;
             }
-            recvStr = Encoding.ASCII.GetString(recvData, 0, recvLen);
-            onReceived.Invoke(recvStr);
-        }
-    }
+            try
+            {
+                // Get a stream object for writing. 			
+                NetworkStream stream = socketConnection.GetStream();
+                if (stream.CanWrite)
+                {
+                    //string clientMessage = "This is a message from one of your clients.";
+                    // Convert string message to byte array.                 
+                    byte[] clientMessageAsByteArray = Encoding.ASCII.GetBytes(message);
+                    // Write byte array to socketConnection stream.                 
+                    stream.Write(clientMessageAsByteArray, 0, clientMessageAsByteArray.Length);
+                    //Debug.Log("Client sent his message - should be received by server");
 
-    void SocketQuit()
-    {
-        //關閉執行緒
-        if (connectThread != null)
+                    m_echo = "[Send Success]" + message;
+                    eventSendCallback?.Invoke();                     // net 4.0
+                }
+            }
+            catch (SocketException socketException)
+            {
+                Debug.Log("Socket exception: " + socketException);
+            }
+        }
+
+        /// <summary>
+        /// Server received message.
+        /// </summary>
+        /// <returns></returns>
+        public string GetReceiveData()
         {
-            connectThread.Interrupt();
-            connectThread.Abort();
+            return m_receive;
         }
-        //最後關閉伺服器
-        if (serverSocket != null)
-            serverSocket.Close();
-        print("diconnect");
-    }
-    
-    void Start()
-    {
-        InitSocket();
-    }
 
-    void OnGUI()
-    {
-        editString = GUI.TextField(new Rect(10, 10, 100, 20), editString);
-        if (GUI.Button(new Rect(10, 30, 60, 20), "send"))
-            SocketSend(editString);
-    }
-
-    private void Update()
-    {
-        if (receivedQueue.Count > 0)
+        /// <summary>
+        /// echo
+        /// </summary>
+        /// <returns></returns>
+        public string GetEcho()
         {
-            var dequeue = receivedQueue.Dequeue();
-
-            onReceived.Invoke(dequeue);
+            return m_echo;
         }
-    }
 
-    //程式退出則關閉連接
-    void OnApplicationQuit()
-    {
-        SocketQuit();
+        
+        // Setup socket connection. 	
+        private void ConnectToTcpServer()
+        {
+            try
+            {
+                clientReceiveThread = new Thread(new ThreadStart(ListenForData));
+                clientReceiveThread.IsBackground = true;
+                clientReceiveThread.Start();
+            }
+            catch (Exception e)
+            {
+                Debug.Log("On client connect exception " + e);
+            }
+        }
+        
+        // Runs in background clientReceiveThread; Listens for incomming data.
+        private void ListenForData()
+        {
+            try
+            {
+                socketConnection = new TcpClient(Ip, Port);
+                Byte[] bytes = new Byte[1024];
+                while (true)
+                {
+                    // Get a stream object for reading 				
+                    using (NetworkStream stream = socketConnection.GetStream())
+                    {
+                        int length;
+                        // Read incomming stream into byte arrary. 					
+                        while ((length = stream.Read(bytes, 0, bytes.Length)) != 0)
+                        {
+                            var incommingData = new byte[length];
+                            Array.Copy(bytes, 0, incommingData, 0, length);
+                            // Convert byte array to string message. 						
+                            string serverMessage = Encoding.ASCII.GetString(incommingData);
+                            //Debug.Log("server message received as: " + serverMessage);
+
+                            m_receive = serverMessage;
+                            eventReceiveCallback?.Invoke();                     // net 4.0
+                        }
+                    }
+                }
+            }
+            catch (SocketException socketException)
+            {
+                Debug.Log("Socket exception: " + socketException);
+            }
+        }
     }
 }
