@@ -1,4 +1,4 @@
-//
+﻿//
 // UDPServer - Unity TCP Socket
 //
 // Copyright (C) 2021 John Tsai
