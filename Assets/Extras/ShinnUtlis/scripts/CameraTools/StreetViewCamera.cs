@@ -5,17 +5,8 @@ public class StreetViewCamera : MonoBehaviour
     public float RollCameraSpeed = 3;
     public float RotCameraSpeed = 5;
     public float PanCameraSensitivity = .02f;
-
-    private float rollY;
+    
     private Vector3 lastPosition;
-
-    private void Start()
-    {
-        if (!Camera.main.orthographic)
-            rollY = Camera.main.fieldOfView;
-        else
-            rollY = Camera.main.orthographicSize;
-    }
 
     private void Update()
     {
@@ -28,21 +19,9 @@ public class StreetViewCamera : MonoBehaviour
 
         // Zoom in/Zoom out
         if (Input.GetAxis("Mouse ScrollWheel") > 0f)
-        {
-            rollY -= RollCameraSpeed;
-            if (Camera.main.orthographic)
-                Camera.main.orthographicSize = rollY;
-            else
-                Camera.main.fieldOfView = rollY;
-        }
+            Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, Camera.main.transform.position -= Vector3.forward * RollCameraSpeed, Time.deltaTime * 5);
         else if (Input.GetAxis("Mouse ScrollWheel") < 0f)
-        {
-            rollY += RollCameraSpeed;
-            if (Camera.main.orthographic)
-                Camera.main.orthographicSize = rollY;
-            else
-                Camera.main.fieldOfView = rollY;
-        }
+            Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, Camera.main.transform.position += Vector3.forward * RollCameraSpeed, Time.deltaTime * 5);
 
         // Pan
         if (Input.GetMouseButtonDown(2))

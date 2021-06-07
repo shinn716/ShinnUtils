@@ -1,6 +1,26 @@
-﻿// Author : Shinn
-// Date : 20210531
-// 
+﻿//
+// UDPServer - Unity TCP Socket
+//
+// Copyright (C) 2021 John Tsai
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
 
 using System.Collections;
 using System.Collections.Generic;
@@ -9,24 +29,12 @@ using UnityEngine;
 public class MaxCamera : MonoBehaviour
 {
     #region DECLARE
-    public enum Type
-    {
-        Desktop,
-        Mobile
-    }
-
-    public Type type = Type.Desktop;
-
-    public static MaxCamera instance;
-
     public Vector3 targetOffset;
+    public Vector2 limitRotation = new Vector2(-80, 80);    // x->min, y->max
     public float distance = 5.0f;
     public float mouseRotationSpeed = 200;
-    public Vector2 limitRotation = new Vector2(-80, 80);    // x->min, y->max
-
-
     public float panSpeed = 0.3f;
-    public float zoomDampening = 5.0f;
+    public float zoomDampening = 6.0f;
 
     private Transform target = null;
     private Vector2 deg = Vector2.zero;
@@ -44,11 +52,6 @@ public class MaxCamera : MonoBehaviour
     #endregion
 
     #region MAIN
-    private void Awake()
-    {
-        instance = this;
-    }
-
     private void Start()
     {
         Init();
@@ -60,7 +63,7 @@ public class MaxCamera : MonoBehaviour
         fov = fovOrigin;
     }
 
-    private void LateUpdate()
+    private void Update()
     {
         if (boolResetFlag)
         {
@@ -72,75 +75,29 @@ public class MaxCamera : MonoBehaviour
                 Init();
             }
 
-            Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, fov, Time.deltaTime * zoomDampening);
-            transform.localPosition = Vector3.Lerp(transform.localPosition, vec3Origin, Time.deltaTime * zoomDampening);
-            transform.localRotation = Quaternion.Slerp(transform.localRotation, Quaternion.identity, Time.deltaTime * zoomDampening);
+            Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, fov, Time.unscaledDeltaTime * zoomDampening);
+            transform.position = Vector3.Lerp(transform.localPosition, vec3Origin, Time.unscaledDeltaTime * zoomDampening);
+            transform.rotation = Quaternion.Slerp(transform.localRotation, Quaternion.identity, Time.unscaledDeltaTime * zoomDampening);
         }
         else
         {
-            if (type.Equals(Type.Desktop))
+            // touch
+            if (Input.touchCount > 0)
             {
                 // rotation
-                if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
+                if (Input.touchCount == 1)
                 {
-                    deg.x += Input.GetAxis("Mouse X") * mouseRotationSpeed * 0.02f;
-                    deg.y -= Input.GetAxis("Mouse Y") * mouseRotationSpeed * 0.02f;
-
-                    //Clamp the vertical axis for the orbit
-                    deg.y = ClampAngle(deg.y, limitRotation.x, limitRotation.y);
-                    desiredRotation = Quaternion.Euler(deg.y, deg.x, 0);
-                    currentRotation = transform.rotation;
-
-                    rotation = Quaternion.Slerp(currentRotation, desiredRotation, Time.deltaTime * zoomDampening);
-                    transform.rotation = rotation;
+                    Touch touch0 = Input.GetTouch(0);
+                    if (touch0.phase == TouchPhase.Moved)
+                        Rotation(-touch0.deltaPosition.x * .002f, -touch0.deltaPosition.y * .002f);
                 }
-                // pan
-                else if (Input.GetMouseButton(2))
+                // zoom in/out  
+                else if (Input.touchCount == 2)
                 {
-                    target.rotation = transform.rotation;
-                    target.Translate(Vector3.right * -Input.GetAxis("Mouse X") * panSpeed);
-                    target.Translate(transform.up * -Input.GetAxis("Mouse Y") * panSpeed, Space.World);
-                }
-                // zoom in/out
-                else if (Mathf.Abs(Input.mouseScrollDelta.y) > 0)
-                    Zoom(Input.GetAxis("Mouse ScrollWheel") * .5f);
-
-                // calculate position based on the new currentDistance 
-                position = target.position - (rotation * Vector3.forward * desiredDistance + targetOffset);
-                transform.position = position;
-            }
-            else if (type.Equals(Type.Mobile))
-            {
-                if (Input.touchCount > 0)
-                {
-                    // rotation
-                    if (Input.touchCount == 1)
+                    Touch touch0 = Input.GetTouch(0);
+                    Touch touch1 = Input.GetTouch(1);
+                    if (touch0.phase == TouchPhase.Moved || touch1.phase == TouchPhase.Moved)
                     {
-                        Touch touch = Input.GetTouch(0);
-                        if (Input.GetTouch(0).phase == TouchPhase.Moved)
-                        {
-
-                            deg.x += touch.deltaPosition.x * mouseRotationSpeed * 0.002f;
-                            deg.y -= touch.deltaPosition.y * mouseRotationSpeed * 0.002f;
-
-                            ////////OrbitAngle
-
-                            //Clamp the vertical axis for the orbit
-                            deg.y = ClampAngle(deg.y, limitRotation.x, limitRotation.y);
-                            // set camera rotation 
-                            desiredRotation = Quaternion.Euler(deg.y, deg.x, 0);
-                            currentRotation = transform.rotation;
-
-                            rotation = Quaternion.Slerp(currentRotation, desiredRotation, Time.deltaTime * zoomDampening);
-                            transform.rotation = rotation;
-                        }
-                    }
-                    // zoom in/out  
-                    else if (Input.touchCount == 2)
-                    {
-                        Touch touch0 = Input.GetTouch(0);
-                        Touch touch1 = Input.GetTouch(1);
-
                         Vector2 touch0PrevPos = touch0.position - touch0.deltaPosition;
                         Vector2 touch1PrevPos = touch1.position - touch1.deltaPosition;
 
@@ -150,21 +107,32 @@ public class MaxCamera : MonoBehaviour
 
                         Zoom(difference * .01f);
                     }
-                    // pan
-                    else if (Input.touchCount == 3)
-                    {
-                        Touch touch0 = Input.GetTouch(0);
-
-                        //grab the rotation of the camera so we can move in a psuedo local XY space
-                        target.rotation = transform.rotation;
-                        target.Translate(Vector3.right * touch0.deltaPosition.x * panSpeed * .05f);
-                        target.Translate(transform.up * -touch0.deltaPosition.y * panSpeed * .05f, Space.World);
-                    }
-
-                    // calculate position based on the new currentDistance 
-                    position = target.position - (rotation * Vector3.forward * desiredDistance + targetOffset);
-                    transform.position = position;
                 }
+                // pan
+                else if (Input.touchCount == 3)
+                {
+                    Touch touch0 = Input.GetTouch(0);
+                    if (touch0.phase == TouchPhase.Moved)
+                        Pan(touch0.deltaPosition.x * .025f, -touch0.deltaPosition.y * .025f);
+                }
+
+                position = target.position - (rotation * Vector3.forward * desiredDistance + targetOffset);
+                transform.position = position;
+            }
+            // mouse
+            else
+            {
+                // rotation
+                if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
+                    Rotation(Input.GetAxis("Mouse X") * .1f, Input.GetAxis("Mouse Y") * .1f);
+                // pan
+                else if (Input.GetMouseButton(2))
+                    Pan(-Input.GetAxis("Mouse X"), -Input.GetAxis("Mouse Y"));
+                // zoom in/out
+                Zoom(Input.GetAxis("Mouse ScrollWheel") * .5f);
+
+                position = target.position - (rotation * Vector3.forward * desiredDistance + targetOffset);
+                transform.position = position;
             }
         }
     }
@@ -193,10 +161,31 @@ public class MaxCamera : MonoBehaviour
         deg.y = Vector3.Angle(Vector3.up, transform.up);
     }
 
+    private void Rotation(float posx, float posy)
+    {
+        deg.x += posx * mouseRotationSpeed;
+        deg.y -= posy * mouseRotationSpeed;
+
+        deg.y = ClampAngle(deg.y, limitRotation.x, limitRotation.y);
+        desiredRotation = Quaternion.Euler(deg.y, deg.x, 0);
+        currentRotation = transform.rotation;
+
+        rotation = Quaternion.Slerp(currentRotation, desiredRotation, Time.unscaledDeltaTime * zoomDampening);
+        transform.rotation = rotation;
+    }
+
+    private void Pan(float right, float up)
+    {
+        target.rotation = transform.rotation;
+        target.Translate(Vector3.right * right * panSpeed);
+        target.Translate(transform.up * up * panSpeed, Space.World);
+    }
+
     private void Zoom(float increment)
     {
-        fov -= increment * 15;
-        Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, fov, Time.deltaTime * zoomDampening);
+        fov += increment * 15;
+        fov = Mathf.Clamp(fov, 5, 80);
+        Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, fov, Time.unscaledDeltaTime * zoomDampening);
     }
 
     private float ClampAngle(float angle, float min, float max)
