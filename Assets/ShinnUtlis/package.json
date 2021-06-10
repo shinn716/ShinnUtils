@@ -1,0 +1,11 @@
+{
+  "name": "com.shinn.utils",
+  "displayName": "Shinn.utils",
+  "description": "ShinnUtils",
+  "version": "0.0.1",
+  "license": "free",
+    "author": {
+        "name": "John Tsai",
+        "url": "https://github.com/shinn716"
+    }
+}

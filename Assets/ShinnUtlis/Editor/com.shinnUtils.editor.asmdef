@@ -1,0 +1,17 @@
+{
+    "name": "shinnUtils.editor",
+    "references": [
+        "GUID:77335a0ad328d4b41ba76e8ebd221648"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
