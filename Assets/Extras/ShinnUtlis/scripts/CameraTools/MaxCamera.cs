@@ -1,26 +1,6 @@
-﻿//
-// UDPServer - Unity TCP Socket
-//
-// Copyright (C) 2021 John Tsai
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
-//
+﻿// Author : Shinn
+// Date : 20210531
+// 
 
 using System.Collections;
 using System.Collections.Generic;
@@ -49,6 +29,7 @@ public class MaxCamera : MonoBehaviour
     private Vector3 vec3Origin = Vector3.zero;
     private Quaternion quaternionOrigin = Quaternion.identity;
     private bool boolResetFlag = false;
+    private bool isMouseDragging = false;
     #endregion
 
     #region MAIN
@@ -105,7 +86,7 @@ public class MaxCamera : MonoBehaviour
                         float currentMagitude = (touch0.position - touch1.position).magnitude;
                         float difference = currentMagitude - prevMagnitude;
 
-                        Zoom(difference * .01f);
+                        Zoom(difference * .005f);
                     }
                 }
                 // pan
@@ -122,11 +103,17 @@ public class MaxCamera : MonoBehaviour
             // mouse
             else
             {
+                if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
+                        isMouseDragging = true;
+
+                if (Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1))
+                    isMouseDragging = false;
+                
                 // rotation
-                if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
+                if (isMouseDragging)
                     Rotation(Input.GetAxis("Mouse X") * .1f, Input.GetAxis("Mouse Y") * .1f);
                 // pan
-                else if (Input.GetMouseButton(2))
+                if (Input.GetMouseButton(2))
                     Pan(-Input.GetAxis("Mouse X"), -Input.GetAxis("Mouse Y"));
                 // zoom in/out
                 Zoom(Input.GetAxis("Mouse ScrollWheel") * .5f);
@@ -177,14 +164,14 @@ public class MaxCamera : MonoBehaviour
     private void Pan(float right, float up)
     {
         target.rotation = transform.rotation;
-        target.Translate(Vector3.right * right * panSpeed);
-        target.Translate(transform.up * up * panSpeed, Space.World);
+        target.Translate(Vector3.right * right * panSpeed * (fov / fovOrigin));
+        target.Translate(transform.up * up * panSpeed * (fov / fovOrigin), Space.World);
     }
 
     private void Zoom(float increment)
     {
         fov += increment * 15;
-        fov = Mathf.Clamp(fov, 5, 80);
+        fov = Mathf.Clamp(fov, 5, 120);
         Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, fov, Time.unscaledDeltaTime * zoomDampening);
     }
 
