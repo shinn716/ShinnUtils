@@ -1,2 +1,2 @@
 # ShinnUtils
-UPM: git@github.com:shinn716/ShinnUtils.git#upm
+```git@github.com:shinn716/ShinnUtils.git#upm```
