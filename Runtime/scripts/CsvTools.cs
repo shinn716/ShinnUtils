@@ -121,15 +121,7 @@ namespace Shinn.Common
         // Following method is used to retrive the relative path as device platform
         private string GetPath(string name)
         {
-#if UNITY_STANDALONE
             return Application.streamingAssetsPath + "/csv/" + name + ".csv";
-// #elif UNITY_ANDROID
-//         return Application.persistentDataPath+"Saved_data.csv";
-// #elif UNITY_IPHONE
-//         return Application.persistentDataPath+"/"+"Saved_data.csv";
-// #else
-//         return Application.dataPath +"/"+"Saved_data.csv";
-#endif
         }
     }
 
