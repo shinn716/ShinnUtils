@@ -10,6 +10,13 @@ public class EventSample : MonoBehaviour
     public static string EVENT_INIT = nameof(EVENT_INIT);
 
     // Start is called before the first frame update
+
+    private void Awake()
+    {
+        if (GetComponent<EventManager>() == null)
+            gameObject.AddComponent<EventManager>();
+    }
+
     void Start()
     {
         EventManager.instance.AddListening(EVENT_INIT, OnSomethingHappened);
