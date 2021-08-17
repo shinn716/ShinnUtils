@@ -1,11 +1,12 @@
 {
   "name": "com.shinn.utils",
-  "displayName": "Shinn.utils",
-  "description": "ShinnUtils",
-  "version": "0.0.2",
+  "displayName": "ShinnUtils",
+  "description": "Development tools",
+  "version": "0.0.3",
   "license": "free",
-    "author": {
-        "name": "John Tsai",
-        "url": "https://github.com/shinn716"
-    }
+  "author": 
+  {
+    "name": "John Tsai",
+    "url": "https://github.com/shinn716"
+  }
 }
