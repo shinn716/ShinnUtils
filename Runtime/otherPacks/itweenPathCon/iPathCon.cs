@@ -21,7 +21,7 @@ namespace Shinn
             ipath.nodeCount = 0;
         }
 
-        [ContextMenu("RemoveAllNode")]
+        [ContextMenu("RefleshItweenPath")]
         public void RefleshItweenPath()
         {
             ipath.nodeCount = 0;
