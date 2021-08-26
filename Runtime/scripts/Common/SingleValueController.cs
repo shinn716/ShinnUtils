@@ -10,7 +10,8 @@ namespace Shinn
 
     public class SingleValueController : MonoBehaviour
     {
-        public enum Type{
+        public enum Type
+        {
             Itween,
             PerlinNoise
         }
@@ -41,32 +42,33 @@ namespace Shinn
         public float randomseed = 0.0F;
         public bool startRand = true;
         public float stopTime = 0;
-        bool startperlin = false;
-        
-        void OnEnable()
+
+        private bool startperlin = false;
+
+        private void OnEnable()
         {
             if (target == null)
                 target = gameObject;
 
-            if(autoStart)
-                Go();
+            if (autoStart)
+                CallStart();
         }
 
-        public void Go() {
-
+        public void CallStart()
+        {
             if (type == Type.PerlinNoise)
             {
-                if(startRand)
+                if (startRand)
                     randomseed = UnityEngine.Random.value;
                 startperlin = true;
 
-                if(stopTime!=0)
-                    Invoke("StopPerlinNoise", stopTime);
+                if (stopTime != 0)
+                    Invoke(nameof(StopPerlinNoise), stopTime);
             }
 
             else
             {
-                iTween.ValueTo(target, iTween.Hash("from", valuerange.x, "to", valuerange.y, "onupdate", "floateventsProcess",
+                iTween.ValueTo(target, iTween.Hash("from", valuerange.x, "to", valuerange.y, "onupdate", "FloatEventsProcess",
                                                     "time", time, "delay", delay,
                                                     "easetype", ease, "looptype", loop,
                                                     "ignoretimescale", ignoreTimeScalest,
@@ -77,28 +79,28 @@ namespace Shinn
 
         private void Update()
         {
-            if (startperlin) {
+            if (startperlin)
+            {
                 float value = basevalue + intensity * Mathf.PerlinNoise(Time.time * noiseSpeed, randomseed);
                 floatevents.Invoke(value);
             }
         }
 
-        public void StopPerlinNoise() {
+        public void StopPerlinNoise()
+        {
             startperlin = false;
         }
 
 
-        void floateventsProcess(float newvalue)
+        private void FloatEventsProcess(float newvalue)
         {
             floatevents.Invoke(newvalue);
         }
 
-        void Complete()
+        private void Complete()
         {
             if (complete)
                 unityevent.Invoke();
         }
-
     }
-
 }

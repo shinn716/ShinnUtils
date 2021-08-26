@@ -4,7 +4,6 @@ using UnityEngine.Events;
 
 public class GameObjectStateEvents : MonoBehaviour
 {
-
     public enum State
     {
         Enable,
@@ -13,18 +12,20 @@ public class GameObjectStateEvents : MonoBehaviour
 
     public State mystate;
 
-    [Header("Events")]
+    [Header("Transform")]
     public Vector3 position = Vector3.zero;
     public Vector3 rotation = Vector3.zero;
     public Vector3 scale = Vector3.one;
+
+    [Header("For color parameter")]
     public Color color = Color.white;
 
-    public Vector3 originPos;
+    private Vector3 originPos;
     private Quaternion originRot;
     private Vector3 originScl;
     private Color originColor;
 
-    [Space]
+    [Header("Start event in state which select")]
     public UnityEvent events;
 
     private void Awake()

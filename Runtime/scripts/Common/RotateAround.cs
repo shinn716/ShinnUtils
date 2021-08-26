@@ -11,7 +11,7 @@ namespace Shinn
             Constant,
             Noise
         }
-        private float RotTypeSelect()
+        private float ReturnValueFromSelect()
         {
             switch (rotaround)
             {
@@ -26,9 +26,8 @@ namespace Shinn
                     return Time.deltaTime;
             }
         }
-
-
-        public RotateType rotaround;
+        
+        public RotateType rotaround = RotateType.Constant;
 
         [Header("Constant"), Range(-100, 100)]
         public float Speed = 1;
@@ -45,7 +44,7 @@ namespace Shinn
 
         private void FixedUpdate()
         {
-            transform.RotateAround(Vector3.zero, Vector3.up, RotTypeSelect());
+            transform.RotateAround(Vector3.zero, Vector3.up, ReturnValueFromSelect());
 
             if (lookat)
                 transform.LookAt(target);

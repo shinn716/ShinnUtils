@@ -13,7 +13,7 @@ namespace Shinn{
             Random,
             Noise
         }
-        public void TypeSelect()
+        public void SetRotation()
         {
             switch (type)
             {
@@ -25,9 +25,9 @@ namespace Shinn{
                     break;
                 case Type.Noise:
                     transform.Rotate(new Vector3(
-                                BaseValue.x + (speed * Mathf.PerlinNoise(Time.time * NoiseSpeed, NoiseSeed1)),
-                                BaseValue.y + (speed * Mathf.PerlinNoise(Time.time * NoiseSpeed, NoiseSeed2)),
-                                BaseValue.z + (speed * Mathf.PerlinNoise(Time.time * NoiseSpeed, NoiseSeed3))
+                                BaseValue.x + (speed * Mathf.PerlinNoise(Time.time * NoiseSpeed, noiseSeed.x)),
+                                BaseValue.y + (speed * Mathf.PerlinNoise(Time.time * NoiseSpeed, noiseSeed.y)),
+                                BaseValue.z + (speed * Mathf.PerlinNoise(Time.time * NoiseSpeed, noiseSeed.z))
                     ));
                     break;
                 default:
@@ -35,40 +35,32 @@ namespace Shinn{
             }
         }
         public Type type;
-
+        
         [SerializeField, Range(0, 3)] float speed = .5f;
-
-        [Header("Constant Rotate")]
+        [SerializeField] bool FreezeRotX = false;
+        [SerializeField] bool FreezeRotY = false;
+        [SerializeField] bool FreezeRotZ = false;
+        
+        [Header("Constant")]
 		[SerializeField, Range(-3, 3)] float px;
 		[SerializeField, Range(-3, 3)] float py;
 		[SerializeField, Range(-3, 3)] float pz;		
 
-		[Header("Random Rotate")]
+		[Header("Random")]
 		[SerializeField] Vector2 RotatePxRange = Vector2.zero;
 		[SerializeField] Vector2 RotatePyRange = Vector2.zero;
 		[SerializeField] Vector2 RotatePzRange = Vector2.zero;
 
-        [Header("Noise Rotate")]
+        [Header("Noise")]
         [SerializeField] Vector3 BaseValue = Vector3.zero;
-        [SerializeField, Range(0, 1)] float NoiseSpeed=1;
+        [SerializeField, Range(0, 1)] float NoiseSpeed = 1;
 
-        [Header("Freeze Rotation")]
-		[SerializeField] bool FreezeRotx = false;
-		[SerializeField] bool FreezeRoty = false;
-		[SerializeField] bool FreezeRotz = false;
-
-        private float NoiseSeed1;
-        private float NoiseSeed2;
-        private float NoiseSeed3;
-        private float RotxOrg;
-        private float RotyOrg;
-        private float RotzOrg;
+        private Vector3 noiseSeed;
+        private Vector3 rotOrigin;
 
         private void Start()
-        {            
-            RotxOrg = transform.localEulerAngles.x;
-            RotyOrg = transform.localEulerAngles.y;
-            RotzOrg = transform.localEulerAngles.z;
+        {
+            rotOrigin = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, transform.localEulerAngles.z);
 
             if (type == Type.Random)
             {
@@ -77,26 +69,19 @@ namespace Shinn{
                 pz = Random.Range(RotatePzRange.x, RotatePzRange.y);
             }
             else if (type == Type.Noise)
-            {
-                NoiseSeed1 = Random.value;
-                NoiseSeed2 = Random.value;
-                NoiseSeed3 = Random.value;
-            }
+                noiseSeed = new Vector3(Random.value, Random.value, Random.value);
         }
 
         private void FixedUpdate () {
 
-            TypeSelect();
-
-			if (FreezeRotx)
-				transform.localEulerAngles = new Vector3 (RotxOrg, transform.localEulerAngles.y, transform.localEulerAngles.z);
-
-			if (FreezeRoty)
-				transform.localEulerAngles = new Vector3 (transform.localEulerAngles.x, RotyOrg, transform.localEulerAngles.z);
-
-			if (FreezeRotz)
-				transform.localEulerAngles = new Vector3 (transform.localEulerAngles.x, transform.localEulerAngles.y, RotzOrg);
-		}
+            // Set rotation
+            SetRotation();
+            
+            // Freeze rotation
+            transform.localEulerAngles = FreezeRotX ? new Vector3(rotOrigin.x, transform.localEulerAngles.y, transform.localEulerAngles.z) : transform.localEulerAngles;
+            transform.localEulerAngles = FreezeRotY ? new Vector3(transform.localEulerAngles.x, rotOrigin.y, transform.localEulerAngles.z) : transform.localEulerAngles;
+            transform.localEulerAngles = FreezeRotZ ? new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, rotOrigin.z) : transform.localEulerAngles;
+        }
 
     }
 }

@@ -7,8 +7,9 @@ namespace Shinn
     public class NPCBehavior : MonoBehaviour
     {
         [Header("NPC Moving Speed")]
-        public bool autoStart = true;
+        public bool isPlaying = true;
         public bool freezeXZ = true;
+
         [Range(0, 1)]
         public float ChaseSpeed = .1f;
         [Range(0.1f, 5)]
@@ -35,48 +36,47 @@ namespace Shinn
 
         private void FixedUpdate()
         {
-            if (autoStart)
-            {
-                Vector3 direction = target - transform.position;
-                if (freezeXZ)
-                    direction.y = 0;
+            if (!isPlaying)
+                return;
 
+            Vector3 direction = target - transform.position;
+            if (freezeXZ)
+                direction.y = 0;
+
+            if (direction != Vector3.zero)
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), .1f);
 
-                if (direction.magnitude > stopDist)
-                    transform.Translate(0, 0, ChaseSpeed);
+            if (direction.magnitude > stopDist)
+                transform.Translate(0, 0, ChaseSpeed);
+            else
+            {
+                timevalue += Time.fixedDeltaTime;
+                int seconds = (int)timevalue % 60;
 
-                else
+                if (seconds > RestTime)
                 {
-                    timevalue += Time.fixedDeltaTime;
-                    int seconds = (int)timevalue % 60;
+                    timevalue = 0;
+                    RestTime = Random.Range(RestTimeRange.x, RestTimeRange.y);
 
-                    if (seconds > RestTime)
-                    {
-                        timevalue = 0;
-                        RestTime = Random.Range(RestTimeRange.x, RestTimeRange.y);
-
-                        if (freezeXZ)
-                            target = new Vector3(   transform.position.x + Random.Range(MoveRange.x, MoveRange.y), 
-                                                    0, 
-                                                    transform.position.z + Random.Range(MoveRange.x, MoveRange.y));
-                        else
-                            target = new Vector3(   transform.position.x + Random.Range(MoveRange.x, MoveRange.y), 
-                                                    transform.position.y + Random.Range(MoveRange.x, MoveRange.y), 
-                                                    transform.position.z + Random.Range(MoveRange.x, MoveRange.y));
-                    }
+                    target = freezeXZ ?
+                            new Vector3(transform.position.x + Random.Range(MoveRange.x, MoveRange.y),
+                                        0,
+                                        transform.position.z + Random.Range(MoveRange.x, MoveRange.y))
+                                        :
+                            new Vector3(transform.position.x + Random.Range(MoveRange.x, MoveRange.y),
+                                        transform.position.y + Random.Range(MoveRange.x, MoveRange.y),
+                                        transform.position.z + Random.Range(MoveRange.x, MoveRange.y));
                 }
             }
         }
 
         private void OnDrawGizmos()
         {
-            if (showTarget)
-            {
-                Gizmos.color = Color.red;
-                Gizmos.DrawSphere(target, .5f);
-            }
-        }
+            if (!showTarget)
+                return;
 
+            Gizmos.color = Color.red;
+            Gizmos.DrawSphere(target, .5f);
+        }
     }
 }
