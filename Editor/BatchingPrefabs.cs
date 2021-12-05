@@ -20,7 +20,7 @@ namespace Shinn.Tools
             GetWindow<BatchingPrefabs>("Batching prefabs");
         }
 
-        [InitializeOnLoadMethod]
+        //[InitializeOnLoadMethod]
         private void Awake()
         {
             OnSelectionChange();
