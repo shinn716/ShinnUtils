@@ -287,31 +287,23 @@ namespace Shinn
 
         #region CompareTwoArray
         /// <summary>
-        /// 比較兩個Array(int, float, boolean, string) 的數值, 是否相同
+        /// 比較兩個Array 的數值, 是否相同
         /// </summary>
         /// <param name="array1"></param>
         /// <param name="array2"></param>
         /// <returns></returns>
-        public static bool CompareTwoArray(float[] array1, float[] array2)
+        public static bool Compare2Array<T, S>(T[] arrayA, S[] arrayB)
         {
-            bool result = array1.SequenceEqual(array2) ? true : false;
-            return result;
+            if (arrayA.Length != arrayB.Length) return false;
+
+            for (int i = 0; i < arrayA.Length; i++)
+            {
+                if (!arrayA[i].Equals(arrayB[i])) return false;
+            }
+
+            return true;
         }
-        public static bool CompareTwoArray(int[] array1, int[] array2)
-        {
-            bool result = array1.SequenceEqual(array2) ? true : false;
-            return result;
-        }
-        public static bool CompareTwoArray(string[] array1, string[] array2)
-        {
-            bool result = array1.SequenceEqual(array2) ? true : false;
-            return result;
-        }
-        public static bool CompareTwoArray(bool[] array1, bool[] array2)
-        {
-            bool result = array1.SequenceEqual(array2) ? true : false;
-            return result;
-        }
+
         #endregion
 
         #region ArrayValueGreaterThanValue, ArrayValueLessThanValue
