@@ -395,7 +395,7 @@ namespace Shinn
         {
             Transform tMin = null;
             float minDist = Mathf.Infinity;
-            foreach (Transform t in enemies)
+            foreach (Transform t in objs)
             {
                 float dist = Vector3.Distance(t.position, currentPos);
                 if (dist < minDist)
