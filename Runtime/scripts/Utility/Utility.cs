@@ -163,7 +163,6 @@ namespace Shinn
         {
             Texture2D Tex2D;
             byte[] FileData;
-
             if (File.Exists(FilePath))
             {
                 FileData = File.ReadAllBytes(FilePath);
@@ -202,11 +201,9 @@ namespace Shinn
             var bitarray = new BitArray(new[] { layoutMask.value });
             var att = bitarray.Cast<bool>().ToArray();
             List<int> returnArray = new List<int>();
-
             for (int i = 0; i < att.Length; i++)
                 if (att[i])
                     returnArray.Add(i);
-
             return returnArray.ToArray();
         }
         
@@ -229,7 +226,6 @@ namespace Shinn
             for (int i = 0; i < total; i++)
                 sequence[i] = i;
 
-
             int end = total - 1;
             for (int i = 0; i < total; i++)
             {
@@ -250,7 +246,6 @@ namespace Shinn
             foreach (var ip in host.AddressList)
                 if (ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
                     return ip.ToString();
-
             throw new Exception("No network adapters with an IPv4 address in the system!");
         }
 
@@ -265,7 +260,6 @@ namespace Shinn
             System.Reflection.FieldInfo[] fields = type.GetFields();
             foreach (System.Reflection.FieldInfo field in fields)
                 field.SetValue(copy, field.GetValue(original));
-
             return copy;
         }
 
@@ -281,7 +275,6 @@ namespace Shinn
             for (int i = 0; i < array.Length; i++)
                 if (array[i].Equals(trurorfalse))
                     value++;
-
             return value;
         }
 
@@ -294,13 +287,11 @@ namespace Shinn
         /// <returns></returns>
         public static bool Compare2Array<T, S>(T[] arrayA, S[] arrayB)
         {
-            if (arrayA.Length != arrayB.Length) return false;
-
+            if (arrayA.Length != arrayB.Length) 
+                return false;
             for (int i = 0; i < arrayA.Length; i++)
-            {
-                if (!arrayA[i].Equals(arrayB[i])) return false;
-            }
-
+                if (!arrayA[i].Equals(arrayB[i])) 
+                    return false;
             return true;
         }
 
@@ -379,15 +370,9 @@ namespace Shinn
         {
             Transform[] objs = Resources.FindObjectsOfTypeAll<Transform>() as Transform[];
             for (int i = 0; i < objs.Length; i++)
-            {
                 if (objs[i].hideFlags == HideFlags.None)
-                {
                     if (objs[i].name == name)
-                    {
                         return objs[i].gameObject;
-                    }
-                }
-            }
             return null;
         }
         
@@ -398,6 +383,28 @@ namespace Shinn
         public static string CreateUUID()
         {
             return Guid.NewGuid().ToString("N");
+        }
+                
+        /// <summary>
+        /// 取得距離最近的物件
+        /// </summary>
+        /// <param name="objs"></param>
+        /// <param name="currentPos"></param>
+        /// <returns></returns>
+        public static Transform GetClosestObject(Transform[] objs, Vector3 currentPos)
+        {
+            Transform tMin = null;
+            float minDist = Mathf.Infinity;
+            foreach (Transform t in enemies)
+            {
+                float dist = Vector3.Distance(t.position, currentPos);
+                if (dist < minDist)
+                {
+                    tMin = t;
+                    minDist = dist;
+                }
+            }
+            return tMin;
         }
     }
 }
