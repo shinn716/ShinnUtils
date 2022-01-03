@@ -15,7 +15,7 @@ public class UDPSample : MonoBehaviour
 
     private void OnApplicationQuit()
     {
-        m_UdpServer.callback -= GetServerReceive;
+        //m_UdpServer.callback -= GetServerReceive;
 
         m_UdpServer.Dispose();
         m_UdpClient.Dispose();
@@ -23,8 +23,8 @@ public class UDPSample : MonoBehaviour
 
     bool InitUDPServer()
     {
-        m_UdpServer = new Shinn.Common.UDPServer();
-        m_UdpServer.callback += GetServerReceive;
+        m_UdpServer = new Shinn.Common.UDPServer("127.0.0.1", 10000, GetServerReceive);
+        //m_UdpServer.callback += GetServerReceive;
         return true;
     }
 
@@ -35,17 +35,20 @@ public class UDPSample : MonoBehaviour
     }
 
 
-    void GetServerReceive()
+    void GetServerReceive(string callback)
     {
-        if (m_UdpServer.GetReceiveData() != null)
-        {
-            print("[Server-Receive]" + m_UdpServer.GetReceiveData());
-        }
+        print("[GetServerReceive]" + callback);
+
+        //if (m_UdpServer.GetReceiveData() != null)
+        //{
+        //    print("[Server-Receive]" + m_UdpServer.GetReceiveData());
+        //}
     }
 
     [ContextMenu("ClientSend")]
     void ClientSend()
     {
+        print("[ClientSend]");
         m_UdpClient.SendDataString("[Client-Send] Hello");
     }
 

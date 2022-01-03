@@ -22,6 +22,7 @@
 // THE SOFTWARE.
 //
 
+using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -32,39 +33,37 @@ namespace Shinn.Common
 {
     public class UDPServer
     {
-        public delegate void Callback();
-        public Callback callback;
+        //public delegate void Callback();
+        //public Callback callback;
 
         private IPEndPoint ipEndPoint;
         private UdpClient udpClient;
         private byte[] receiveByte;
-        private string receiveData = string.Empty;
+        //private string receiveData = string.Empty;
         private Thread thread;
-        
+
         /// <summary>
         /// Default ip = "127.0.0.1", port = 10000
         /// </summary>
         /// <param name="ip"></param>
         /// <param name="port"></param>
-        public UDPServer(string ip = "127.0.0.1", int port = 10000)
+        public UDPServer(string ip = "127.0.0.1", int port = 10000, Action<string> callback = null)
         {
             ipEndPoint = new IPEndPoint(IPAddress.Parse(ip), port);
             udpClient = new UdpClient(ipEndPoint.Port);
             receiveByte = new byte[1024];
-            
-            thread = new Thread(new ThreadStart(ReceiveData));
+
+            //thread = new Thread(new ThreadStart(ReceiveData));
+
+            if (callback == null)
+            {
+                Debug.Log("Need to set callback(string).");
+                return;
+            }
+            thread = new Thread(() => ReceiveData(callback));
             thread.Start();
 
             Debug.Log($"Init UDPServer {ip}/{port}");
-        }
-
-        /// <summary>
-        /// Call back.
-        /// </summary>
-        /// <returns></returns>
-        public string GetReceiveData()
-        {
-            return receiveData;
         }
 
         /// <summary>
@@ -79,19 +78,24 @@ namespace Shinn.Common
                 thread.Abort();
         }
         
-        private void ReceiveData()
+        private void ReceiveData(Action<string> callback)
         {
             while (true)
             {
                 receiveByte = udpClient.Receive(ref ipEndPoint);
-                receiveData = Encoding.UTF8.GetString(receiveByte);
+                string receiveData = Encoding.UTF8.GetString(receiveByte);
+                callback(receiveData);
 
                 //if (callback != null)                 // net 2.0
                 //    callback.Invoke();
 
-                callback?.Invoke();                     // net 4.0
+                //callback?.Invoke();                     // net 4.0
             }
         }
 
+        //private string GetReceiveData()
+        //{
+        //    return receiveData;
+        //}
     }
 }
