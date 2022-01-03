@@ -1,9 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿#if ENABLE_DOT_NET4_X
 
 // Api compatibility level need set to .NET 4.x
 using System.IO.Ports;
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,12 +16,12 @@ public class SerialReceiver
     private SerialPort stream;
     private Thread thread;
 
-    public delegate void Callback();
-    public Callback callback;
+    //public delegate void Callback();
+    //public Callback callback;
 
-    public string stringData { get; set; }
+    private string readingData = string.Empty;
 
-    public SerialReceiver(string port = "COM4", int baudrate = 9600)
+    public SerialReceiver(string port = "COM4", int baudrate = 9600, Action<string> callback = null)
     {
         // Get a list of serial port names.
         string[] ports = SerialPort.GetPortNames();
@@ -39,34 +41,72 @@ public class SerialReceiver
 
         task01.Wait();
 
+        if (callback == null)
+        {
+            Debug.Log("Need to input callback(string).");
+            return;
+        }
+
         Task task02 = Task.Run(() =>
         {
-            thread = new Thread(new ThreadStart(Read));
+            thread = new Thread(() => Read(callback));
             thread.Start();
         });
     }
 
     public void Dispose()
     {
+        Debug.Log("[SerialReceiver] Dispose");
         stream.Close();
         thread.Join();
     }
 
-    private void Read()
+
+    private void Read(Action<string> _callback)
     {
         while (stream.IsOpen)
         {
             try
             {
-                stringData = stream.ReadLine();
-                callback?.Invoke();                     // net 4.0
+                readingData = stream.ReadLine();
+                Callback(_callback);
             }
 
-            catch (Exception)
+            catch (Exception e)
             {
-                stringData = null;
-                //Debug.Log("[LOG]Serial is not ready." + e);
+                readingData = null;
+                Debug.Log("[LOG] Serial is not ready." + e);
             }
         }
     }
+
+    private void Callback(Action<string> functionName)
+    {
+        functionName(GetValue());
+    }
+
+    private string GetValue()
+    {
+        return readingData;
+    }
+
+
+    //private void Read()
+    //{
+    //    while (stream.IsOpen)
+    //    {
+    //        try
+    //        {
+    //            stringData = stream.ReadLine();
+    //            callback?.Invoke();                     // net 4.0
+    //        }
+
+    //        catch (Exception)
+    //        {
+    //            stringData = null;
+    //            //Debug.Log("[LOG]Serial is not ready." + e);
+    //        }
+    //    }
+    //}
 }
+#endif
