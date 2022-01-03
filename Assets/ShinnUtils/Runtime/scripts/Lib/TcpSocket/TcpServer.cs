@@ -38,23 +38,25 @@ namespace Shinn.Common
         public string Ip { get; set; }
         public int Port { get; set; }
 
-        public event CallReceiveback eventReceiveCallback;
-        public delegate void CallReceiveback();
-        public event CallSendback eventSendCallback;
-        public delegate void CallSendback();
+        //public event CallReceiveback eventReceiveCallback;
+        //public delegate void CallReceiveback();
+        //public event CallSendback eventSendCallback;
+        //public delegate void CallSendback();
 
-        private string m_receive = string.Empty;
-        private string m_echo = string.Empty;
+        //private string m_receive = string.Empty;
+        //private string m_echo = string.Empty;
+
         private TcpListener tcpListener;
         private Thread tcpListenerThread;
         private TcpClient connectedTcpClient;
 
-        public TCPServer(string _ip ="127.0.0.1", int _port = 6969)
+        public TCPServer(string _ip ="127.0.0.1", int _port = 6969, Action<string> callback = null)
         {
             Ip = _ip;
             Port = _port;
 
-            tcpListenerThread = new Thread(new ThreadStart(ListenForIncommingRequests));
+            //tcpListenerThread = new Thread(new ThreadStart(ListenForIncommingRequests));
+            tcpListenerThread = new Thread(() => ListenForIncommingRequests(callback));
             tcpListenerThread.IsBackground = true;
             tcpListenerThread.Start();
             Debug.Log($"Init TCPServer {Ip}/{Port}");
@@ -75,10 +77,10 @@ namespace Shinn.Common
         /// <summary> 	
         /// Send message to client using socket connection. 	
         /// </summary> 	
-        public void SendMessage(string message)
+        public void SendMessage(string message, Action<string> callback = null)
         {
-            m_receive = string.Empty;
-            m_echo = string.Empty;
+            //m_receive = string.Empty;
+            //m_echo = string.Empty;
 
             if (connectedTcpClient == null)
                 return;
@@ -96,36 +98,37 @@ namespace Shinn.Common
                     stream.Write(serverMessageAsByteArray, 0, serverMessageAsByteArray.Length);
                     //Debug.Log("Server sent his message - should be received by client");
 
-                    m_echo = "[Send Success]" + message;
-                    eventSendCallback?.Invoke();                     // net 4.0
+                    var m_echo = "[Send Success]" + message;
+                    callback(m_echo);
+
+                    //eventSendCallback?.Invoke();                     // net 4.0
                 }
             }
-            catch (SocketException socketException)
+            catch (SocketException e)
             {
-                Debug.Log("Socket exception: " + socketException);
+                Debug.Log("Socket exception: " + e);
             }
         }
 
-        /// <summary>
-        /// Client receive message.
-        /// </summary>
-        /// <returns></returns>
-        public string GetReceiveData()
-        {
-            return m_receive;
-        }
+        ///// <summary>
+        ///// Client receive message.
+        ///// </summary>
+        ///// <returns></returns>
+        //public string GetReceiveData()
+        //{
+        //    return m_receive;
+        //}
 
-        /// <summary>
-        /// echo
-        /// </summary>
-        /// <returns></returns>
-        public string GetEcho()
-        {
-            return m_echo;
-        }
+        ///// <summary>
+        ///// echo
+        ///// </summary>
+        ///// <returns></returns>
+        //public string GetEcho()
+        //{
+        //    return m_echo;
+        //}
 
-
-        private void ListenForIncommingRequests()
+        private void ListenForIncommingRequests(Action<string> callback = null)
         {
             try
             {
@@ -150,16 +153,18 @@ namespace Shinn.Common
                                 string clientMessage = Encoding.ASCII.GetString(incommingData);
                                 //Debug.Log("client message received as: " + clientMessage);
 
-                                m_receive = clientMessage;
-                                eventReceiveCallback?.Invoke();                     // net 4.0
+                                callback(clientMessage);
+
+                                //m_receive = clientMessage;
+                                //eventReceiveCallback?.Invoke();                     // net 4.0
                             }
                         }
                     }
                 }
             }
-            catch (SocketException socketException)
+            catch (SocketException e)
             {
-                Debug.Log("SocketException " + socketException.ToString());
+                Debug.Log("SocketException " + e);
             }
         }
     }

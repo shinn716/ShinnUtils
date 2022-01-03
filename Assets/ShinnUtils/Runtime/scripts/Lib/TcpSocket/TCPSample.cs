@@ -15,27 +15,27 @@ public class TCPSample : MonoBehaviour
 
     bool InitTCPServer()
     {
-        m_tCPServer = new Shinn.Common.TCPServer();
-        m_tCPServer.eventReceiveCallback += GetServerReceive;
-        m_tCPServer.eventSendCallback += GetServerEcho;
+        m_tCPServer = new Shinn.Common.TCPServer("127.0.0.1", 6969, GetServerReceive);
+        //m_tCPServer.eventReceiveCallback += GetServerReceive;
+        //m_tCPServer.eventSendCallback += GetServerEcho;
         return true;
     }
 
     bool InitTCPClient()
     {
-        m_tCPClient = new Shinn.Common.TCPClient();
-        m_tCPClient.eventReceiveCallback += GetClientReceive;
-        m_tCPClient.eventSendCallback += GetClientEcho;
+        m_tCPClient = new Shinn.Common.TCPClient("127.0.0.1", 6969, GetClientReceive);
+        //m_tCPClient.eventReceiveCallback += GetClientReceive;
+        //m_tCPClient.eventSendCallback += GetClientEcho;
         return true;
     }
 
     private void OnApplicationQuit()
     {
-        m_tCPServer.eventReceiveCallback -= GetServerReceive;
-        m_tCPServer.eventSendCallback -= GetServerEcho;
+        //m_tCPServer.eventReceiveCallback -= GetServerReceive;
+        //m_tCPServer.eventSendCallback -= GetServerEcho;
 
-        m_tCPClient.eventReceiveCallback -= GetClientReceive;
-        m_tCPClient.eventSendCallback -= GetClientEcho;
+        //m_tCPClient.eventReceiveCallback -= GetClientReceive;
+        //m_tCPClient.eventSendCallback -= GetClientEcho;
 
         m_tCPServer.Dispose();
         m_tCPClient.Dispose();
@@ -44,49 +44,57 @@ public class TCPSample : MonoBehaviour
     [ContextMenu("ClientSend")]
     private void ClientSend()
     {
-        m_tCPClient.SendMessage("C123");
+        m_tCPClient.SendMessage("C123", GetClientEcho);
     }
 
     [ContextMenu("ServerSend")]
     private void ServerSend()
     {
-        m_tCPServer.SendMessage("S123");
+        m_tCPServer.SendMessage("S123", GetServerEcho);
     }
 
 
 
 
-    void GetClientEcho()
+    void GetClientEcho(string callback)
     {
-        if (m_tCPClient.GetEcho() != null)
-        {
-            print("[Client-echo]" + m_tCPClient.GetEcho());
-        }
+        print("[Client-echo]" + callback);
+
+        //if (m_tCPClient.GetEcho() != null)
+        //{
+        //    print("[Client-echo]" + m_tCPClient.GetEcho());
+        //}
     }
 
-    void GetClientReceive()
+    void GetClientReceive(string callback)
     {
-        if (m_tCPClient.GetReceiveData() != null)
-        {
-            print("[Client-Receive]" + m_tCPClient.GetReceiveData());
-        }
+        print("[Client-Receive]" + callback);
+
+        //if (m_tCPClient.GetReceiveData() != null)
+        //{
+        //    print("[Client-Receive]" + m_tCPClient.GetReceiveData());
+        //}
     }
 
 
 
-    void GetServerEcho()
+    void GetServerEcho(string callback)
     {
-        if (m_tCPServer.GetEcho() != null)
-        {
-            print("[Server-echo]" + m_tCPServer.GetEcho());
-        }
+        print("[Server-echo]" + callback);
+
+        //if (m_tCPServer.GetEcho() != null)
+        //{
+        //    print("[Server-echo]" + m_tCPServer.GetEcho());
+        //}
     }
 
-    void GetServerReceive()
+    void GetServerReceive(string callback)
     {
-        if (m_tCPServer.GetReceiveData() != null)
-        {
-            print("[Server-Receive]" + m_tCPServer.GetReceiveData());
-        }
+        print("[Server-Receive]" + callback);
+
+        //if (m_tCPServer.GetReceiveData() != null)
+        //{
+        //    print("[Server-Receive]" + m_tCPServer.GetReceiveData());
+        //}
     }
 }
