@@ -2,7 +2,7 @@
   "name": "com.shinn.utils",
   "displayName": "ShinnUtils",
   "description": "Development tools",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "license": "free",
   "author": 
   {
@@ -13,6 +13,10 @@
   {
     "displayName": "Samples",
     "path": "Samples~"
+  },
+  {
+    "displayName": "SimpleDotween",
+    "path": "SimpleDotween~"
   }
   ]
 }
