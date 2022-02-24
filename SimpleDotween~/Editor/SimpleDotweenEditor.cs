@@ -117,7 +117,7 @@ public class SimpleDotweenEditor : Editor
         label_scaleValue = new GUIContent(" - Scale to/from");
 
         label_posValue = new GUIContent(" - Move to position");
-        label_pos2Value = new GUIContent(" - Move to position 2D");
+        //label_pos2Value = new GUIContent(" - Move to position 2D");
         label_rotvalue = new GUIContent(" - Rotate to");
 
 
@@ -199,22 +199,27 @@ public class SimpleDotweenEditor : Editor
                 EditorGUILayout.PropertyField(posValue, label_posValue);
                 break;
             case 7:
+                EditorGUILayout.PropertyField(posValue, label_posValue);
+                break;
+
+            case 8:
                 EditorGUILayout.PropertyField(pos2Value, label_pos2Value);
                 break;
-            case 8:
-                EditorGUILayout.PropertyField(rotvalue, label_rotvalue);
-                break;
+
             case 9:
                 EditorGUILayout.PropertyField(rotvalue, label_rotvalue);
                 break;
             case 10:
+                EditorGUILayout.PropertyField(rotvalue, label_rotvalue);
+                break;
+            case 11:
                 EditorGUILayout.PropertyField(fadeStart, label_fadeStart);
                 EditorGUILayout.PropertyField(fadeEnd, label_fadeEnd);
                 break;
-            case 11:
+            case 12:
                 EditorGUILayout.PropertyField(endColor, label_endColor);
                 break;
-            case 12:
+            case 13:
                 EditorGUILayout.PropertyField(endColor, label_endColor);
                 break;
         }

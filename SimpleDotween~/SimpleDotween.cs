@@ -27,8 +27,10 @@ public class SimpleDotween : MonoBehaviour
         scaleFrom,
         moveToTarget,
         moveToTarget_LOCAL,
+
         moveToPos,
         moveToPos_LOCAL,
+        moveToPos_2D_LOCAL,
 
         rotationTo,
         rotationTo_LOCAL,
@@ -143,20 +145,19 @@ public class SimpleDotween : MonoBehaviour
             case State.moveToTarget_LOCAL:
                 dotween = target.transform.DOLocalMove(moveloc.localPosition, time).SetEase(ease).SetDelay(delay).SetLoops(looptimes, looptype).SetUpdate(ignoreTimeScale).OnComplete(Complete);
                 break;
+
             case State.moveToPos:
-                if (target.GetComponent<RectTransform>())
-                {
-                    Vector2 rect = target.GetComponent<RectTransform>().anchoredPosition;
-                    dotween = DOTween.To(() => rect, x => rect = x, pos2Value, time).OnUpdate(() =>
-                    {
-                        target.GetComponent<RectTransform>().anchoredPosition = rect;
-                    }).SetEase(ease).SetDelay(delay).SetLoops(looptimes, looptype).SetUpdate(ignoreTimeScale).OnComplete(Complete);
-                }
-                else
-                    dotween = target.transform.DOLocalMove(posValue, time).SetEase(ease).SetDelay(delay).SetLoops(looptimes, looptype).SetUpdate(ignoreTimeScale).OnComplete(Complete);
+                dotween = target.transform.DOLocalMove(posValue, time).SetEase(ease).SetDelay(delay).SetLoops(looptimes, looptype).SetUpdate(ignoreTimeScale).OnComplete(Complete);
                 break;
             case State.moveToPos_LOCAL:
                 dotween = target.transform.DOLocalMove(posValue, time).SetEase(ease).SetDelay(delay).SetLoops(looptimes, looptype).SetUpdate(ignoreTimeScale).OnComplete(Complete);
+                break;
+            case State.moveToPos_2D_LOCAL:
+                Vector2 rect = target.GetComponent<RectTransform>().anchoredPosition;
+                dotween = DOTween.To(() => rect, x => rect = x, pos2Value, time).OnUpdate(() =>
+                {
+                    target.GetComponent<RectTransform>().anchoredPosition = rect;
+                }).SetEase(ease).SetDelay(delay).SetLoops(looptimes, looptype).SetUpdate(ignoreTimeScale).OnComplete(Complete);
                 break;
 
             case State.rotationTo:

@@ -1,4 +1,4 @@
-﻿// Author : Shinn
+// Author : Shinn
 // Date : 20210531
 // 
 
@@ -9,18 +9,17 @@ using UnityEngine;
 public class MaxCamera : MonoBehaviour
 {
     #region DECLARE
-    public Vector3 targetOffset;
+    public bool useTouch = false;
     public Vector2 limitRotation = new Vector2(-80, 80);    // x->min, y->max
     public float distance = 5.0f;
-    public float mouseRotationSpeed = 200;
+    public float rollCameraSpeed = .1f;
+    public float zoomDampening = 50f;
+    public float zoomTouchOffset = .5f;
     public float panSpeed = 0.3f;
-    public float zoomDampening = 6.0f;
 
     private Transform target = null;
     private Vector2 deg = Vector2.zero;
     private float desiredDistance = 0;
-    private float fov = 0;
-    private float fovOrigin = 0;
 
     private Quaternion currentRotation = Quaternion.identity;
     private Quaternion desiredRotation = Quaternion.identity;
@@ -28,100 +27,115 @@ public class MaxCamera : MonoBehaviour
     private Vector3 position = Vector3.zero;
     private Vector3 vec3Origin = Vector3.zero;
     private Quaternion quaternionOrigin = Quaternion.identity;
-    private bool boolResetFlag = false;
     private bool isMouseDragging = false;
+
+    private bool init = false;
+    private GameObject povit = null;
+    private Rigidbody rb = null;
     #endregion
 
     #region MAIN
     private void Start()
     {
+        povit = new GameObject();
+        povit.name = $"Camera_Povit";
+        transform.SetParent(povit.transform);
+        povit.transform.localPosition = transform.localPosition;
+        povit.transform.localRotation = transform.localRotation;
+        transform.localPosition = Vector3.zero;
+        transform.localRotation = Quaternion.identity;
+
+        if (GetComponent<Rigidbody>() == null)
+            rb = gameObject.AddComponent<Rigidbody>();
+        else
+            rb = gameObject.GetComponent<Rigidbody>();
+        rb.mass = 10;
+        rb.drag = 10;
+        rb.useGravity = false;
+        rb.isKinematic = false;
+
         Init();
 
         distance = Vector3.Distance(transform.position, target.position);
-        vec3Origin = Camera.main.transform.position;
-        quaternionOrigin = Camera.main.transform.rotation;
-        fovOrigin = Camera.main.fieldOfView;
-        fov = fovOrigin;
+        vec3Origin = povit.transform.localPosition;
+        quaternionOrigin = povit.transform.localRotation;
+
+        Rotation(0, 0);
     }
 
     private void Update()
     {
-        if (boolResetFlag)
+        // touch
+        if (useTouch)
         {
-            if (Vector3.Distance(transform.position, vec3Origin) < .001f)
+            // rotation
+            if (Input.touchCount == 1)
             {
-                transform.localPosition = vec3Origin;
-                transform.localRotation = quaternionOrigin;
-                boolResetFlag = false;
-                Init();
+                Touch touch0 = Input.GetTouch(0);
+                if (touch0.phase == TouchPhase.Moved)
+                    Rotation(touch0.deltaPosition.x * .002f, touch0.deltaPosition.y * .002f);
+            }
+            //zoom in/out  
+            else if (Input.touchCount == 2)
+            {
+                Touch touch0 = Input.GetTouch(0);
+                Touch touch1 = Input.GetTouch(1);
+                if (touch0.phase == TouchPhase.Moved || touch1.phase == TouchPhase.Moved)
+                {
+                    Vector2 touch0PrevPos = touch0.position - touch0.deltaPosition;
+                    Vector2 touch1PrevPos = touch1.position - touch1.deltaPosition;
+
+                    float prevMagnitude = (touch0PrevPos - touch1PrevPos).magnitude;
+                    float currentMagitude = (touch0.position - touch1.position).magnitude;
+                    float difference = currentMagitude - prevMagnitude;
+
+                    // Zoom in/Zoom out
+                    if (difference > 5f)
+                        rb.velocity = zoomTouchOffset * Time.deltaTime * zoomDampening * transform.forward;
+                    else if (difference < -5f)
+                        rb.velocity = zoomTouchOffset * Time.deltaTime * zoomDampening * -transform.forward;
+                }
+            }
+            //pan
+            else if (Input.touchCount == 3)
+            {
+                Touch touch0 = Input.GetTouch(0);
+                Touch touch1 = Input.GetTouch(1);
+                Touch touch2 = Input.GetTouch(2);
+                if (touch0.phase == TouchPhase.Moved && touch1.phase == TouchPhase.Moved && touch2.phase == TouchPhase.Moved)
+                    Pan(touch0.deltaPosition.x * .025f, touch0.deltaPosition.y * .025f);
             }
 
-            Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, fov, Time.unscaledDeltaTime * zoomDampening);
-            transform.position = Vector3.Lerp(transform.localPosition, vec3Origin, Time.unscaledDeltaTime * zoomDampening);
-            transform.rotation = Quaternion.Slerp(transform.localRotation, Quaternion.identity, Time.unscaledDeltaTime * zoomDampening);
+            position = target.position - (rotation * Vector3.forward * desiredDistance);
+            povit.transform.localPosition = position;
         }
+        // mouse
         else
         {
-            // touch
-            if (Input.touchCount > 0)
-            {
-                // rotation
-                if (Input.touchCount == 1)
-                {
-                    Touch touch0 = Input.GetTouch(0);
-                    if (touch0.phase == TouchPhase.Moved)
-                        Rotation(-touch0.deltaPosition.x * .002f, -touch0.deltaPosition.y * .002f);
-                }
-                // zoom in/out  
-                else if (Input.touchCount == 2)
-                {
-                    Touch touch0 = Input.GetTouch(0);
-                    Touch touch1 = Input.GetTouch(1);
-                    if (touch0.phase == TouchPhase.Moved || touch1.phase == TouchPhase.Moved)
-                    {
-                        Vector2 touch0PrevPos = touch0.position - touch0.deltaPosition;
-                        Vector2 touch1PrevPos = touch1.position - touch1.deltaPosition;
+            if (Input.GetMouseButtonDown(0))
+                isMouseDragging = true;
 
-                        float prevMagnitude = (touch0PrevPos - touch1PrevPos).magnitude;
-                        float currentMagitude = (touch0.position - touch1.position).magnitude;
-                        float difference = currentMagitude - prevMagnitude;
+            if (Input.GetMouseButtonUp(0))
+                isMouseDragging = false;
 
-                        Zoom(difference * .005f);
-                    }
-                }
-                // pan
-                else if (Input.touchCount == 3)
-                {
-                    Touch touch0 = Input.GetTouch(0);
-                    if (touch0.phase == TouchPhase.Moved)
-                        Pan(touch0.deltaPosition.x * .025f, -touch0.deltaPosition.y * .025f);
-                }
+            // rotation
+            if (isMouseDragging)
+                Rotation(Input.GetAxis("Mouse X") * rollCameraSpeed, Input.GetAxis("Mouse Y") * rollCameraSpeed);
 
-                position = target.position - (rotation * Vector3.forward * desiredDistance + targetOffset);
-                transform.position = position;
-            }
-            // mouse
-            else
-            {
-                if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
-                        isMouseDragging = true;
+            // pan
+            if (Input.GetMouseButton(1) || Input.GetMouseButton(2))
+                Pan(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
 
-                if (Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1))
-                    isMouseDragging = false;
-                
-                // rotation
-                if (isMouseDragging)
-                    Rotation(Input.GetAxis("Mouse X") * .1f, Input.GetAxis("Mouse Y") * .1f);
-                // pan
-                if (Input.GetMouseButton(2))
-                    Pan(-Input.GetAxis("Mouse X"), -Input.GetAxis("Mouse Y"));
-                // zoom in/out
-                Zoom(Input.GetAxis("Mouse ScrollWheel") * .5f);
+            // Zoom in/Zoom out
+            if (Input.GetAxis("Mouse ScrollWheel") > 0f)
+                rb.velocity = Time.deltaTime * zoomDampening * -transform.forward;
+            else if (Input.GetAxis("Mouse ScrollWheel") < 0f)
+                rb.velocity = Time.deltaTime * zoomDampening * transform.forward;
 
-                position = target.position - (rotation * Vector3.forward * desiredDistance + targetOffset);
-                transform.position = position;
-            }
+            position = target.position - (rotation * Vector3.forward * desiredDistance);
+            povit.transform.localPosition = position;
         }
+
     }
     #endregion
 
@@ -131,11 +145,11 @@ public class MaxCamera : MonoBehaviour
         if (!target)
         {
             GameObject go = new GameObject("Cam Target");
-            go.transform.position = Camera.main.transform.position + (transform.forward * distance);
+            go.transform.position = transform.position + (transform.forward * distance);
             target = go.transform;
         }
 
-        target.position = Camera.main.transform.position + (transform.forward * distance);
+        target.position = transform.position + (povit.transform.forward * distance);
         target.rotation = quaternionOrigin;
 
         desiredDistance = distance;
@@ -146,33 +160,28 @@ public class MaxCamera : MonoBehaviour
 
         deg.x = Vector3.Angle(Vector3.right, transform.right);
         deg.y = Vector3.Angle(Vector3.up, transform.up);
+
+        init = true;
     }
 
     private void Rotation(float posx, float posy)
     {
-        deg.x += posx * mouseRotationSpeed;
-        deg.y -= posy * mouseRotationSpeed;
+        deg.x += posx * 200;
+        deg.y -= posy * 200;
 
         deg.y = ClampAngle(deg.y, limitRotation.x, limitRotation.y);
         desiredRotation = Quaternion.Euler(deg.y, deg.x, 0);
-        currentRotation = transform.rotation;
+        currentRotation = povit.transform.rotation;
 
         rotation = Quaternion.Slerp(currentRotation, desiredRotation, Time.unscaledDeltaTime * zoomDampening);
-        transform.rotation = rotation;
+        povit.transform.rotation = rotation;
     }
 
     private void Pan(float right, float up)
     {
         target.rotation = transform.rotation;
-        target.Translate(Vector3.right * right * panSpeed * (fov / fovOrigin));
-        target.Translate(transform.up * up * panSpeed * (fov / fovOrigin), Space.World);
-    }
-
-    private void Zoom(float increment)
-    {
-        fov += increment * 15;
-        fov = Mathf.Clamp(fov, 5, 120);
-        Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, fov, Time.unscaledDeltaTime * zoomDampening);
+        target.Translate(Vector3.right * right * panSpeed);
+        target.Translate(transform.up * up * panSpeed, Space.World);
     }
 
     private float ClampAngle(float angle, float min, float max)
@@ -186,10 +195,19 @@ public class MaxCamera : MonoBehaviour
     #endregion
 
     #region PUBLIC
+    [ContextMenu("ResetCam")]
     public void ResetCam()
     {
-        boolResetFlag = true;
-        fov = fovOrigin;
+        if (!init)
+            return;
+
+        transform.localPosition = Vector3.zero;
+        transform.localRotation = Quaternion.identity;
+        povit.transform.localPosition = vec3Origin;
+        povit.transform.localRotation = quaternionOrigin;
+        rb.velocity = Vector3.zero;
+
+        Init();
     }
     #endregion
 }
