@@ -20,13 +20,19 @@ public class MicInput : MonoBehaviour
     private AudioSource _audio;
 
     void Awake()
-    {
+    { 
         instance = this;
-        _audio = GetComponent<AudioSource>();
     }
 
-    void Start()
+    IEnumerator Start()
     {
+        AudioSettings.speakerMode = AudioSpeakerMode.Mono;
+        AudioSettings.outputSampleRate = 44100;
+        AudioSettings.SetDSPBufferSize(320, 4);
+        yield return null;
+        _audio = GetComponent<AudioSource>();
+
+        yield return null;
         microphoneList.Clear();
         foreach (var device in Microphone.devices)
             microphoneList.Add(device);
@@ -35,17 +41,32 @@ public class MicInput : MonoBehaviour
             if (Microphone.devices[i].Equals("Microphone (Realtek(R) Audio)") || Microphone.devices[i].Equals("麥克風排列 (Realtek(R) Audio)"))
                 GetDevicesIndex = i;
 
+        yield return null;
         InitMic();
     }
+
     [ContextMenu("Init")]
-    public bool InitMic()
+    public void InitMic()
     {
-        _audio.clip = Microphone.Start(Microphone.devices[GetDevicesIndex], true, 10, 44100);
+        _audio.Stop();
         _audio.loop = true;
         _audio.mute = false;
-        //while (!(Microphone.GetPosition(null) > 0)) { }
-        _audio.Play();
-        return true;
+
+        int minFreq, maxFreq;
+        Microphone.GetDeviceCaps(null, out minFreq, out maxFreq);
+
+        _audio.clip = Microphone.Start(Microphone.devices[GetDevicesIndex], true, 10, 44100);
+
+        while (_audio.clip != null)
+        {
+            int delay = Microphone.GetPosition(null);
+            if (delay > 0)
+            {
+                _audio.Play();
+                Debug.Log("Latency = " + (1000.0f / GetComponent<AudioSource>().clip.frequency * delay) + " msec");
+                break;
+            }
+        }
     }
     [ContextMenu("Dispose")]
     public void Dispose()
@@ -76,5 +97,4 @@ public class MicInput : MonoBehaviour
             for (var i = 0; i < data.Length; i++)
                 data[i] = 0;
     }
-
 }
