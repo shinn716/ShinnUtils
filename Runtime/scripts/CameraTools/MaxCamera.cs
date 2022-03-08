@@ -6,32 +6,38 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Camera))]
 public class MaxCamera : MonoBehaviour
 {
     #region DECLARE
-    public bool useTouch = false;
-    public Vector2 limitRotation = new Vector2(-80, 80);    // x->min, y->max
-    public float distance = 5.0f;
-    public float rollCameraSpeed = .1f;
-    public float zoomDampening = 50f;
-    public float zoomTouchOffset = .5f;
-    public float panSpeed = 0.3f;
+    [Header("Mouse/Touch"), SerializeField] private Types types = Types.MOUSE;
 
+    [Header("Rotation"), SerializeField] private Vector2 limitRotation = new Vector2(-80, 80);    // x->min, y->max
+    [SerializeField] private float distance = 5.0f;
+    
+    [Header("Roll"), SerializeField] private float rollCameraSpeed = .1f;
+
+    [Header("Zoom In/Out"), SerializeField] private float zoomDampening = 1000f;
+    [SerializeField] private float zoomTouchOffset = .5f;
+    [SerializeField] private float panSpeed = 0.3f;
+
+    private GameObject povit = null;
+    private Rigidbody rb = null;
     private Transform target = null;
-    private Vector2 deg = Vector2.zero;
+
+
     private float desiredDistance = 0;
+    private bool isMouseDragging = false;
+    private bool init = false;
+
+    private Vector2 deg = Vector2.zero;
+    private Vector3 position = Vector3.zero;
+    private Vector3 vec3Origin = Vector3.zero;
 
     private Quaternion currentRotation = Quaternion.identity;
     private Quaternion desiredRotation = Quaternion.identity;
-    private Quaternion rotation = Quaternion.identity;
-    private Vector3 position = Vector3.zero;
-    private Vector3 vec3Origin = Vector3.zero;
     private Quaternion quaternionOrigin = Quaternion.identity;
-    private bool isMouseDragging = false;
-
-    private bool init = false;
-    private GameObject povit = null;
-    private Rigidbody rb = null;
+    private Quaternion rotation = Quaternion.identity;
     #endregion
 
     #region MAIN
@@ -42,15 +48,13 @@ public class MaxCamera : MonoBehaviour
         transform.SetParent(povit.transform);
         povit.transform.localPosition = transform.localPosition;
         povit.transform.localRotation = transform.localRotation;
+
         transform.localPosition = Vector3.zero;
         transform.localRotation = Quaternion.identity;
 
-        if (GetComponent<Rigidbody>() == null)
-            rb = gameObject.AddComponent<Rigidbody>();
-        else
-            rb = gameObject.GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody>() == null ? gameObject.AddComponent<Rigidbody>() : GetComponent<Rigidbody>();
         rb.mass = 10;
-        rb.drag = 10;
+        rb.drag = 5;
         rb.useGravity = false;
         rb.isKinematic = false;
 
@@ -66,7 +70,7 @@ public class MaxCamera : MonoBehaviour
     private void Update()
     {
         // touch
-        if (useTouch)
+        if (types.Equals(Types.TOUCH))
         {
             // rotation
             if (Input.touchCount == 1)
@@ -124,7 +128,7 @@ public class MaxCamera : MonoBehaviour
 
             // pan
             if (Input.GetMouseButton(1) || Input.GetMouseButton(2))
-                Pan(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
+                Pan(Input.GetAxis("Mouse X"), -Input.GetAxis("Mouse Y"));
 
             // Zoom in/Zoom out
             if (Input.GetAxis("Mouse ScrollWheel") > 0f)
@@ -140,6 +144,12 @@ public class MaxCamera : MonoBehaviour
     #endregion
 
     #region PRIVATE
+    private enum Types
+    {
+        MOUSE,
+        TOUCH
+    }
+    
     private void Init()
     {
         if (!target)
@@ -149,8 +159,7 @@ public class MaxCamera : MonoBehaviour
             target = go.transform;
         }
 
-        target.position = transform.position + (povit.transform.forward * distance);
-        target.rotation = quaternionOrigin;
+        target.SetPositionAndRotation(transform.position + (povit.transform.forward * distance), quaternionOrigin);
 
         desiredDistance = distance;
         position = vec3Origin;
@@ -180,8 +189,8 @@ public class MaxCamera : MonoBehaviour
     private void Pan(float right, float up)
     {
         target.rotation = transform.rotation;
-        target.Translate(Vector3.right * right * panSpeed);
-        target.Translate(transform.up * up * panSpeed, Space.World);
+        target.Translate(panSpeed * right * Vector3.right);
+        target.Translate(panSpeed * up * Vector3.up, Space.World);
     }
 
     private float ClampAngle(float angle, float min, float max)
