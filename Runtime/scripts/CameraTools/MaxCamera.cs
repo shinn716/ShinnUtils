@@ -34,7 +34,6 @@ public class MaxCamera : MonoBehaviour
     private Vector3 position = Vector3.zero;
     private Vector3 vec3Origin = Vector3.zero;
 
-    private Quaternion currentRotation = Quaternion.identity;
     private Quaternion desiredRotation = Quaternion.identity;
     private Quaternion quaternionOrigin = Quaternion.identity;
     private Quaternion rotation = Quaternion.identity;
@@ -164,7 +163,6 @@ public class MaxCamera : MonoBehaviour
         desiredDistance = distance;
         position = vec3Origin;
         rotation = quaternionOrigin;
-        currentRotation = quaternionOrigin;
         desiredRotation = quaternionOrigin;
 
         deg.x = Vector3.Angle(Vector3.right, transform.right);
@@ -180,9 +178,8 @@ public class MaxCamera : MonoBehaviour
 
         deg.y = ClampAngle(deg.y, limitRotation.x, limitRotation.y);
         desiredRotation = Quaternion.Euler(deg.y, deg.x, 0);
-        currentRotation = povit.transform.rotation;
 
-        rotation = Quaternion.Slerp(currentRotation, desiredRotation, Time.unscaledDeltaTime * zoomDampening);
+        rotation = Quaternion.Slerp(povit.transform.rotation, desiredRotation, Time.unscaledDeltaTime * zoomDampening);
         povit.transform.rotation = rotation;
     }
 

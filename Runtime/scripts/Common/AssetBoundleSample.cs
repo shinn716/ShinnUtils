@@ -6,9 +6,13 @@ using System;
 
 public class AssetBoundleSample : MonoBehaviour
 {
+    [SerializeField]
+    private string[] loadFileNames;
+
     void Start()
     {
-        StartCoroutine(Load_gameObject(System.IO.Path.Combine(Application.streamingAssetsPath, "myObject")));
+        foreach(var i in loadFileNames)
+            StartCoroutine(Load_gameObject(System.IO.Path.Combine(Application.streamingAssetsPath, i)));
     }
     
     #region Private
