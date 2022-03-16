@@ -4,14 +4,20 @@ using UnityEngine;
 public class StreetViewCamera : MonoBehaviour
 {
     #region DECLARE
+    [Header("Roll")]
     [SerializeField] private float zoomDampening = 100;
-    [SerializeField] private float zoomTouchOffset = .5f;
+    [SerializeField] private float zoomTouchOffset = 1;
 
+    [Header("Rotation")]
+    [SerializeField] private Vector2 limitRotation = new Vector2(-80, 80);    // x->min, y->max
     [SerializeField] private float rotCameraSpeed = 2.5f;
+
+    [Header("Pan")]
     [SerializeField] private float panSpeed = .1f;
 
     public Transform Povit { get => povit.transform; }
-
+    public bool IsMouseDragging { get; set; } = false;
+    
     private GameObject povit;
     private Rigidbody rb = null;
     #endregion
@@ -48,10 +54,7 @@ public class StreetViewCamera : MonoBehaviour
             {
                 Touch touch0 = Input.GetTouch(0);
                 if (touch0.phase == TouchPhase.Moved)
-                {
-                    povit.transform.Rotate(new Vector3(touch0.deltaPosition.x * .002f, touch0.deltaPosition.y * .002f, 0));
-                    povit.transform.rotation = Quaternion.Euler(povit.transform.rotation.eulerAngles.x, povit.transform.rotation.eulerAngles.y, 0);
-                }
+                    Rotation(touch0.deltaPosition.x * rotCameraSpeed * .05f, touch0.deltaPosition.y * rotCameraSpeed * .05f);
             }
             //zoom in/out  
             else if (Input.touchCount == 2)
@@ -69,9 +72,9 @@ public class StreetViewCamera : MonoBehaviour
 
                     // Zoom in/Zoom out
                     if (difference > 5f)
-                        rb.velocity = zoomTouchOffset * Time.deltaTime * zoomDampening * transform.forward;
-                    else if (difference < -5f)
                         rb.velocity = zoomTouchOffset * Time.deltaTime * zoomDampening * -transform.forward;
+                    else if (difference < -5f)
+                        rb.velocity = zoomTouchOffset * Time.deltaTime * zoomDampening * transform.forward;
                 }
             }
             //pan
@@ -86,12 +89,17 @@ public class StreetViewCamera : MonoBehaviour
         }
         else
         {
+            
             // Rotation
-            if (Input.GetMouseButton(1) || Input.GetMouseButton(0))
-            {
-                povit.transform.Rotate(new Vector3(Input.GetAxis("Mouse Y") * rotCameraSpeed, Input.GetAxis("Mouse X") * rotCameraSpeed, 0));
-                povit.transform.rotation = Quaternion.Euler(povit.transform.rotation.eulerAngles.x, povit.transform.rotation.eulerAngles.y, 0);
-            }
+            if (Input.GetMouseButtonDown(0))
+                IsMouseDragging = true;
+
+            if (Input.GetMouseButtonUp(0))
+                IsMouseDragging = false;
+
+            // rotation
+            if (IsMouseDragging)
+                Rotation(Input.GetAxis("Mouse X") * rotCameraSpeed, Input.GetAxis("Mouse Y") * rotCameraSpeed);
 
             // Zoom in/Zoom out
             if (Input.GetAxis("Mouse ScrollWheel") > 0f)
@@ -102,13 +110,29 @@ public class StreetViewCamera : MonoBehaviour
             // Pan
             if (Input.GetMouseButton(2))
                 Pan(Input.GetAxis("Mouse X"), -Input.GetAxis("Mouse Y"));
+            
         }
+    }
+
+    private void Rotation(float posx, float posy)
+    {
+        povit.transform.Rotate(new Vector3(posy, -posx, 0));
+        povit.transform.rotation = Quaternion.Euler(povit.transform.eulerAngles.x, povit.transform.eulerAngles.y, 0);
     }
 
     private void Pan(float right, float up)
     {
         povit.transform.Translate(panSpeed * right * Vector3.right);
         povit.transform.Translate(panSpeed * up * Vector3.up, Space.World);
+    }
+
+    private float ClampAngle(float angle, float min, float max)
+    {
+        if (angle < -360)
+            angle += 360;
+        if (angle > 360)
+            angle -= 360;
+        return Mathf.Clamp(angle, min, max);
     }
     #endregion
 }
