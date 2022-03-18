@@ -99,7 +99,7 @@ public class StreetViewCamera : MonoBehaviour
 
             // rotation
             if (IsMouseDragging)
-                Rotation(Input.GetAxis("Mouse X") * rotCameraSpeed, Input.GetAxis("Mouse Y") * rotCameraSpeed);
+                Rotation(-Input.GetAxis("Mouse X") * rotCameraSpeed, -Input.GetAxis("Mouse Y") * rotCameraSpeed);
 
             // Zoom in/Zoom out
             if (Input.GetAxis("Mouse ScrollWheel") > 0f)
@@ -109,7 +109,7 @@ public class StreetViewCamera : MonoBehaviour
 
             // Pan
             if (Input.GetMouseButton(2))
-                Pan(Input.GetAxis("Mouse X"), -Input.GetAxis("Mouse Y"));
+                Pan(-Input.GetAxis("Mouse X"), -Input.GetAxis("Mouse Y"));
             
         }
     }
