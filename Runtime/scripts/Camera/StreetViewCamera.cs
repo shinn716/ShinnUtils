@@ -1,32 +1,39 @@
+// StreetViewCamera
+// Author: johnTC
+// Last update: 20220506
+
 using UnityEngine;
 
 [RequireComponent(typeof(Camera))]
 public class StreetViewCamera : MonoBehaviour
 {
     #region DECLARE
-    [Header("Roll")]
-    [SerializeField] private float zoomDampening = 100;
+    [Header("Rotation"), SerializeField] private float rotCameraSpeed = 2f;
+
+    [Header("Roll"), SerializeField] private float zoomDampening = .1f;
     [SerializeField] private float zoomTouchOffset = 1;
 
-    [Header("Rotation")]
-    [SerializeField] private Vector2 limitRotation = new Vector2(-80, 80);    // x->min, y->max
-    [SerializeField] private float rotCameraSpeed = 2.5f;
+    [Header("Pan"),SerializeField] private float panSpeed = .4f;
 
-    [Header("Pan")]
-    [SerializeField] private float panSpeed = .1f;
+    [Space, SerializeField] private bool disableRoll = false;
+    [SerializeField] private bool disablePan = false;
+    [SerializeField] private bool inverseMouseClick = false;
 
     public Transform Povit { get => povit.transform; }
     public bool IsMouseDragging { get; set; } = false;
-    
+
+    private int mouseClickValue = 0;
     private GameObject povit;
-    private Rigidbody rb = null;
+    private Vector3 orgPos = Vector3.zero;
+    private Quaternion orgRot = Quaternion.identity;
+    private readonly float offset = 2.5f;
     #endregion
 
     #region MAIN
     private void Start()
     {
         povit = new GameObject();
-        povit.name = $"Camera_Povit";
+        povit.name = $"StreetViewCamera_Povit";
         transform.SetParent(povit.transform);
         povit.transform.localPosition = transform.localPosition;
         povit.transform.localRotation = transform.localRotation;
@@ -34,11 +41,16 @@ public class StreetViewCamera : MonoBehaviour
         transform.localPosition = Vector3.zero;
         transform.localRotation = Quaternion.identity;
 
-        rb = GetComponent<Rigidbody>() == null ? gameObject.AddComponent<Rigidbody>() : GetComponent<Rigidbody>();
-        rb.mass = 10;
-        rb.drag = 5;
-        rb.useGravity = false;
-        rb.isKinematic = false;
+        orgPos = povit.transform.localPosition;
+        orgRot = povit.transform.localRotation;
+
+        InverseMouseClick(inverseMouseClick);
+
+#if UNITY_EDITOR
+        rotCameraSpeed *= offset;
+        zoomDampening *= offset;
+        panSpeed *= offset;
+#endif
     }
 
     private void Update()
@@ -57,7 +69,7 @@ public class StreetViewCamera : MonoBehaviour
                     Rotation(touch0.deltaPosition.x * rotCameraSpeed * .05f, touch0.deltaPosition.y * rotCameraSpeed * .05f);
             }
             //zoom in/out  
-            else if (Input.touchCount == 2)
+            else if (Input.touchCount == 2 && !disableRoll)
             {
                 Touch touch0 = Input.GetTouch(0);
                 Touch touch1 = Input.GetTouch(1);
@@ -72,13 +84,13 @@ public class StreetViewCamera : MonoBehaviour
 
                     // Zoom in/Zoom out
                     if (difference > 5f)
-                        rb.velocity = zoomTouchOffset * Time.deltaTime * zoomDampening * -transform.forward;
+                        transform.Translate(Vector3.forward * zoomDampening);
                     else if (difference < -5f)
-                        rb.velocity = zoomTouchOffset * Time.deltaTime * zoomDampening * transform.forward;
+                        transform.Translate(Vector3.back * zoomDampening);
                 }
             }
             //pan
-            else if (Input.touchCount == 3)
+            else if (Input.touchCount == 3 && !disablePan)
             {
                 Touch touch0 = Input.GetTouch(0);
                 Touch touch1 = Input.GetTouch(1);
@@ -87,14 +99,14 @@ public class StreetViewCamera : MonoBehaviour
                     Pan(touch0.deltaPosition.x * .025f, touch0.deltaPosition.y * .025f);
             }
         }
+        // mouse
         else
         {
-            
             // Rotation
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(mouseClickValue))
                 IsMouseDragging = true;
 
-            if (Input.GetMouseButtonUp(0))
+            if (Input.GetMouseButtonUp(mouseClickValue))
                 IsMouseDragging = false;
 
             // rotation
@@ -102,18 +114,43 @@ public class StreetViewCamera : MonoBehaviour
                 Rotation(-Input.GetAxis("Mouse X") * rotCameraSpeed, -Input.GetAxis("Mouse Y") * rotCameraSpeed);
 
             // Zoom in/Zoom out
-            if (Input.GetAxis("Mouse ScrollWheel") > 0f)
-                rb.velocity = Time.deltaTime * zoomDampening * -transform.forward;
-            else if (Input.GetAxis("Mouse ScrollWheel") < 0f)
-                rb.velocity = Time.deltaTime * zoomDampening * transform.forward;
+            if (!disableRoll)
+            {
+                if (Input.GetAxis("Mouse ScrollWheel") > 0f)
+                    transform.Translate(Vector3.forward * zoomDampening);
+                else if (Input.GetAxis("Mouse ScrollWheel") < 0f)
+                    transform.Translate(Vector3.back * zoomDampening);
+            }
 
             // Pan
-            if (Input.GetMouseButton(2))
+            if (Input.GetMouseButton(2) && !disablePan)
                 Pan(-Input.GetAxis("Mouse X"), -Input.GetAxis("Mouse Y"));
-            
         }
     }
 
+    private void OnDisable()
+    {
+        IsMouseDragging = false;
+    }
+    #endregion
+
+    #region PUBLIC
+    [ContextMenu("Reset")]
+    public void Reset()
+    {
+        povit.transform.localPosition = orgPos;
+        povit.transform.localRotation = orgRot;
+        transform.localPosition = Vector3.zero;
+        transform.localRotation = Quaternion.identity;
+    }
+
+    public void InverseMouseClick(bool boolvalue)
+    {
+        mouseClickValue = boolvalue ? 1 : 0;
+    }
+    #endregion
+
+    #region PRIVATE
     private void Rotation(float posx, float posy)
     {
         povit.transform.Rotate(new Vector3(posy, -posx, 0));
@@ -124,15 +161,6 @@ public class StreetViewCamera : MonoBehaviour
     {
         povit.transform.Translate(panSpeed * right * Vector3.right);
         povit.transform.Translate(panSpeed * up * Vector3.up, Space.World);
-    }
-
-    private float ClampAngle(float angle, float min, float max)
-    {
-        if (angle < -360)
-            angle += 360;
-        if (angle > 360)
-            angle -= 360;
-        return Mathf.Clamp(angle, min, max);
     }
     #endregion
 }
