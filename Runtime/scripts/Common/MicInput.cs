@@ -1,3 +1,6 @@
+
+#if UNITY_STANDALONE_WIN
+
 // https://github.com/keijiro/UnityMicTest
 
 using System.Collections;
@@ -98,3 +101,6 @@ public class MicInput : MonoBehaviour
                 data[i] = 0;
     }
 }
+
+
+#endif

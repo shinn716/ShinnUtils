@@ -14,7 +14,8 @@ public class ToggleCustomEvent : MonoBehaviour
 
     private void OnEnable()
     {
-        OnEnableEvent.Invoke();
+        if (OnEnableEvent != null)
+            OnEnableEvent.Invoke();
     }
 
     public void OnValueChange(bool isOn)
