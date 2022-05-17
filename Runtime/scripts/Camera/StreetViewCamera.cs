@@ -135,8 +135,7 @@ public class StreetViewCamera : MonoBehaviour
     #endregion
 
     #region PUBLIC
-    [ContextMenu("Reset")]
-    public void Reset()
+    public void SetReset()
     {
         povit.transform.localPosition = orgPos;
         povit.transform.localRotation = orgRot;
