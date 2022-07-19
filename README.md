@@ -1,7 +1,7 @@
 # ShinnUtils
 Supply the following URL:  
 ```
-https://github.com/shinn716/ShinnUtils.git#package
+https://github.com/shinn716/ShinnUtils.git?path=Assets/Packages/ShinnUtils
 ```  
   
 If your unity missing Newtonsoft plugin, import the following URL:  
