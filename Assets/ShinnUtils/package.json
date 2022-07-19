@@ -2,7 +2,7 @@
   "name": "com.shinn.utils",
   "displayName": "ShinnUtils",
   "description": "Development tools",
-  "version": "0.0.4",
+  "version": "0.1.1",
   "license": "free",
   "author": 
   {
@@ -13,6 +13,18 @@
   {
     "displayName": "Samples",
     "path": "Samples~"
+  },
+  {
+    "displayName": "SimpleDotween",
+    "path": "SimpleDotween~"
+  },
+  {
+    "displayName": "SimpleItween",
+    "path": "SimpleItween~"
+  },
+  {
+    "displayName": "WebGLBridgeSample",
+    "path": "WebGLBridgeSample~"
   }
   ]
 }

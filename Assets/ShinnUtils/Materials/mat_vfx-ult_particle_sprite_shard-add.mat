@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: mat_vfx-ult_particle_sprite_shard-add-[1.0]_sh
+  m_Name: mat_vfx-ult_particle_sprite_shard-add
   m_Shader: {fileID: 4800000, guid: c73a1f0ce5066174ab2e764e034dff90, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 5

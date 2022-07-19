@@ -299,7 +299,7 @@ namespace Shinn
 
         #region ArrayValueGreaterThanValue, ArrayValueLessThanValue
         /// <summary>
-        /// Array(int[], float) 內數值大於某一數
+        /// Array(int, float) 內數值大於某一數
         /// </summary>
         /// <param name="array"></param>
         /// <param name="limit"></param>

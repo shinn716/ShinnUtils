@@ -4,19 +4,33 @@ using UnityEngine;
 
 namespace Shinn
 {
-    public class CopyTransform : MonoBehaviour
+    public class SyncTransform : MonoBehaviour
     {
-        [SerializeField] Transform target;
-        [SerializeField] float speed = 10;
+        #region DECLARE
+        [SerializeField] 
+        private Transform target = null;
 
-        [Header("Rotation"), SerializeField] bool syncRotation = false;
-        [SerializeField] bool freezeRotX;
-        [SerializeField] bool freezeRotY;
-        [SerializeField] bool freezeRotZ;
+        [SerializeField] 
+        private float speed = 10;
 
-        private Vector3 offset;
-        private Vector3 rot;
+        [Header("Rotation"), SerializeField] 
+        private bool syncRotation = false;
 
+        [SerializeField] 
+        private bool freezeRotX = false;
+
+        [SerializeField] 
+        private bool freezeRotY = false;
+
+        [SerializeField] 
+        private bool freezeRotZ = false;
+
+        private Vector3 offset = Vector3.zero;
+        private Vector3 rot = Vector3.zero;
+
+        #endregion
+
+        #region MAIN
         private void Start()
         {
             offset = target.position - transform.position;
@@ -38,5 +52,6 @@ namespace Shinn
             rot = freezeRotZ ? Vector3.Scale(rot, new Vector3(1, 1, 0)) : rot;
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(rot), Time.fixedDeltaTime * speed);
         }
+        #endregion
     }
 }

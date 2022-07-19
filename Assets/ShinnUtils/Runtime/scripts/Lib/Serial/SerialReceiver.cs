@@ -61,7 +61,6 @@ public class SerialReceiver
         thread.Join();
     }
 
-
     private void Read(Action<string> _callback)
     {
         while (stream.IsOpen)
@@ -82,14 +81,8 @@ public class SerialReceiver
 
     private void Callback(Action<string> functionName)
     {
-        functionName(GetValue());
+        functionName(readingData);
     }
-
-    private string GetValue()
-    {
-        return readingData;
-    }
-
 
     //private void Read()
     //{
