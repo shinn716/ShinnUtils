@@ -13,11 +13,11 @@ namespace Shinn.Tools
         private string stringOutputPath = "Assets/Resources/";
         private string stringFeedback = string.Empty;
 
-        [MenuItem("DevTools/Batching prefabs")]
+        [MenuItem("DevTools/Batching Prefabs")]
         private static void OpenMenu()
         {
             // Open menu
-            GetWindow<BatchingPrefabs>("Batching prefabs");
+            GetWindow<BatchingPrefabs>("Batching Prefabs");
         }
 
         //[InitializeOnLoadMethod]

@@ -121,7 +121,7 @@ namespace Shinn
         }
     }
 
-    public class Utility
+    public class Utils
     {
         /// <summary>
         /// Texture to Texture2D

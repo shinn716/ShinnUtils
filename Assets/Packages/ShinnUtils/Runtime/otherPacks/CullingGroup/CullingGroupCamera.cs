@@ -26,7 +26,7 @@ public class CullingGroupCamera : MonoBehaviour
         m_group.SetBoundingDistances(new float[] { 1, 5, 10, 30, 100 });
         
         // Search layer of all gameobjects in hierarchy.
-        var array = Shinn.Utility.Bitmask2Array(layer.value);
+        var array = Shinn.Utils.Bitmask2Array(layer.value);
         targets = FindGameObjectsWithLayer(array);
 
         // 設置列表以執行可見性確定

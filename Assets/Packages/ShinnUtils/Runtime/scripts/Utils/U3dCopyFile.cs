@@ -9,7 +9,7 @@ using System;
 using UnityEditor;
 
 [ExecuteInEditMode]
-public class U3dFileUtils : MonoBehaviour
+public class U3dCopyFile : MonoBehaviour
 {
     public string sourcesPath = "C:\\";
     public string targetPath = "D:\\";
