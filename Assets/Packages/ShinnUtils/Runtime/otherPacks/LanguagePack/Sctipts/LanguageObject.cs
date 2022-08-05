@@ -62,23 +62,30 @@ namespace Shinn
 
         #region EDITOR
 #if UNITY_EDITOR
-        [MenuItem("DevTools/LanguageObject/Import")]
+        [MenuItem("ShiDevTools/Language Object/Import")]
         public static void Import()
         {
             string dir = EditorUtility.OpenFilePanel("Load JSON from file", "", ",json,Json,JSON");
 
-            StreamReader reader = new StreamReader(dir);
-            var content = reader.ReadToEnd();
-            reader.Close();
+            try
+            {
+                StreamReader reader = new StreamReader(dir);
+                var content = reader.ReadToEnd();
+                reader.Close();
 
-            Debug.Log($"<color=green>[Load success]</color> {dir}");
+                Debug.Log($"<color=green>[Load success]</color> {dir}");
 
-            var data = JsonConvert.DeserializeObject<JsonData>(content);
-            var target = OnSelectionChange();
-            target.allDatas = data;
+                var data = JsonConvert.DeserializeObject<JsonData>(content);
+                var target = OnSelectionChange();
+                target.allDatas = data;
+            }
+            catch (Exception e)
+            {
+                Debug.Log(e);
+            }
         }
 
-        [MenuItem("DevTools/LanguageObject/Export")]
+        [MenuItem("ShiDevTools/Language Object/Export")]
         public static void Export()
         {
             var target = OnSelectionChange();

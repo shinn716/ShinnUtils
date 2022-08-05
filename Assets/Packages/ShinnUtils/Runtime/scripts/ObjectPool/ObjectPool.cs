@@ -23,9 +23,7 @@ namespace Shinn
         private void Awake()
         {
             Instance = this;
-        }
-        private void Start()
-        {
+
             poolDictionary = new Dictionary<string, Queue<GameObject>>();
             foreach (Pool pool in pools)
             {
@@ -55,7 +53,6 @@ namespace Shinn
             objectToSpawn.transform.localScale = _scl;
             objectToSpawn.SendMessage("OnObjectSwam");
             poolDictionary[_tag].Enqueue(objectToSpawn);
-
             return objectToSpawn;
         }
     }

@@ -9,60 +9,21 @@ using System.Collections.Generic;
 
 namespace Shinn
 {
-    #region Write And Read Data
-    public class TxtTools
+    #region Convert str, hex, int to something
+    public class Converter
     {
-        /// <summary>
-        /// 寫入文字 (addDatatoFiles 重負寫入)
-        /// </summary>
-        /// <param name="data"></param>
-        /// <param name="dataPath"></param>
-        /// <param name="addDatatoFiles"></param>
-        public static void WriteToTxt(string data, string dataPath, bool addDatatoFiles = true)
-        {
-            using (StreamWriter outputFile = new StreamWriter(dataPath, addDatatoFiles))
-                outputFile.WriteLine(data);
-        }
-
-        /// <summary>
-        /// 讀取文字檔, 各別行數
-        /// </summary>
-        /// <param name="dataPath"></param>
-        /// <returns></returns>
-        public static string[] ReadLines(string dataPath)
-        {
-            string[] lines = File.ReadAllLines(dataPath);
-            return lines;
-        }
-
-        /// <summary>
-        /// 讀取文字檔
-        /// </summary>
-        /// <param name="dataPath"></param>
-        /// <returns></returns>
-        public static string ReadText(string dataPath)
-        {
-            string allstr = File.ReadAllText(dataPath);
-            return allstr;
-        }
-    }
-    #endregion
-    
-    public class ConvertTools
-    {
-        public static string Unicode2String(string source)
+        public static string Unicode2String(string _source)
         {
             return new Regex(@"\\u([0-9A-F]{4})", RegexOptions.IgnoreCase | RegexOptions.Compiled).Replace(
-                         source, x => string.Empty + Convert.ToChar(Convert.ToUInt16(x.Result("$1"), 16)));
+                         _source, x => string.Empty + Convert.ToChar(Convert.ToUInt16(x.Result("$1"), 16)));
         }
 
-        public static string String2Unicode(string source)
+        public static string String2Unicode(string _source)
         {
-            byte[] bytes = Encoding.Unicode.GetBytes(source);
+            byte[] bytes = Encoding.Unicode.GetBytes(_source);
             StringBuilder stringBuilder = new StringBuilder();
             for (int i = 0; i < bytes.Length; i += 2)
                 stringBuilder.AppendFormat("\\u{0}{1}", bytes[i + 1].ToString("x").PadLeft(2, '0'), bytes[i].ToString("x").PadLeft(2, '0'));
-
             return stringBuilder.ToString();
         }
 
@@ -71,16 +32,16 @@ namespace Shinn
         /// </summary>
         /// <param name="bytes"></param>
         /// <returns></returns>
-        public static byte[] StringToBytes(string s)
+        public static byte[] StringToBytes(string _source)
         {
             //string s = "4321000000000000000000000000000000000000";
             //byte[] bytes = Encoding.ASCII.GetBytes(s);
 
-            byte[] s_bytes = new byte[s.Length / 2];
-            for (int i = 0; i < s.Length; i = i + 2)
+            byte[] s_bytes = new byte[_source.Length / 2];
+            for (int i = 0; i < _source.Length; i = i + 2)
             {
                 //每2位16進位數字轉換為一個10進位整數
-                s_bytes[i / 2] = Convert.ToByte(s.Substring(i, 2), 16);
+                s_bytes[i / 2] = Convert.ToByte(_source.Substring(i, 2), 16);
             }
             return s_bytes;
         }
@@ -90,13 +51,11 @@ namespace Shinn
         /// </summary>
         /// <param name="bytes"></param>
         /// <returns></returns>
-        public static string BytesToString(byte[] bytes)
+        public static string BytesToString(byte[] _bytes)
         {
             string result = "";
-
-            foreach (var b in bytes)
+            foreach (var b in _bytes)
                 result += b.ToString("X2");
-
             return result;
         }
 
@@ -105,9 +64,9 @@ namespace Shinn
         /// </summary>
         /// <param name="decValue"></param>
         /// <returns></returns>
-        public static string ConvertInt2Hex(int decValue)
+        public static string ConvertInt2Hex(int _decValue)
         {
-            return string.Format("{0:x}", decValue);
+            return string.Format("{0:x}", _decValue);
         }
 
         /// <summary>
@@ -115,27 +74,68 @@ namespace Shinn
         /// </summary>
         /// <param name="hexValue"></param>
         /// <returns></returns>
-        public static int ConvertHex2Int(string hexValue)
+        public static int ConvertHex2Int(string _hexValue)
         {
-            return (int)Convert.ToInt64(hexValue, 16);
+            return (int)Convert.ToInt64(_hexValue, 16);
         }
     }
+    #endregion
 
-    public class Utils
+    #region Write And Read Data
+    public class Txt
+    {
+        /// <summary>
+        /// 寫入文字 (addDatatoFiles 重負寫入)
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="dataPath"></param>
+        /// <param name="addDatatoFiles"></param>
+        public static void String2TxtFiles(string _content, string _outputurl, bool _addDatatoFiles = true)
+        {
+            using (StreamWriter outputFile = new StreamWriter(_outputurl, _addDatatoFiles))
+                outputFile.WriteLine(_content);
+        }
+
+        /// <summary>
+        /// 讀取文字檔, 各別行數
+        /// </summary>
+        /// <param name="dataPath"></param>
+        /// <returns></returns>
+        public static string[] ReadLines(string _url)
+        {
+            string[] lines = File.ReadAllLines(_url);
+            return lines;
+        }
+
+        /// <summary>
+        /// 讀取文字檔
+        /// </summary>
+        /// <param name="dataPath"></param>
+        /// <returns></returns>
+        public static string ReadTxt(string _url)
+        {
+            string allstr = File.ReadAllText(_url);
+            return allstr;
+        }
+    }
+    #endregion
+
+    #region Convert Image to right format
+    public class Image
     {
         /// <summary>
         /// Texture to Texture2D
         /// </summary>
         /// <param name="texture"></param>
         /// <returns></returns>
-        public static Texture2D Tex2Tex2D(Texture texture)
+        public static Texture2D Tex2Tex2D(Texture _texture)
         {
             return Texture2D.CreateExternalTexture(
-            texture.width,
-            texture.height,
+            _texture.width,
+            _texture.height,
             TextureFormat.RGB24,
             false, false,
-            texture.GetNativeTexturePtr());
+            _texture.GetNativeTexturePtr());
         }
 
         /// <summary>
@@ -145,12 +145,12 @@ namespace Shinn
         /// <param name="PixelsPerUnit"></param>
         /// <param name="spriteType"></param>
         /// <returns></returns>
-        public static Sprite Tex2D2Sprite(Texture2D texture, float PixelsPerUnit = 100.0f, SpriteMeshType spriteType = SpriteMeshType.Tight)
+        public static Sprite Tex2D2Sprite(Texture2D _texture, float _pixelsPerUnit = 100.0f, SpriteMeshType _spriteType = SpriteMeshType.Tight)
         {
             Sprite NewSprite;
-            NewSprite = Sprite.Create(texture, 
-                new Rect(0, 0, texture.width, texture.height), 
-                new Vector2(0, 0), PixelsPerUnit, 0, spriteType);
+            NewSprite = Sprite.Create(_texture,
+                new Rect(0, 0, _texture.width, _texture.height),
+                new Vector2(0, 0), _pixelsPerUnit, 0, _spriteType);
             return NewSprite;
         }
 
@@ -159,13 +159,13 @@ namespace Shinn
         /// </summary>
         /// <param name="FilePath"></param>
         /// <returns></returns>
-        public static Texture2D LoadTex2D(string FilePath)
+        public static Texture2D LoadTex2D(string _url)
         {
             Texture2D Tex2D;
             byte[] FileData;
-            if (File.Exists(FilePath))
+            if (File.Exists(_url))
             {
-                FileData = File.ReadAllBytes(FilePath);
+                FileData = File.ReadAllBytes(_url);
                 Tex2D = new Texture2D(2, 2);             // Create new "empty" texture
                 if (Tex2D.LoadImage(FileData))           // Load the imagedata into the texture (size is set automatically)
                     return Tex2D;                        // If data = readable -> return texture
@@ -180,25 +180,28 @@ namespace Shinn
         /// <param name="PixelsPerUnit"></param>
         /// <param name="spriteType"></param>
         /// <returns></returns>
-        public static Sprite LoadSprite(string FilePath, float PixelsPerUnit = 100.0f, SpriteMeshType spriteType = SpriteMeshType.Tight)
+        public static Sprite LoadSprite(string _url, float _pixelsPerUnit = 100.0f, SpriteMeshType _spriteType = SpriteMeshType.Tight)
         {
             Sprite NewSprite;
-            Texture2D SpriteTexture = LoadTex2D(FilePath);
-            NewSprite = Sprite.Create(SpriteTexture, 
-                new Rect(0, 0, SpriteTexture.width, SpriteTexture.height), 
-                new Vector2(0, 0), PixelsPerUnit, 0, spriteType);
+            Texture2D SpriteTexture = LoadTex2D(_url);
+            NewSprite = Sprite.Create(SpriteTexture,
+                new Rect(0, 0, SpriteTexture.width, SpriteTexture.height),
+                new Vector2(0, 0), _pixelsPerUnit, 0, _spriteType);
             return NewSprite;
         }
+    }
+    #endregion
 
-
+    public class Utils
+    {
         /// <summary>
         /// Bitmask to int array
         /// </summary>
         /// <param name="mask"></param>
         /// <returns></returns>
-        public static int[] Bitmask2Array(LayerMask layoutMask)
+        public static int[] Bitmask2Array(LayerMask _layoutMask)
         {
-            var bitarray = new BitArray(new[] { layoutMask.value });
+            var bitarray = new BitArray(new[] { _layoutMask.value });
             var att = bitarray.Cast<bool>().ToArray();
             List<int> returnArray = new List<int>();
             for (int i = 0; i < att.Length; i++)
@@ -252,14 +255,14 @@ namespace Shinn
         /// <summary>
         /// CopyComponent function, from https://answers.unity.com/questions/458207/copy-a-component-at-runtime.html
         /// </summary>
-        public static Component CopyComponent(Component original, GameObject destination)
+        public static Component CopyComponent(Component _original, GameObject _destination)
         {
-            Type type = original.GetType();
-            Component copy = destination.AddComponent(type);
+            Type type = _original.GetType();
+            Component copy = _destination.AddComponent(type);
             // Copied fields can be restricted with BindingFlags
             System.Reflection.FieldInfo[] fields = type.GetFields();
             foreach (System.Reflection.FieldInfo field in fields)
-                field.SetValue(copy, field.GetValue(original));
+                field.SetValue(copy, field.GetValue(_original));
             return copy;
         }
 
@@ -269,11 +272,11 @@ namespace Shinn
         /// <param name="Boolean array"></param>
         /// <param name="flag(true or false)"></param>
         /// <returns></returns>
-        public static int FindCountOfStateInBoolArray(bool[] array, bool trurorfalse)
+        public static int FindCountOfStateInBoolArray(bool[] _array, bool _trueOrfalse = true)
         {
             int value = 0;
-            for (int i = 0; i < array.Length; i++)
-                if (array[i].Equals(trurorfalse))
+            for (int i = 0; i < _array.Length; i++)
+                if (_array[i].Equals(_trueOrfalse))
                     value++;
             return value;
         }
@@ -366,12 +369,12 @@ namespace Shinn
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public static GameObject FindInactiveObject(string name)
+        public static GameObject FindInactiveObject(string _name)
         {
             Transform[] objs = Resources.FindObjectsOfTypeAll<Transform>() as Transform[];
             for (int i = 0; i < objs.Length; i++)
                 if (objs[i].hideFlags == HideFlags.None)
-                    if (objs[i].name == name)
+                    if (objs[i].name == _name)
                         return objs[i].gameObject;
             return null;
         }
@@ -391,13 +394,13 @@ namespace Shinn
         /// <param name="objs"></param>
         /// <param name="currentPos"></param>
         /// <returns></returns>
-        public static Transform GetClosestObject(Transform[] objs, Vector3 currentPos)
+        public static Transform GetClosestObject(Transform[] _objs, Vector3 _currentPos)
         {
             Transform tMin = null;
             float minDist = Mathf.Infinity;
-            foreach (Transform t in objs)
+            foreach (Transform t in _objs)
             {
-                float dist = Vector3.Distance(t.position, currentPos);
+                float dist = Vector3.Distance(t.position, _currentPos);
                 if (dist < minDist)
                 {
                     tMin = t;

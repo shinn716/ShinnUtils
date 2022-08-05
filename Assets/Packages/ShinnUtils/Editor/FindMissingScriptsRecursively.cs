@@ -5,7 +5,7 @@ public class FindMissingScriptsRecursively : EditorWindow
 {
     static int go_count = 0, components_count = 0, missing_count = 0;
 
-    [MenuItem("DevTools/FindMissingScriptsRecursively")]
+    [MenuItem("ShiDevTools/Find Missing Scripts")]
     public static void ShowWindow()
     {
         EditorWindow.GetWindow(typeof(FindMissingScriptsRecursively));
