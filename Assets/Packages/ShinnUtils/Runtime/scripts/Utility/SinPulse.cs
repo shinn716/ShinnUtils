@@ -1,73 +1,76 @@
 // Author: Shinn
-// Date: 20200402
+// Date: 20220805
 //
 // Sample:
-// Pulse pulse = new Pulse(mainCallback);
-// void mainCallback(float value)
+// SinPulse pulse = new SinPulse(Callback);
+// void Callback(float value)
 // {
-//    print("mainCallback " + value);
+//    print("Callback " + value);
 // }
 
 using UnityEngine;
 using System;
 using System.Threading;
+
 namespace Shinn
 {
     public class SinPulse
     {
-
-        Thread thread;
-        bool isRun = true;
-        float m_count;
-        float value;
+        private Thread thread = null;
+        private bool isRun = true;
+        private float m_count = 0;
+        private float value = 0;
 
         /// <summary>
         /// 0 -> 1 -> 0 make Sin Pulse.
         /// </summary>
         /// <param name="magnitude"></param>
-        /// <param name="microSeconds"></param>
-        /// <param name="functionName"></param>
-        public SinPulse(float magnitude, int microSeconds, Action<float> functionName)
+        /// <param name="time"></param>
+        /// <param name="callback"></param>
+        public SinPulse(float _magnitude, float _time, Action<float> _callback, bool _loop = false)
         {
-            StartPluse(magnitude, microSeconds, functionName);
-        }
-
-        private void StartPluse(float magnitude, int microSeconds, Action<float> functionName)
-        {
-            thread = new Thread(() => Counting(magnitude, microSeconds, functionName));
+            thread = new Thread(() => StartPulse(_magnitude, _time, _callback, _loop));
             thread.Start();
-            //Debug.Log("StartPluse");
         }
 
-        private void Counting(float magnitude, int microSeconds, Action<float> functionName)
+        public void Dispose()
         {
+            if (thread != null)
+            {
+                thread.Abort();
+                thread = null;
+            }
+        }
 
+        private void StartPulse(float _magnitude, float _time, Action<float> _callback, bool _loop = false)
+        {
+            int microTime = Convert.ToInt32(_time *= 1000 / 33);
             while (isRun)
             {
-                Thread.Sleep(microSeconds);
+                Thread.Sleep(microTime);
                 m_count += .1f;
-                value = magnitude * Mathf.Sin(m_count);
-                Callback(functionName);
-                //Debug.Log(value);
-                if (value < 0)
+                value = _magnitude * Mathf.Sin(m_count);
+                Callback(_callback);
+
+                if (value <= 0.05f && !_loop)
                 {
                     value = 0;
-                    Callback(functionName);
-                    //Debug.Log("End");
-                    isRun = false; // disable while loop
-                    thread.Abort();
+                    isRun = false;
+                    Callback(_callback);
+
+                    if (thread != null)
+                    {
+                        thread.Abort();
+                        thread = null;
+                    }
                 }
             }
         }
 
-        private void Callback(Action<float> functionName)
+        private void Callback(Action<float> _callback)
         {
-            functionName(GetValue());
-        }
-
-        private float GetValue()
-        {
-            return value;
+            if (_callback != null)
+                _callback.Invoke(value);
         }
     }
 }

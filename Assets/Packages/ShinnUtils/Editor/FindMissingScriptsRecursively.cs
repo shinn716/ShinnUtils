@@ -1,61 +1,95 @@
 ﻿using UnityEngine;
 using UnityEditor;
+using System.Text;
 
-public class FindMissingScriptsRecursively : EditorWindow
+namespace Shinn
 {
-    static int go_count = 0, components_count = 0, missing_count = 0;
-
-    [MenuItem("ShiDevTools/Find Missing Scripts")]
-    public static void ShowWindow()
+    public class FindMissingScriptsRecursively : EditorWindow
     {
-        EditorWindow.GetWindow(typeof(FindMissingScriptsRecursively));
-    }
+        private static int go_count = 0, components_count = 0, missing_count = 0;
+        private static StringBuilder sb = new StringBuilder();
+        private static GameObject[] selectedGos;
+        Editor editor;
 
-    public void OnGUI()
-    {
-        if (GUILayout.Button("Find Missing Scripts in selected GameObjects"))
+        [SerializeField] private GameObject[] list;
+
+        [MenuItem("ShiDevTools/Find Missing Scripts")]
+        public static void ShowWindow()
         {
-            FindInSelected();
+            EditorWindow.GetWindow(typeof(FindMissingScriptsRecursively));
         }
-    }
-    private static void FindInSelected()
-    {
-        GameObject[] go = Selection.gameObjects;
-        go_count = 0;
-        components_count = 0;
-        missing_count = 0;
-        foreach (GameObject g in go)
-        {
-            FindInGO(g);
-        }
-        Debug.Log(string.Format("Searched {0} GameObjects, {1} components, found {2} missing", go_count, components_count, missing_count));
-    }
 
-    private static void FindInGO(GameObject g)
-    {
-        go_count++;
-        Component[] components = g.GetComponents<Component>();
-        for (int i = 0; i < components.Length; i++)
+        private void Awake()
         {
-            components_count++;
-            if (components[i] == null)
+            editor = Editor.CreateEditor(this);
+        }
+
+        public void OnGUI()
+        {
+            Debug.Log("gui");
+            list = selectedGos;
+
+            if (editor != null)
+                editor.OnInspectorGUI();
+
+            if (GUILayout.Button("Find Missing Scripts in selected GameObjects"))
             {
-                missing_count++;
-                string s = g.name;
-                Transform t = g.transform;
-                while (t.parent != null)
+                sb.Clear();
+                FindInSelected();
+            }
+
+            GUILayout.Label(sb.ToString());
+        }
+        private static void FindInSelected()
+        {
+            selectedGos = Selection.gameObjects;
+            go_count = 0;
+            components_count = 0;
+            missing_count = 0;
+            foreach (GameObject g in selectedGos)
+            {
+                FindInGO(g);
+            }
+            sb.AppendLine(string.Format("Searched {0} GameObjects, {1} components, found {2} missing", go_count, components_count, missing_count));
+        }
+
+        private static void FindInGO(GameObject g)
+        {
+            go_count++;
+            Component[] components = g.GetComponents<Component>();
+            for (int i = 0; i < components.Length; i++)
+            {
+                components_count++;
+                if (components[i] == null)
                 {
-                    s = t.parent.name + "/" + s;
-                    t = t.parent;
+                    missing_count++;
+                    string s = g.name;
+                    Transform t = g.transform;
+                    while (t.parent != null)
+                    {
+                        s = t.parent.name + "/" + s;
+                        t = t.parent;
+                    }
+                    //Debug.Log(s + " has an empty script attached in position: " + i, g);
+                    sb.AppendLine($"*{s} has an empty script attached in position: [{i}] {g}");
                 }
-                Debug.Log(s + " has an empty script attached in position: " + i, g);
+            }
+            // Now recurse through each child GO (if there are any):
+            foreach (Transform childT in g.transform)
+            {
+                //Debug.Log("Searching " + childT.name  + " " );
+                FindInGO(childT.gameObject);
             }
         }
-        // Now recurse through each child GO (if there are any):
-        foreach (Transform childT in g.transform)
+
+        [CustomEditor(typeof(FindMissingScriptsRecursively), true)]
+        public class ListTestEditorDrawer : Editor
         {
-            //Debug.Log("Searching " + childT.name  + " " );
-            FindInGO(childT.gameObject);
+            public override void OnInspectorGUI()
+            {
+                var list = serializedObject.FindProperty("list");
+                EditorGUILayout.PropertyField(list, new GUIContent("Selected gameobjects:"), true);
+            }
         }
     }
 }

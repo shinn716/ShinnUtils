@@ -18,7 +18,7 @@ public class RunExtensionProgram : MonoBehaviour
             try
             {
                 string filalPath = Path.Combine(Environment.CurrentDirectory, File.ReadAllText(m_readPath));
-                WindowsEventAPI.SetWindowEvent(filalPath, WindowsEventAPI.WindowsStyle.Minimized);
+                Shinn.WindowsEventAPI.SetWindowEvent(filalPath, Shinn.WindowsEventAPI.WindowsStyle.Minimized);
             }
 
             catch (Exception e)

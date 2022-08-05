@@ -10,11 +10,11 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace Shinn.Common
+namespace Shinn
 {
-    public class Upload : MonoBehaviour
+    public class UploadManager : MonoBehaviour
     {
-        public static Upload instance;
+        public static UploadManager instance;
 
         private void Awake()
         {

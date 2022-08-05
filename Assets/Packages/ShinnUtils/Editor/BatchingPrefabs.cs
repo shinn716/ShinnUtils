@@ -4,7 +4,7 @@ using System.Collections;
 using System.IO;
 using System.Text;
 
-namespace Shinn.Tools
+namespace Shinn
 {
     // Batch prefabs
     public class BatchingPrefabs : EditorWindow

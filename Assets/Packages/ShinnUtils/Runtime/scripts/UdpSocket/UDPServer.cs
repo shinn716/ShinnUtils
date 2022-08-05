@@ -33,13 +33,9 @@ namespace Shinn.Common
 {
     public class UDPServer
     {
-        //public delegate void Callback();
-        //public Callback callback;
-
         private IPEndPoint ipEndPoint;
         private UdpClient udpClient;
         private byte[] receiveByte;
-        //private string receiveData = string.Empty;
         private Thread thread;
 
         /// <summary>
@@ -52,8 +48,6 @@ namespace Shinn.Common
             ipEndPoint = new IPEndPoint(IPAddress.Parse(ip), port);
             udpClient = new UdpClient(ipEndPoint.Port);
             receiveByte = new byte[1024];
-
-            //thread = new Thread(new ThreadStart(ReceiveData));
 
             if (callback == null)
             {
@@ -84,18 +78,8 @@ namespace Shinn.Common
             {
                 receiveByte = udpClient.Receive(ref ipEndPoint);
                 string receiveData = Encoding.UTF8.GetString(receiveByte);
-                callback(receiveData);
-
-                //if (callback != null)                 // net 2.0
-                //    callback.Invoke();
-
-                //callback?.Invoke();                     // net 4.0
+                callback?.Invoke(receiveData);
             }
         }
-
-        //private string GetReceiveData()
-        //{
-        //    return receiveData;
-        //}
     }
 }

@@ -38,14 +38,6 @@ namespace Shinn.Common
         public string Ip { get; set; }
         public int Port { get; set; }
 
-        //public event CallReceiveback eventReceiveCallback;
-        //public delegate void CallReceiveback();
-        //public event CallSendback eventSendCallback;
-        //public delegate void CallSendback();
-
-        //private string m_receive = string.Empty;
-        //private string m_echo = string.Empty;
-
         private TcpListener tcpListener;
         private Thread tcpListenerThread;
         private TcpClient connectedTcpClient;
@@ -55,7 +47,6 @@ namespace Shinn.Common
             Ip = _ip;
             Port = _port;
 
-            //tcpListenerThread = new Thread(new ThreadStart(ListenForIncommingRequests));
             tcpListenerThread = new Thread(() => ListenForIncommingRequests(callback));
             tcpListenerThread.IsBackground = true;
             tcpListenerThread.Start();
@@ -79,9 +70,6 @@ namespace Shinn.Common
         /// </summary> 	
         public void SendMessage(string message, Action<string> callback = null)
         {
-            //m_receive = string.Empty;
-            //m_echo = string.Empty;
-
             if (connectedTcpClient == null)
                 return;
 
@@ -99,9 +87,7 @@ namespace Shinn.Common
                     //Debug.Log("Server sent his message - should be received by client");
 
                     var m_echo = "[Send Success]" + message;
-                    callback(m_echo);
-
-                    //eventSendCallback?.Invoke();                     // net 4.0
+                    callback?.Invoke(m_echo);
                 }
             }
             catch (SocketException e)
@@ -110,29 +96,10 @@ namespace Shinn.Common
             }
         }
 
-        ///// <summary>
-        ///// Client receive message.
-        ///// </summary>
-        ///// <returns></returns>
-        //public string GetReceiveData()
-        //{
-        //    return m_receive;
-        //}
-
-        ///// <summary>
-        ///// echo
-        ///// </summary>
-        ///// <returns></returns>
-        //public string GetEcho()
-        //{
-        //    return m_echo;
-        //}
-
         private void ListenForIncommingRequests(Action<string> callback = null)
         {
             try
             {
-                // Create listener on localhost port 8052. 			
                 tcpListener = new TcpListener(IPAddress.Parse(Ip), Port);
                 tcpListener.Start();
                 Byte[] bytes = new Byte[1024];
@@ -151,12 +118,7 @@ namespace Shinn.Common
                                 Array.Copy(bytes, 0, incommingData, 0, length);
                                 // Convert byte array to string message. 							
                                 string clientMessage = Encoding.ASCII.GetString(incommingData);
-                                //Debug.Log("client message received as: " + clientMessage);
-
-                                callback(clientMessage);
-
-                                //m_receive = clientMessage;
-                                //eventReceiveCallback?.Invoke();                     // net 4.0
+                                callback?.Invoke(clientMessage);
                             }
                         }
                     }

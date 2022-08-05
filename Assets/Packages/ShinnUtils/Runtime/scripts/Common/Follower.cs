@@ -1,64 +1,62 @@
 using UnityEngine;
 
-namespace Shinn
+public class Follower : MonoBehaviour
 {
-    public class Follower : MonoBehaviour
+    #region DECLARE
+    [Header("Chase Target"), SerializeField]
+    private bool enable = true;
+
+    [SerializeField]
+    private Transform target = null;
+
+    [SerializeField]
+    private MoveType type = MoveType.Lerp;
+
+    [Header("Chase speed and rotation speed."), Range(0, 1)]
+    private float chaseSpeed = .1f;
+
+    [Range(0, 1)]
+    private float rotationSpeed = .1f;
+
+    [Header("Stop distance"), Range(0, 10)]
+    private float stopDist = 2;
+
+    [Header("Freeze RotY")]
+    private bool onTheGround = false;
+    #endregion
+
+    #region MAIN
+    private void FixedUpdate()
     {
-        #region DECLARE
-        [Header("Chase Target"), SerializeField] 
-        private bool enable = true;
-        
-        [SerializeField] 
-        private Transform target = null;
-        
-        [SerializeField] 
-        private MoveType type = MoveType.Lerp;
+        if (target == null)
+            return;
 
-        [Header("Chase speed and rotation speed."), Range(0, 1)]
-        private float chaseSpeed = .1f;
+        if (!enable)
+            return;
 
-        [Range(0, 1)]
-        private float rotationSpeed = .1f;
+        Vector3 direction = target.transform.position - transform.position;
 
-        [Header("Stop distance"), Range(0, 10)]
-        private float stopDist = 2;
+        if (onTheGround)
+            direction.y = 0;
 
-        [Header("Freeze RotY")]
-        private bool onTheGround = false;
-        #endregion
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), rotationSpeed);
 
-        #region MAIN
-        private void FixedUpdate()
+        if (direction.magnitude > stopDist)
         {
-            if (target == null)
-                return;
-
-            if (!enable)
-                return;
-
-            Vector3 direction = target.transform.position - transform.position;
-
-            if (onTheGround)
-                direction.y = 0;
-
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), rotationSpeed);
-
-            if (direction.magnitude > stopDist)
-            {
-                if (type == MoveType.Lerp)
-                    transform.position = Vector3.Lerp(transform.position, target.position, chaseSpeed);
-                else
-                    transform.Translate(0, 0, chaseSpeed);
-            }
+            if (type == MoveType.Lerp)
+                transform.position = Vector3.Lerp(transform.position, target.position, chaseSpeed);
+            else
+                transform.Translate(0, 0, chaseSpeed);
         }
-        #endregion
-
-        #region PRIVATE
-        private enum MoveType
-        {
-            Lerp,
-            Translate
-        }
-        #endregion
     }
+    #endregion
+
+    #region PRIVATE
+    private enum MoveType
+    {
+        Lerp,
+        Translate
+    }
+    #endregion
 }
+
