@@ -12,13 +12,13 @@ namespace Shinn
     #region Convert str, hex, int to something
     public class Converter
     {
-        public static string Unicode2String(string _source)
+        public static string UnicodeToString(string _source)
         {
-            return new Regex(@"\\u([0-9A-F]{4})", RegexOptions.IgnoreCase | RegexOptions.Compiled).Replace(
-                         _source, x => string.Empty + Convert.ToChar(Convert.ToUInt16(x.Result("$1"), 16)));
+            return new Regex(@"\\u([0-9A-F]{4})", 
+                RegexOptions.IgnoreCase | RegexOptions.Compiled).Replace(_source, x => string.Empty + Convert.ToChar(Convert.ToUInt16(x.Result("$1"), 16)));
         }
 
-        public static string String2Unicode(string _source)
+        public static string StringToUnicode(string _source)
         {
             byte[] bytes = Encoding.Unicode.GetBytes(_source);
             StringBuilder stringBuilder = new StringBuilder();
@@ -29,20 +29,16 @@ namespace Shinn
 
         /// <summary>
         ///  HexString to Bytes
+        ///  string s = "4321000000000000000000000000000000000000"; 
+        ///  byte[] bytes = Encoding.ASCII.GetBytes(s);
         /// </summary>
         /// <param name="bytes"></param>
         /// <returns></returns>
         public static byte[] StringToBytes(string _source)
         {
-            //string s = "4321000000000000000000000000000000000000";
-            //byte[] bytes = Encoding.ASCII.GetBytes(s);
-
             byte[] s_bytes = new byte[_source.Length / 2];
             for (int i = 0; i < _source.Length; i = i + 2)
-            {
-                //每2位16進位數字轉換為一個10進位整數
                 s_bytes[i / 2] = Convert.ToByte(_source.Substring(i, 2), 16);
-            }
             return s_bytes;
         }
 
@@ -64,7 +60,7 @@ namespace Shinn
         /// </summary>
         /// <param name="decValue"></param>
         /// <returns></returns>
-        public static string ConvertInt2Hex(int _decValue)
+        public static string IntToHex(int _decValue)
         {
             return string.Format("{0:x}", _decValue);
         }
@@ -74,7 +70,7 @@ namespace Shinn
         /// </summary>
         /// <param name="hexValue"></param>
         /// <returns></returns>
-        public static int ConvertHex2Int(string _hexValue)
+        public static int HexToInt(string _hexValue)
         {
             return (int)Convert.ToInt64(_hexValue, 16);
         }
@@ -90,7 +86,7 @@ namespace Shinn
         /// <param name="data"></param>
         /// <param name="dataPath"></param>
         /// <param name="addDatatoFiles"></param>
-        public static void String2TxtFiles(string _content, string _outputurl, bool _addDatatoFiles = true)
+        public static void StringOutput(string _content, string _outputurl, bool _addDatatoFiles = true)
         {
             using (StreamWriter outputFile = new StreamWriter(_outputurl, _addDatatoFiles))
                 outputFile.WriteLine(_content);
@@ -114,8 +110,7 @@ namespace Shinn
         /// <returns></returns>
         public static string ReadTxt(string _url)
         {
-            string allstr = File.ReadAllText(_url);
-            return allstr;
+            return File.ReadAllText(_url);
         }
     }
     #endregion
@@ -128,7 +123,7 @@ namespace Shinn
         /// </summary>
         /// <param name="texture"></param>
         /// <returns></returns>
-        public static Texture2D Tex2Tex2D(Texture _texture)
+        public static Texture2D TexToTex2D(Texture _texture)
         {
             return Texture2D.CreateExternalTexture(
             _texture.width,
@@ -145,7 +140,7 @@ namespace Shinn
         /// <param name="PixelsPerUnit"></param>
         /// <param name="spriteType"></param>
         /// <returns></returns>
-        public static Sprite Tex2D2Sprite(Texture2D _texture, float _pixelsPerUnit = 100.0f, SpriteMeshType _spriteType = SpriteMeshType.Tight)
+        public static Sprite Tex2DToSprite(Texture2D _texture, float _pixelsPerUnit = 100.0f, SpriteMeshType _spriteType = SpriteMeshType.Tight)
         {
             Sprite NewSprite;
             NewSprite = Sprite.Create(_texture,
@@ -239,16 +234,19 @@ namespace Shinn
             }
             return output;
         }
-        
+
         /// <summary>
         /// Get Ip address
         /// </summary>
-        public static string GetLocalIP()
+        public static string[] GetLocalIP(System.Net.Sockets.AddressFamily _type = System.Net.Sockets.AddressFamily.InterNetwork)
         {
             var host = System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName());
-            foreach (var ip in host.AddressList)
-                if (ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
-                    return ip.ToString();
+            List<string> returnvalue = new List<string>();
+            foreach (var i in host.AddressList)
+                if (i.AddressFamily == _type)
+                    if (i != null)
+                        returnvalue.Add(i.ToString());
+            return returnvalue.ToArray();
             throw new Exception("No network adapters with an IPv4 address in the system!");
         }
 
@@ -259,7 +257,6 @@ namespace Shinn
         {
             Type type = _original.GetType();
             Component copy = _destination.AddComponent(type);
-            // Copied fields can be restricted with BindingFlags
             System.Reflection.FieldInfo[] fields = type.GetFields();
             foreach (System.Reflection.FieldInfo field in fields)
                 field.SetValue(copy, field.GetValue(_original));
@@ -298,33 +295,33 @@ namespace Shinn
             return true;
         }
 
-        #endregion
-
-        #region ArrayValueGreaterThanValue, ArrayValueLessThanValue
+        public enum SignType
+        {
+            GREATER,
+            LESS
+        }
         /// <summary>
         /// Array(int, float) 內數值大於某一數
         /// </summary>
         /// <param name="array"></param>
         /// <param name="limit"></param>
         /// <returns></returns>
-        public static bool ArrayValueGreaterThanValue(int[] array, int limit)
+        public static bool Compare2ArrayValue(float[] _array, int _limit, SignType _signType = SignType.GREATER)
         {
-            bool result = array.All(_value => _value > limit) ? true : false;
+            bool result = false;
+            if (_signType.Equals(SignType.GREATER))
+                result = _array.All(_value => _value > _limit) ? true : false;
+            else
+                result = _array.All(_value => _value < _limit) ? true : false;
             return result;
         }
-        public static bool ArrayValueGreaterThanValue(float[] array, float limit)
+        public static bool Compare2ArrayValue(int[] _array, int _limit, SignType _signType = SignType.GREATER)
         {
-            bool result = array.All(_value => _value > limit) ? true : false;
-            return result;
-        }
-        public static bool ArrayValueLessThanValue(int[] array, int limit)
-        {
-            bool result = array.All(_value => _value < limit) ? true : false;
-            return result;
-        }
-        public static bool ArrayValueLessThanValue(float[] array, float limit)
-        {
-            bool result = array.All(_value => _value < limit) ? true : false;
+            bool result = false;
+            if (_signType.Equals(SignType.GREATER))
+                result = _array.All(_value => _value > _limit) ? true : false;
+            else
+                result = _array.All(_value => _value < _limit) ? true : false;
             return result;
         }
         #endregion
@@ -334,14 +331,14 @@ namespace Shinn
         /// </summary>
         /// <param name="sQuaternion"></param>
         /// <returns></returns>
-        public static Quaternion Str2Quaternion(string sQuaternion)
+        public static Quaternion Str2Quaternion(string _sQuaternion)
         {
             // Remove the parentheses
-            if (sQuaternion.StartsWith("(") && sQuaternion.EndsWith(")"))
-                sQuaternion = sQuaternion.Substring(1, sQuaternion.Length - 2);
+            if (_sQuaternion.StartsWith("(") && _sQuaternion.EndsWith(")"))
+                _sQuaternion = _sQuaternion.Substring(1, _sQuaternion.Length - 2);
 
             // split the items
-            string[] sArray = sQuaternion.Split(',');
+            string[] sArray = _sQuaternion.Split(',');
 
             // store as a Vector3
             Quaternion result = new Quaternion(
@@ -357,11 +354,11 @@ namespace Shinn
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static float GetDegree(float value)
+        public static float GetDegree(float _value)
         {
-            value %= 360;
-            value = value > 180 ? value - 360 : value;
-            return value;
+            _value %= 360;
+            _value = _value > 180 ? _value - 360 : _value;
+            return _value;
         }
 
         /// <summary>

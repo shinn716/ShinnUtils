@@ -29,17 +29,19 @@ namespace Shinn
         private void OnGUI()
         {
             GUILayout.Label("Copy all source to destination: ");
+
+
             GUILayout.Label("Sources path: ");
             sourcesPath = GUILayout.TextField(sourcesPath);
+            if (GUILayout.Button("browse"))
+                EditorApplication.delayCall += OpenBrowserSource;
+
 
             GUILayout.Label("Export path: ");
             targetPath = GUILayout.TextField(targetPath);
+            if (GUILayout.Button("browse"))
+                EditorApplication.delayCall += OpenBrowserTarget;
 
-
-            editor = Editor.CreateEditor(this);
-            editor.OnInspectorGUI();
-
-            GUILayout.Label(sb.ToString());
 
             GUILayout.Space(10f);
             if (GUILayout.Button("Get all files"))
@@ -56,8 +58,26 @@ namespace Shinn
                 sb.Clear();
                 Dduplicate();
             }
+
+            editor = Editor.CreateEditor(this);
+            editor.OnInspectorGUI();
+
+            GUILayout.Label(sb.ToString());
         }
 
+
+        private void OpenBrowserSource()
+        {
+            string path = EditorUtility.OpenFolderPanel("Select path", "", "");
+            sourcesPath = path;
+            EditorUtility.FocusProjectWindow();
+        }
+        private void OpenBrowserTarget()
+        {
+            string path = EditorUtility.OpenFolderPanel("Export path", "", "");
+            targetPath = path;
+            EditorUtility.FocusProjectWindow();
+        }
 
         private void GetAllFilesInSources()
         {
@@ -97,9 +117,8 @@ namespace Shinn
         }
 
 
-
         [CustomEditor(typeof(CopyFileTools), true)]
-        public class ListTestEditorDrawer : Editor
+        public class ListEditorDrawer : Editor
         {
             public override void OnInspectorGUI()
             {

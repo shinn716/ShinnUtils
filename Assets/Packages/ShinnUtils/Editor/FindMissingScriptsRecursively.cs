@@ -1,36 +1,38 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using System.Text;
+using System.Collections.Generic;
 
 namespace Shinn
 {
     public class FindMissingScriptsRecursively : EditorWindow
     {
-        private static int go_count = 0, components_count = 0, missing_count = 0;
-        private static StringBuilder sb = new StringBuilder();
-        private static GameObject[] selectedGos;
-        Editor editor;
+        [SerializeField, ReadOnly]
+        private List<GameObject> missingGameObjects = new List<GameObject>();
 
-        [SerializeField] private GameObject[] list;
+        private Editor editor;
+        private int go_count = 0;
+        private int components_count = 0;
+        private int missing_count = 0;
+        private StringBuilder sb = new StringBuilder();
+        private GameObject[] selectedGameObjects;
 
         [MenuItem("ShiDevTools/Find Missing Scripts")]
         public static void ShowWindow()
         {
-            EditorWindow.GetWindow(typeof(FindMissingScriptsRecursively));
+            GetWindow<FindMissingScriptsRecursively>("Find Missing Scripts");
         }
+
 
         private void Awake()
         {
-            editor = Editor.CreateEditor(this);
+            OnSelectionChange();
         }
 
-        public void OnGUI()
+        private void OnGUI()
         {
-            Debug.Log("gui");
-            list = selectedGos;
 
-            if (editor != null)
-                editor.OnInspectorGUI();
+            GUILayout.Label($"Now select [{selectedGameObjects.Length}] objects.");
 
             if (GUILayout.Button("Find Missing Scripts in selected GameObjects"))
             {
@@ -38,22 +40,27 @@ namespace Shinn
                 FindInSelected();
             }
 
+            editor = Editor.CreateEditor(this);
+            editor.OnInspectorGUI();
+
             GUILayout.Label(sb.ToString());
         }
-        private static void FindInSelected()
+        private void FindInSelected()
         {
-            selectedGos = Selection.gameObjects;
+            missingGameObjects.Clear();
             go_count = 0;
             components_count = 0;
             missing_count = 0;
-            foreach (GameObject g in selectedGos)
+
+            foreach (GameObject g in selectedGameObjects)
             {
                 FindInGO(g);
             }
+
             sb.AppendLine(string.Format("Searched {0} GameObjects, {1} components, found {2} missing", go_count, components_count, missing_count));
         }
 
-        private static void FindInGO(GameObject g)
+        private void FindInGO(GameObject g)
         {
             go_count++;
             Component[] components = g.GetComponents<Component>();
@@ -70,25 +77,30 @@ namespace Shinn
                         s = t.parent.name + "/" + s;
                         t = t.parent;
                     }
-                    //Debug.Log(s + " has an empty script attached in position: " + i, g);
+
                     sb.AppendLine($"*{s} has an empty script attached in position: [{i}] {g}");
+                    missingGameObjects.Add(g);
                 }
             }
-            // Now recurse through each child GO (if there are any):
+
             foreach (Transform childT in g.transform)
             {
-                //Debug.Log("Searching " + childT.name  + " " );
                 FindInGO(childT.gameObject);
             }
         }
 
+        private void OnSelectionChange()
+        {
+            selectedGameObjects = Selection.gameObjects;
+        }
+
         [CustomEditor(typeof(FindMissingScriptsRecursively), true)]
-        public class ListTestEditorDrawer : Editor
+        public class ListEditorDrawer : Editor
         {
             public override void OnInspectorGUI()
             {
-                var list = serializedObject.FindProperty("list");
-                EditorGUILayout.PropertyField(list, new GUIContent("Selected gameobjects:"), true);
+                var list = serializedObject.FindProperty("missingGameObjects");
+                EditorGUILayout.PropertyField(list, new GUIContent("Missing targets"), true);
             }
         }
     }
