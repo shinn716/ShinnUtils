@@ -357,3 +357,4 @@ Assets/Samples/
 WebApp/**/coverage/*
 
 .DS_Store
+Logs/
