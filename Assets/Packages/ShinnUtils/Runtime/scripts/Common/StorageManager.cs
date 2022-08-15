@@ -15,9 +15,9 @@ using System.IO;
 
 namespace Shinn
 {
-    public class DUFileManager : MonoBehaviour
+    public class StorageManager : MonoBehaviour
     {
-        public static DUFileManager Instance;
+        public static StorageManager Instance;
 
         private void Awake()
         {
