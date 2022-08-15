@@ -9,7 +9,7 @@ public class CullingGroupCamera : MonoBehaviour
     [SerializeField] float fov = 2;
 
     private CullingGroup m_group = null;
-    private GameObject[] targets = null;
+    private Renderer[] targets = null;
     private BoundingSphere[] m_bounds = null;
 
     #region Main
@@ -58,29 +58,28 @@ public class CullingGroupCamera : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, fov * 5.5f);
+        Gizmos.DrawWireCube(transform.position + Vector3.forward * 5, 5.5f * fov * new Vector3(1, .25f, 1));
     }
     #endregion
 
     #region PRIAVTE
     private void OnChange(CullingGroupEvent ev)
     {
-        targets[ev.index].gameObject.SetActive(ev.isVisible);
+        targets[ev.index].enabled = (ev.isVisible);
         
         if (ev.currentDistance > fov)
-            targets[ev.index].gameObject.SetActive(false);
+            targets[ev.index].enabled = (false);
     }
 
-    private GameObject[] FindGameObjectsWithLayer(int[] layer)
+    private Renderer[] FindGameObjectsWithLayer(int[] layer)
     {
-        var goArray = FindObjectsOfType<GameObject>();
-        List<GameObject> goList = new List<GameObject>();
+        var goArray = FindObjectsOfType<Renderer>();
+        List<Renderer> goList = new List<Renderer>();
 
         for (int i = 0; i < layer.Length; i++)
             for (int j=0; j< goArray.Length; j++)
-                if (goArray[j].layer.Equals(layer[i]))
+                if (goArray[j].gameObject.layer.Equals(layer[i]))
                     goList.Add(goArray[j]);
-        
         return goList.ToArray();
     }
     #endregion
