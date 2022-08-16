@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Networking;
-using System.Threading.Tasks;
 using System;
 using System.IO;
 using Firebase.Storage;
@@ -13,62 +13,49 @@ public class FirebaseStorageSample : MonoBehaviour
     private StorageReference storage_ref;
 
     [SerializeField] private string gsUrl = "gs://url";
-    [SerializeField] Texture2D rawimg;
+    [SerializeField] RawImage rawimg;
 
-    // Use this for initialization
-    void Start()
+
+    [ContextMenu("TestUploadAndGenQRCode")]
+    public void TestUploadAndGenQRCode()
     {
-        Upload(Application.streamingAssetsPath, "Upload", "DfkhrO1XUAEYkdw.jpg",
-            () =>
-            {
-                Debug.Log("Upload success!");
-            });
-        DownloadImg("https://firebasestorage.googleapis.com/v0/b/helloword-47662.appspot.com/o/Upload%2FDfkhrO1XUAEYkdw.jpeg?alt=media&token=c9076ec7-9098-42d0-b7ef-0f84526b8c8b",
-            (v) =>
-            {
-                rawimg = v;
-                Debug.Log("Download success!");
-            });
+        StartCoroutine(UploadCo(Application.streamingAssetsPath, "Upload", "DfkhrO1XUAEYkdw.jpg", (v)=> {
+            rawimg.texture = QRCodeHelper.CreateQRCodeTex2D(v);
+        }));
     }
 
-    public void DownloadImg(string url, Action<Texture2D> action = null)
-    {
-        StartCoroutine(DownloadImgCo(url, action));
-    }
 
-    public void Upload(string locUrl, string tarUrl, string filename, Action action = null)
+    public IEnumerator UploadCo(string locUrl, string tarUrl, string filename, Action<string> callback)
     {
         storage = FirebaseStorage.DefaultInstance;
         storage_ref = storage.GetReferenceFromUrl(gsUrl);
 
-        // File located on disk
         string local_file = Path.Combine(locUrl, filename);
-        //string local_file = "file://" + Application.streamingAssetsPath + "/" + "DfkhrO1XUAEYkdw.jpg";
+        //string local_file = "file://" + Application.streamingAssetsPath + "/" + "DfkhrO1XUAEYkdw.jpg";\
 
-        //Create a reference to the file you want to upload
         StorageReference image_ref = storage_ref.Child(tarUrl + "/" + filename);
 
-        // Upload the file to the path
-        image_ref.PutFileAsync(local_file)
-          .ContinueWith((Task<StorageMetadata> task) =>
-          {
-              if (task.IsFaulted || task.IsCanceled)
-              {
-                  Debug.Log(task.Exception.ToString());
-                  // Uh-oh, an error occurred!
-              }
-              else
-              {
-                  //Metadata contains file metadata such as size, content - type, and download URL.
-                  //StorageMetadata metadata = task.Result;
-                  //string download_url = metadata.DownloadUrl.ToString();
-                  action?.Invoke();
-                  //Debug.Log("download url = " + download_url);
-              }
-          });
+        var uploadTask = image_ref.PutFileAsync(local_file);
+        yield return new WaitUntil(() => uploadTask.IsCompleted);
+
+        if (uploadTask.Exception != null)
+        {
+            Debug.LogError($"Failed to upload because {uploadTask.Exception}");
+            yield break;
+        }
+
+        var getUrltask = image_ref.GetDownloadUrlAsync();
+        yield return new WaitUntil(() => getUrltask.IsCompleted);
+
+        if (getUrltask.Exception != null)
+        {
+            Debug.LogError($"Failed to get a download url with {getUrltask.Exception}");
+            yield break;
+        }
+        callback?.Invoke(getUrltask.Result.ToString());
     }
 
-    private IEnumerator DownloadImgCo(string url, Action<Texture2D> action)
+    public IEnumerator DownloadImgCo(string url, Action<Texture2D> callback)
     {
         Texture2D text2d;
         UnityWebRequest request = UnityWebRequestTexture.GetTexture(url);
@@ -80,7 +67,7 @@ public class FirebaseStorageSample : MonoBehaviour
         else
         {
             text2d = ((DownloadHandlerTexture)request.downloadHandler).texture;
-            action?.Invoke(text2d);
+            callback?.Invoke(text2d);
         }
     }
 }
