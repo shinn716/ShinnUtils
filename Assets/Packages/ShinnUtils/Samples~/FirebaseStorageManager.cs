@@ -1,31 +1,22 @@
+// Sample: 
+//    StartCoroutine(UploadCo(Application.streamingAssetsPath, "Upload", "DfkhrO1XUAEYkdw.jpg", (v)=> {
+//        rawimg.texture = QRCodeHelper.CreateQRCodeTex2D(v);
+//    }));
+
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Networking;
 using System;
 using System.IO;
 using Firebase.Storage;
 
-public class FirebaseStorageSample : MonoBehaviour
+public static class FirebaseStorageManager
 {
-    private FirebaseStorage storage;
-    private StorageReference storage_ref;
+    private static FirebaseStorage storage;
+    private static StorageReference storage_ref;
+    private static readonly string gsUrl = "gs://url";
 
-    [SerializeField] private string gsUrl = "gs://url";
-    [SerializeField] RawImage rawimg;
-
-
-    [ContextMenu("TestUploadAndGenQRCode")]
-    public void TestUploadAndGenQRCode()
-    {
-        StartCoroutine(UploadCo(Application.streamingAssetsPath, "Upload", "DfkhrO1XUAEYkdw.jpg", (v)=> {
-            rawimg.texture = QRCodeHelper.CreateQRCodeTex2D(v);
-        }));
-    }
-
-
-    public IEnumerator UploadCo(string locUrl, string tarUrl, string filename, Action<string> callback)
+    public static IEnumerator UploadCo(string locUrl, string tarUrl, string filename, Action<string> callback)
     {
         storage = FirebaseStorage.DefaultInstance;
         storage_ref = storage.GetReferenceFromUrl(gsUrl);
@@ -55,19 +46,26 @@ public class FirebaseStorageSample : MonoBehaviour
         callback?.Invoke(getUrltask.Result.ToString());
     }
 
-    public IEnumerator DownloadImgCo(string url, Action<Texture2D> callback)
+    public static IEnumerator DownloadImgCo(string url, Action<Texture2D> callback)
     {
-        Texture2D text2d;
         UnityWebRequest request = UnityWebRequestTexture.GetTexture(url);
         yield return request.SendWebRequest();
         if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
-        {
             Debug.Log(request.error);
-        }
         else
         {
-            text2d = ((DownloadHandlerTexture)request.downloadHandler).texture;
+            var text2d = ((DownloadHandlerTexture)request.downloadHandler).texture;
             callback?.Invoke(text2d);
         }
+    }
+
+    public static IEnumerator DownloadTextCo(string url, Action<string> callback)
+    {
+        UnityWebRequest request = UnityWebRequest.Get(url);
+        yield return request.SendWebRequest();
+        if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
+            Debug.Log(request.error);
+        else
+            callback?.Invoke(request.downloadHandler.text);
     }
 }
