@@ -1,9 +1,9 @@
-// Sample: 
-//    StartCoroutine(UploadCo(Application.streamingAssetsPath, "Upload", "DfkhrO1XUAEYkdw.jpg", (v)=> {
-//        rawimg.texture = QRCodeHelper.CreateQRCodeTex2D(v);
-//    }));
+// Sample:
+// FirebaseStorageManager.UploadCo(fullpath, "Config", (v) => { print("Upload success! " + v); });
+//
 
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 using System;
@@ -14,19 +14,17 @@ public static class FirebaseStorageManager
 {
     private static FirebaseStorage storage;
     private static StorageReference storage_ref;
-    private static readonly string gsUrl = "gs://url";
+    private static readonly string gsUrl = "gs://appurl";
 
-    public static IEnumerator UploadCo(string locUrl, string tarUrl, string filename, Action<string> callback)
+    public static IEnumerator UploadCo(string _fullname, string _tarFolder, Action<string> _callback)
     {
         storage = FirebaseStorage.DefaultInstance;
         storage_ref = storage.GetReferenceFromUrl(gsUrl);
 
-        string local_file = Path.Combine(locUrl, filename);
-        //string local_file = "file://" + Application.streamingAssetsPath + "/" + "DfkhrO1XUAEYkdw.jpg";\
+        string filename = Path.GetFileName(_fullname);
+        StorageReference image_ref = storage_ref.Child(_tarFolder + "/" + filename);
 
-        StorageReference image_ref = storage_ref.Child(tarUrl + "/" + filename);
-
-        var uploadTask = image_ref.PutFileAsync(local_file);
+        var uploadTask = image_ref.PutFileAsync(_fullname);
         yield return new WaitUntil(() => uploadTask.IsCompleted);
 
         if (uploadTask.Exception != null)
@@ -43,9 +41,8 @@ public static class FirebaseStorageManager
             Debug.LogError($"Failed to get a download url with {getUrltask.Exception}");
             yield break;
         }
-        callback?.Invoke(getUrltask.Result.ToString());
+        _callback?.Invoke(getUrltask.Result.ToString());
     }
-
     public static IEnumerator DownloadImgCo(string url, Action<Texture2D> callback)
     {
         UnityWebRequest request = UnityWebRequestTexture.GetTexture(url);
@@ -58,7 +55,6 @@ public static class FirebaseStorageManager
             callback?.Invoke(text2d);
         }
     }
-
     public static IEnumerator DownloadTextCo(string url, Action<string> callback)
     {
         UnityWebRequest request = UnityWebRequest.Get(url);

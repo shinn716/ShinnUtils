@@ -31,14 +31,16 @@ namespace Shinn
     public class PointerEvent : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerClickHandler
     {
         public delegate void UIPointerEvent(GameObject go);
-        public event UIPointerEvent OnPointerEvent;
+        public event UIPointerEvent OnPointerEventListener;
 
         [Header("Custom events (Suggest use actions)")]
-        public UnityEvent onLongPressEvents;
-        public UnityEvent onTouchUpEvents;
-        public UnityEvent onClickEvents;
+        [SerializeField] private UnityEvent onLongPressEvents;
+        [SerializeField] private UnityEvent onLongPressLoopEvents;
+        [SerializeField] private UnityEvent onTouchUpEvents;
+        [SerializeField] private UnityEvent onClickEvents;
 
         public Action onLongpress { get; set; } = null;
+        public Action onLongPressLoop { get; set; } = null;
         public Action onTouchUp { get; set; } = null;
         public Action onClick { get; set; } = null;
 
@@ -49,12 +51,15 @@ namespace Shinn
         void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
         {
             if (!m_onClick)
+            {
                 onClick?.Invoke();
+                onClickEvents?.Invoke();
+            }
         }
         void IPointerDownHandler.OnPointerDown(PointerEventData eventData)
         {
-            if (OnPointerEvent != null)
-                OnPointerEvent(this.gameObject);
+            if (OnPointerEventListener != null)
+                OnPointerEventListener(this.gameObject);
             StartCoroutine(LongPressCo());
         }
         void IPointerUpHandler.OnPointerUp(PointerEventData eventData)
@@ -64,7 +69,7 @@ namespace Shinn
         }
 
 
-        private IEnumerator LongPressCo(float _delaytime = .5f)
+        private IEnumerator LongPressCo(float _delaytime = .15f)
         {
             m_touch = true;
 
@@ -78,6 +83,7 @@ namespace Shinn
             {
                 m_Down = true;
                 onLongpress?.Invoke();
+                onLongPressEvents?.Invoke();
             }
 
             // Animate the countdown
@@ -87,9 +93,12 @@ namespace Shinn
                 m_onClick = true;
                 var ratio = (Time.time - startTime) / 10;
                 m_touch = ratio <= 1f;
+                onLongPressLoop?.Invoke();
+                onLongPressLoopEvents?.Invoke();
                 yield return null;
             }
             onTouchUp?.Invoke();
+            onTouchUpEvents?.Invoke();
             m_Down = false;
         }
         private IEnumerator DelayAndSetOnClickCo()
