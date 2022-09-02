@@ -57,8 +57,10 @@ public class CullingGroupCamera : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        Matrix4x4 rotationMatrix = Matrix4x4.TRS(transform.position, transform.rotation, transform.lossyScale);
+        Gizmos.matrix = rotationMatrix;
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireCube(transform.position + Vector3.forward * 5, 5.5f * fov * new Vector3(1, .25f, 1));
+        Gizmos.DrawWireCube(Vector3.forward * 5.5f, 5.5f * fov * new Vector3(1, .25f, 1));
     }
     #endregion
 

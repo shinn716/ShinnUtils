@@ -3,17 +3,17 @@
 //    btnRecord.OnPointerEvent += delegate (GameObject go)
 //    {
 //        // OnClick TODO:
-//        btnRecord.onClick = () =>
+//        btnRecord.OnClick = () =>
 //        {
 //            print("onClick");
 //        };
 //        // Long press TODO: 
-//        btnRecord.onLongpress = () =>
+//        btnRecord.OnLongpress = () =>
 //        {
 //            print("onLongpress");
 //        };
 //        // Long press TODO: 
-//        btnRecord.onTouchUp = () =>
+//        btnRecord.OnTouchUp = () =>
 //        {
 //            print("onTouchUp");
 //        };
@@ -39,10 +39,10 @@ namespace Shinn
         [SerializeField] private UnityEvent onTouchUpEvents;
         [SerializeField] private UnityEvent onClickEvents;
 
-        public Action onLongpress { get; set; } = null;
-        public Action onLongPressLoop { get; set; } = null;
-        public Action onTouchUp { get; set; } = null;
-        public Action onClick { get; set; } = null;
+        public Action OnLongpress { get; set; } = null;
+        public Action OnLongPressLoop { get; set; } = null;
+        public Action OnTouchUp { get; set; } = null;
+        public Action OnClick { get; set; } = null;
 
         private bool m_touch = false;
         private bool m_onClick = false;
@@ -52,7 +52,7 @@ namespace Shinn
         {
             if (!m_onClick)
             {
-                onClick?.Invoke();
+                OnClick?.Invoke();
                 onClickEvents?.Invoke();
             }
         }
@@ -82,7 +82,7 @@ namespace Shinn
             if (!m_Down)
             {
                 m_Down = true;
-                onLongpress?.Invoke();
+                OnLongpress?.Invoke();
                 onLongPressEvents?.Invoke();
             }
 
@@ -93,11 +93,11 @@ namespace Shinn
                 m_onClick = true;
                 var ratio = (Time.time - startTime) / 10;
                 m_touch = ratio <= 1f;
-                onLongPressLoop?.Invoke();
+                OnLongPressLoop?.Invoke();
                 onLongPressLoopEvents?.Invoke();
                 yield return null;
             }
-            onTouchUp?.Invoke();
+            OnTouchUp?.Invoke();
             onTouchUpEvents?.Invoke();
             m_Down = false;
         }
