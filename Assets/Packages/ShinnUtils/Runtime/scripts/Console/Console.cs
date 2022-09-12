@@ -31,7 +31,7 @@ public class Console : MonoBehaviour
     bool collapse;
 
     public Rect SizeOffset { get; set; }
-    public bool ShowConsole { get; set; }
+    public bool ShowConsoleInDefault = false;
 
     // Visual elements:
     static readonly Dictionary<LogType, Color> logTypeColors = new Dictionary<LogType, Color>()
@@ -64,12 +64,12 @@ public class Console : MonoBehaviour
     void Update()
     {
         if (Input.GetKeyDown(enableToggle))
-            ShowConsole = !ShowConsole;
+            ShowConsoleInDefault = !ShowConsoleInDefault;
     }
 
     void OnGUI()
     {
-        if (!ShowConsole)
+        if (!ShowConsoleInDefault)
             return;
 
         Rect windowRect = new Rect(margin + SizeOffset.x, margin + SizeOffset.y, Screen.width - (margin * 2) + SizeOffset.width, Screen.height - (margin * 2) + SizeOffset.height);
@@ -150,6 +150,9 @@ public class Console : MonoBehaviour
     /// </summary>
     void ExportMessages()
     {
+        if (!Directory.Exists(Application.streamingAssetsPath))
+            Directory.CreateDirectory(Application.streamingAssetsPath);
+
         string full = Path.Combine(Application.streamingAssetsPath, $"log_{System.DateTime.UtcNow.ToString("yyyy-MM-dd-HH-mm-ss")}.txt");
 
         Debug.Log($"[Save to] {full}");
@@ -159,7 +162,7 @@ public class Console : MonoBehaviour
             StringBuilder sb = new StringBuilder();
 
             foreach (var i in logs)
-                sb.AppendLine($"[{i.type}]  {i.message}  {i.stackTrace}");
+                sb.AppendLine($"[{i.type}] {i.message} {i.stackTrace}");
 
             outputFile.WriteLine(sb.ToString());
             outputFile.Close();

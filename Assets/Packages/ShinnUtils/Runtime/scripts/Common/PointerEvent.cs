@@ -91,8 +91,9 @@ namespace Shinn
             while (m_touch)
             {
                 m_onClick = true;
-                var ratio = (Time.time - startTime) / 10;
-                m_touch = ratio <= 1f;
+                //var ratio = (Time.time - startTime) / 10;
+                //m_touch = ratio <= 1f;
+
                 OnLongPressLoop?.Invoke();
                 onLongPressLoopEvents?.Invoke();
                 yield return null;
