@@ -17,7 +17,9 @@ namespace Shinn
         private string targetPath = "D:\\";
         private Editor editor;
         private StringBuilder sb = new StringBuilder();
-        private Dictionary<string, FileInfo> fileinfolist = new Dictionary<string, FileInfo>();
+        private Vector2 scrollFilelist = Vector2.zero;
+        private Vector2 scrollLoglist = Vector2.zero;
+        private bool showList = true;
 
         [MenuItem("ShiDevTools/Copy File Menu")]
         private static void OpenMenu()
@@ -30,18 +32,17 @@ namespace Shinn
         {
             GUILayout.Label("Copy all source to destination: ");
 
-
             GUILayout.Label("Sources path: ");
             sourcesPath = GUILayout.TextField(sourcesPath);
             if (GUILayout.Button("browse"))
                 EditorApplication.delayCall += OpenBrowserSource;
 
-
-            GUILayout.Label("Export path: ");
+            GUILayout.Label("Target path: ");
             targetPath = GUILayout.TextField(targetPath);
             if (GUILayout.Button("browse"))
                 EditorApplication.delayCall += OpenBrowserTarget;
 
+            showList = GUILayout.Toggle(showList, "Show list in GUI.");
 
             GUILayout.Space(10f);
             if (GUILayout.Button("Get all files"))
@@ -53,16 +54,31 @@ namespace Shinn
                 sb.Clear();
                 filelist.Clear();
             }
-            if (GUILayout.Button("Copy to the destination"))
+            if (GUILayout.Button("*Copy all files*"))
             {
-                sb.Clear();
-                Dduplicate();
+                DuplicateAllFiles();
             }
 
+            EditorGUILayout.BeginVertical();
+
+            scrollFilelist = EditorGUILayout.BeginScrollView(scrollFilelist, GUILayout.Width(position.width), GUILayout.Height(position.height / 6));
             editor = Editor.CreateEditor(this);
             editor.OnInspectorGUI();
+            EditorGUILayout.EndScrollView();
+            EditorGUILayout.EndVertical();
 
-            GUILayout.Label(sb.ToString());
+
+            GUILayout.Space(10f);
+            EditorGUILayout.BeginVertical();
+            scrollLoglist = EditorGUILayout.BeginScrollView(scrollLoglist, GUILayout.Width(position.width), GUILayout.Height(position.height / 2));
+
+
+            GUILayout.Label("[log]");
+            if (sb.Length > 0)
+                GUILayout.Label(sb.ToString());
+
+            EditorGUILayout.EndScrollView();
+            EditorGUILayout.EndVertical();
         }
 
 
@@ -74,45 +90,52 @@ namespace Shinn
         }
         private void OpenBrowserTarget()
         {
-            string path = EditorUtility.OpenFolderPanel("Export path", "", "");
+            string path = EditorUtility.OpenFolderPanel("Target path", "", "");
             targetPath = path;
             EditorUtility.FocusProjectWindow();
         }
-
         private void GetAllFilesInSources()
         {
             filelist.Clear();
-            fileinfolist.Clear();
             sb.Clear();
-            var info = new DirectoryInfo(sourcesPath);
-            var fileInfo = info.GetFiles();
-            foreach (var file in fileInfo)
+
+            try
             {
-                filelist.Add(file.ToString());
-                fileinfolist.Add(file.ToString(), file);
-                sb.AppendLine(file.Name);
+                sb.AppendLine("File count: " + Directory.GetFiles(sourcesPath, "*.*", SearchOption.AllDirectories).Length);
+                if (!showList)
+                    return;
+
+                foreach (string newPath in Directory.GetFiles(sourcesPath, "*.*", SearchOption.AllDirectories))
+                    filelist.Add(newPath);
+            }
+            catch (Exception e)
+            {
+                sb.AppendLine("[error]" + e.ToString());
             }
         }
-        private void Dduplicate()
+        private void DuplicateAllFiles()
         {
             sb.AppendLine("Start Process... please wait");
-            Process();
+            ProcessDuplicateAllFiles();
         }
-        private async void Process(Action callback = null)
+        private async void ProcessDuplicateAllFiles()
         {
             var task01 = Task.Run(() =>
             {
-                sb.AppendLine($"Copy files count: {fileinfolist.Count}");
-                foreach (var i in fileinfolist)
+                //Now Create all of the directories
+                foreach (string dirPath in Directory.GetDirectories(sourcesPath, "*",
+                   SearchOption.AllDirectories))
+                    Directory.CreateDirectory(dirPath.Replace(sourcesPath, targetPath));
+
+                //Copy all the files & Replaces any files with the same name
+                foreach (string newPath in Directory.GetFiles(sourcesPath, "*.*",
+                   SearchOption.AllDirectories))
                 {
-                    string[] splitArray = i.Key.Split(char.Parse("\\"));
-                    var copyname = splitArray[splitArray.Length - 1];
-                    File.Copy(i.Key, Path.Combine(targetPath, copyname), true);
-                    sb.AppendLine($"Finish Process: {i.Key}  {(float)i.Value.Length / 1024 / 1024} MB");
+                    sb.AppendLine(newPath);
+                    File.Copy(newPath, newPath.Replace(sourcesPath, targetPath), true);
                 }
             }
             );
-            callback?.Invoke();
             await Task.Yield();
         }
 
