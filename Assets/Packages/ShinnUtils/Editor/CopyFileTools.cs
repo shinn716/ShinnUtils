@@ -32,12 +32,12 @@ namespace Shinn
         {
             GUILayout.Label("Copy all source to destination: ");
 
-            GUILayout.Label("Sources path: ");
+            GUILayout.Label("Sources: ");
             sourcesPath = GUILayout.TextField(sourcesPath);
             if (GUILayout.Button("browse"))
                 EditorApplication.delayCall += OpenBrowserSource;
 
-            GUILayout.Label("Target path: ");
+            GUILayout.Label("Destination: ");
             targetPath = GUILayout.TextField(targetPath);
             if (GUILayout.Button("browse"))
                 EditorApplication.delayCall += OpenBrowserTarget;

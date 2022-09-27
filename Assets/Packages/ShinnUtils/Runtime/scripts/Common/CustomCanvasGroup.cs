@@ -8,7 +8,7 @@ namespace Shinn
     [RequireComponent(typeof(CanvasGroup))]
     public class CustomCanvasGroup : MonoBehaviour
     {
-        private CanvasGroup canvasGroup;
+        public CanvasGroup canvasGroup { get; private set; } = null;
 
         public Action OnEnableAction { get; set; } = null;
         public Action OnDisableAction { get; set; } = null;

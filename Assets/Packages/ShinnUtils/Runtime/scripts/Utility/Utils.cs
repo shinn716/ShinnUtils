@@ -184,6 +184,18 @@ namespace Shinn
                 new Vector2(0, 0), _pixelsPerUnit, 0, _spriteType);
             return NewSprite;
         }
+
+        /// <summary>
+        /// Texture2D to base64
+        /// </summary>
+        /// <param name="texture"></param>
+        /// <returns></returns>
+        public static string ConvertTex2DtoBase64(Texture2D texture)
+        {
+            byte[] bytes = texture.EncodeToPNG();
+            string base64String = Convert.ToBase64String(bytes);
+            return base64String;
+        }
     }
     #endregion
 
@@ -203,14 +215,6 @@ namespace Shinn
                 if (att[i])
                     returnArray.Add(i);
             return returnArray.ToArray();
-        }
-        
-        /// <summary>
-        /// Mapping 
-        /// </summary>
-        public static float Map(float v, float a, float b, float x, float y)
-        {
-            return (v == a) ? x : (v - a) * (y - x) / (b - a) + x;
         }
 
         /// <summary>

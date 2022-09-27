@@ -6,6 +6,14 @@ namespace Shinn
     public static class Math
     {
         /// <summary>
+        /// Mapping 
+        /// </summary>
+        public static float Map(float v, float a, float b, float x, float y)
+        {
+            return (v == a) ? x : (v - a) * (y - x) / (b - a) + x;
+        }
+
+        /// <summary>
         /// 取偶數, 小數點第N位 (小數點最大第二位)
         /// </summary>
         /// <param name="input"></param>

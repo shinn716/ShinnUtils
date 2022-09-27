@@ -44,6 +44,8 @@ namespace Shinn
         public Action OnTouchUp { get; set; } = null;
         public Action OnClick { get; set; } = null;
 
+        public float delayTime = .5f;
+
         private bool m_touch = false;
         private bool m_onClick = false;
         private bool m_Down = false;
@@ -60,7 +62,7 @@ namespace Shinn
         {
             if (OnPointerEventListener != null)
                 OnPointerEventListener(this.gameObject);
-            StartCoroutine(LongPressCo());
+            StartCoroutine(LongPressCo(delayTime));
         }
         void IPointerUpHandler.OnPointerUp(PointerEventData eventData)
         {

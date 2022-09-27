@@ -66,7 +66,6 @@ public class Achievement : MonoBehaviour
 
         var output = JsonUtility.ToJson(achievementTable);
         PlayerPrefs.SetString("achievementTable", output);
-        print(output);
     }
 
 
