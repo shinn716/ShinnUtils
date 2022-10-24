@@ -35,6 +35,7 @@ namespace Shinn.Common
 {
     public class TCPServer
     {
+        public event Action<string> Receiver;
         public string Ip { get; set; }
         public int Port { get; set; }
 
@@ -42,12 +43,13 @@ namespace Shinn.Common
         private Thread tcpListenerThread;
         private TcpClient connectedTcpClient;
 
-        public TCPServer(string _ip ="127.0.0.1", int _port = 6969, Action<string> callback = null)
+
+        public TCPServer(string _ip ="127.0.0.1", int _port = 6969)
         {
             Ip = _ip;
             Port = _port;
 
-            tcpListenerThread = new Thread(() => ListenForIncommingRequests(callback));
+            tcpListenerThread = new Thread(() => ListenForIncommingRequests());
             tcpListenerThread.IsBackground = true;
             tcpListenerThread.Start();
             Debug.Log($"Init TCPServer {Ip}/{Port}");
@@ -68,7 +70,7 @@ namespace Shinn.Common
         /// <summary> 	
         /// Send message to client using socket connection. 	
         /// </summary> 	
-        public void SendMessage(string message, Action<string> callback = null)
+        public void SendMessage(string message)
         {
             if (connectedTcpClient == null)
                 return;
@@ -78,16 +80,10 @@ namespace Shinn.Common
                 // Get a stream object for writing. 			
                 NetworkStream stream = connectedTcpClient.GetStream();
                 if (stream.CanWrite)
-                {
-                    //string serverMessage = "Hello.";
-                    // Convert string message to byte array.                 
-                    byte[] serverMessageAsByteArray = Encoding.ASCII.GetBytes(message);
-                    // Write byte array to socketConnection stream.               
+                {                
+                    byte[] serverMessageAsByteArray = Encoding.UTF8.GetBytes(message);
                     stream.Write(serverMessageAsByteArray, 0, serverMessageAsByteArray.Length);
-                    //Debug.Log("Server sent his message - should be received by client");
-
-                    var m_echo = "[Send Success]" + message;
-                    callback?.Invoke(m_echo);
+                    Receiver?.Invoke(message);
                 }
             }
             catch (SocketException e)
@@ -96,7 +92,7 @@ namespace Shinn.Common
             }
         }
 
-        private void ListenForIncommingRequests(Action<string> callback = null)
+        private void ListenForIncommingRequests()
         {
             try
             {
@@ -115,10 +111,9 @@ namespace Shinn.Common
                             while ((length = stream.Read(bytes, 0, bytes.Length)) != 0)
                             {
                                 var incommingData = new byte[length];
-                                Array.Copy(bytes, 0, incommingData, 0, length);
-                                // Convert byte array to string message. 							
-                                string clientMessage = Encoding.ASCII.GetString(incommingData);
-                                callback?.Invoke(clientMessage);
+                                Array.Copy(bytes, 0, incommingData, 0, length);						
+                                string clientMessage = Encoding.UTF8.GetString(incommingData);
+                                Receiver?.Invoke(clientMessage);
                             }
                         }
                     }

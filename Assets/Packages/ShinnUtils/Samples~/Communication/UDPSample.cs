@@ -1,34 +1,37 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Shinn.Common;
+using System;
 
 public class UDPSample : MonoBehaviour
 {
-    private Shinn.Common.UDPServer m_UdpServer;
-    private Shinn.Common.UDPClient m_UdpClient;
+    UDPServer server;
+    UDPClient client;
 
     void Start()
     {
-        m_UdpServer = new Shinn.Common.UDPServer("127.0.0.1", 10000, GetServerReceive);
-        m_UdpClient = new Shinn.Common.UDPClient();
+        server = new UDPServer();
+        client = new UDPClient();
+        server.Receiver += UdpGetData;
     }
 
     private void OnApplicationQuit()
     {
-        m_UdpServer.Dispose();
-        m_UdpClient.Dispose();
+        server.Receiver -= UdpGetData;
+        server.Dispose();
+        client.Dispose();
     }
 
-    void GetServerReceive(string callback)
+
+    void UdpGetData(string _data)
     {
-        print("[GetServerReceive]" + callback);
+        print("==Udp==" + _data);
     }
 
-    [ContextMenu("ClientSend")]
-    void ClientSend()
+    [ContextMenu("UdpSend")]
+    void UdpSend()
     {
-        print("[ClientSend]");
-        m_UdpClient.SendDataString("[Client-Send] Hello");
+        client.SendDataString(DateTime.Now.ToString());
     }
-
 }

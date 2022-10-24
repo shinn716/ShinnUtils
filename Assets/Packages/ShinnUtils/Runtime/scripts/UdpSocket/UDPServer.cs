@@ -35,29 +35,38 @@ namespace Shinn.Common
     {
         private IPEndPoint ipEndPoint;
         private UdpClient udpClient;
-        private byte[] receiveByte;
         private Thread thread;
+        private byte[] receiveByte;
+        private bool loop = false;
+
+        public event Action<string> Receiver;
 
         /// <summary>
         /// Default ip = "127.0.0.1", port = 10000
         /// </summary>
         /// <param name="ip"></param>
         /// <param name="port"></param>
-        public UDPServer(string ip = "127.0.0.1", int port = 10000, Action<string> callback = null)
+        public UDPServer(string ip = "127.0.0.1", int port = 10000)
         {
+            loop = true;
             ipEndPoint = new IPEndPoint(IPAddress.Parse(ip), port);
             udpClient = new UdpClient(ipEndPoint.Port);
             receiveByte = new byte[1024];
 
-            if (callback == null)
-            {
-                Debug.Log("Need to set callback(string).");
-                return;
-            }
-            thread = new Thread(() => ReceiveData(callback));
+            thread = new Thread(() => ReceiveData());
             thread.Start();
 
             Debug.Log($"Init UDPServer {ip}/{port}");
+        }
+
+        private void ReceiveData()
+        {
+            while (loop)
+            {
+                receiveByte = udpClient.Receive(ref ipEndPoint);
+                string receiveData = Encoding.UTF8.GetString(receiveByte);
+                Receiver?.Invoke(receiveData);
+            }
         }
 
         /// <summary>
@@ -65,21 +74,9 @@ namespace Shinn.Common
         /// </summary>
         public void Dispose()
         {
-            if (udpClient != null)
-                udpClient.Close();
-
-            if (thread != null)
-                thread.Abort();
-        }
-        
-        private void ReceiveData(Action<string> callback)
-        {
-            while (true)
-            {
-                receiveByte = udpClient.Receive(ref ipEndPoint);
-                string receiveData = Encoding.UTF8.GetString(receiveByte);
-                callback?.Invoke(receiveData);
-            }
+            loop = false;
+            udpClient?.Close();
+            thread?.Abort();
         }
     }
 }
