@@ -80,7 +80,7 @@ namespace Shinn.Common
                     byte[] clientMessageAsByteArray = Encoding.UTF8.GetBytes(message);
                     // Write byte array to socketConnection stream.                 
                     stream.Write(clientMessageAsByteArray, 0, clientMessageAsByteArray.Length);
-                    Receiver.Invoke(message);
+                    //Receiver?.Invoke(message);
                 }
             }
             catch (SocketException socketException)

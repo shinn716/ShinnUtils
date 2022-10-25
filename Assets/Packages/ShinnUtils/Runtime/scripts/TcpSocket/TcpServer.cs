@@ -83,7 +83,7 @@ namespace Shinn.Common
                 {                
                     byte[] serverMessageAsByteArray = Encoding.UTF8.GetBytes(message);
                     stream.Write(serverMessageAsByteArray, 0, serverMessageAsByteArray.Length);
-                    Receiver?.Invoke(message);
+                    //Receiver?.Invoke(message);
                 }
             }
             catch (SocketException e)
