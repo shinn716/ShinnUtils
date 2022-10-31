@@ -9,26 +9,31 @@
     "name": "John Tsai",
     "url": "https://github.com/shinn716"
   },
-  "samples": [
-  {
-    "displayName": "Samples",
-    "path": "Samples~"
-  },
-  {
-    "displayName": "SimpleDotween",
-    "path": "SimpleDotween~"
-  },
-  {
-    "displayName": "SimpleItween",
-    "path": "SimpleItween~"
-  },
-  {
-    "displayName": "WebGLBridgeSample",
-    "path": "WebGLBridgeSample~"
-  },
-  {
-    "displayName": "HDRP-ParticleSystemShader",
-    "path": "HDRPParticleSystemShader~"
-  }
+  "samples": 
+  [
+    {
+      "displayName": "FirebaseStorageSample",
+      "path": "FirebaseStorageSample~"
+    },
+    {
+      "displayName": "HDRP-ParticleSystemShader",
+      "path": "HDRPParticleSystemShader~"
+    },
+    {
+      "displayName": "Samples",
+      "path": "Samples~"
+    },
+    {
+      "displayName": "SimpleDotween",
+      "path": "SimpleDotween~"
+    },
+    {
+      "displayName": "SimpleItween",
+      "path": "SimpleItween~"
+    },
+    {
+      "displayName": "WebGLBridgeSample",
+      "path": "WebGLBridgeSample~"
+    }
   ]
 }
