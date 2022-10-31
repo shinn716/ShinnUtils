@@ -12,8 +12,8 @@ public class TCPSample : MonoBehaviour
     void Start()
     {
         tserver = new TCPServer();
-        tserver.Receiver += TcpServerGetData;
         tclient = new TCPClient();
+        tserver.Receiver += TcpServerGetData;
         tclient.Receiver += TcpClientGetData;
     }
 
@@ -28,24 +28,24 @@ public class TCPSample : MonoBehaviour
 
     void TcpServerGetData(string _data)
     {
-        print("==TCP Server==" + _data);
+        print("[TCP Server]" + _data);
     }
 
     void TcpClientGetData(string _data)
     {
-        print("==TCP Client==" + _data);
+        print("[TCP Client]" + _data);
     }
 
 
     [ContextMenu("TcpServerSend")]
     void TcpServerSend()
     {
-        tserver.SendMessage("TCP " + DateTime.Now.ToString());
+        tserver.SendMessage("Server: " + DateTime.Now.ToString());
     }
 
     [ContextMenu("TcpClientSend")]
     void TcpClientSend()
     {
-        tclient.SendMessage("TCP " + DateTime.Now.ToString());
+        tclient.SendMessage("Client: " + DateTime.Now.ToString());
     }
 }

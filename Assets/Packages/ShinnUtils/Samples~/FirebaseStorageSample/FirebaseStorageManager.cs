@@ -2,6 +2,8 @@
 // FirebaseStorageManager.UploadCo(fullpath, "Config", (v) => { print("Upload success! " + v); });
 //
 
+#if Enable_FirebaseStorage
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -65,3 +67,5 @@ public static class FirebaseStorageManager
             callback?.Invoke(request.downloadHandler.text);
     }
 }
+
+#endif

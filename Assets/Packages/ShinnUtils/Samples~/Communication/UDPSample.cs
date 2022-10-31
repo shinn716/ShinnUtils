@@ -26,12 +26,12 @@ public class UDPSample : MonoBehaviour
 
     void UdpGetData(string _data)
     {
-        print("==Udp==" + _data);
+        print("[Udp]" + _data);
     }
 
     [ContextMenu("UdpSend")]
     void UdpSend()
     {
-        client.SendDataString(DateTime.Now.ToString());
+        client.Send(DateTime.Now.ToString());
     }
 }

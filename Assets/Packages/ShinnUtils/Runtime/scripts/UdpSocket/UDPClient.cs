@@ -52,20 +52,9 @@ namespace Shinn.Common
         /// Send Data -> string
         /// </summary>
         /// <param name="tempData"></param>
-        public void SendDataString(string input)
+        public void Send(string input)
         {
             sendByte = Encoding.UTF8.GetBytes(input);
-            udpClient.Send(sendByte, sendByte.Length, ipEndPoint);
-        }
-
-        /// <summary>
-        /// Send Data -> string
-        /// </summary>
-        /// <param name="tempData"></param>
-        public void SendDataByte(string input)
-        {
-            var bytes = Encoding.UTF8.GetBytes(input);
-            sendByte = bytes;
             udpClient.Send(sendByte, sendByte.Length, ipEndPoint);
         }
 
