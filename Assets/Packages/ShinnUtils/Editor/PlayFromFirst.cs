@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public static class PlayFromFirst
 {
-    const string playFromFirstMenuStr = "ShiDevTools/Always Start From Scene 0 &p";
+    const string playFromFirstMenuStr = "ShiDevTools/Edit/Always Start From Scene 0 &0";
 
     static bool playFromFirstScene
     {
