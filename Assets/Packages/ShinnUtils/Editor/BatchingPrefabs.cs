@@ -13,7 +13,7 @@ namespace Shinn
         private string stringOutputPath = "Assets/Resources/";
         private string stringFeedback = string.Empty;
 
-        [MenuItem("ShiDevTools/Batching Prefabs")]
+        [MenuItem("Tools/ShinnDev/Batching Prefabs")]
         private static void OpenMenu()
         {
             // Open menu

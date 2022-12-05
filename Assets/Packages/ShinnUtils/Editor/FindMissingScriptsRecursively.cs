@@ -17,7 +17,7 @@ namespace Shinn
         private StringBuilder sb = new StringBuilder();
         private GameObject[] selectedGameObjects;
 
-        [MenuItem("ShiDevTools/Find Missing Scripts")]
+        [MenuItem("Tools/ShinnDev/Find Missing Scripts")]
         public static void ShowWindow()
         {
             GetWindow<FindMissingScriptsRecursively>("Find Missing Scripts");

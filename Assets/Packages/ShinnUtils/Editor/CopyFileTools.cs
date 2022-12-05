@@ -21,7 +21,7 @@ namespace Shinn
         private Vector2 scrollLoglist = Vector2.zero;
         private bool showList = true;
 
-        [MenuItem("ShiDevTools/Copy File Menu")]
+        [MenuItem("Tools/ShinnDev/Copy File Menu")]
         private static void OpenMenu()
         {
             // Open menu

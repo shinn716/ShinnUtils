@@ -63,7 +63,7 @@ namespace Shinn
 
         #region EDITOR
 #if UNITY_EDITOR
-        [MenuItem("ShiDevTools/Language Object/Import")]
+        [MenuItem("Tools/ShinnDev/Language Object/Import")]
         public static void Import()
         {
             string dir = EditorUtility.OpenFilePanel("Load JSON from file", "", ",json,Json,JSON");
@@ -86,7 +86,7 @@ namespace Shinn
             }
         }
 
-        [MenuItem("ShiDevTools/Language Object/Export")]
+        [MenuItem("Tools/ShinnDev/Language Object/Export")]
         public static void Export()
         {
             var target = OnSelectionChange();
