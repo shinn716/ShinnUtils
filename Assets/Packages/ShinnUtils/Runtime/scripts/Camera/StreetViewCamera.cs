@@ -11,7 +11,7 @@ public class StreetViewCamera : MonoBehaviour
     [Header("Rotation"), SerializeField] private float rotCameraSpeed = 2f;
 
     [Header("Roll"), SerializeField] private float zoomDampening = .1f;
-    [SerializeField] private float zoomTouchOffset = 1;
+    //[SerializeField] private float zoomTouchOffset = 1;
 
     [Header("Pan"),SerializeField] private float panSpeed = .4f;
 

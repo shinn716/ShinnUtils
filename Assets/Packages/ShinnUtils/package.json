@@ -34,6 +34,10 @@
     {
       "displayName": "WebGLBridgeSample",
       "path": "WebGLBridgeSample~"
+    },
+    {
+      "displayName": "NewInputAction",
+      "path": "NewInputAction~"
     }
   ]
 }
