@@ -2,7 +2,7 @@
   "name": "com.shinn.utils",
   "displayName": "ShinnUtils",
   "description": "Development tools",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "license": "free",
   "author": 
   {
@@ -38,6 +38,10 @@
     {
       "displayName": "NewInputAction",
       "path": "NewInputAction~"
+    },
+    {
+      "displayName": "AddressableSample",
+      "path": "AddressableSample~"
     }
   ]
 }

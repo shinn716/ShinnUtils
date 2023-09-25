@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: TextMesh
+  m_EditorClassIdentifier: 
+  m_GroupName: TextMesh
+  m_Data:
+    m_SerializedData: []
+  m_GUID: fe141621579fa6846b4c2cb3fa8b2f5a
+  m_SerializeEntries:
+  - m_GUID: 900340cb565e5e64dbf9438e9b7e3880
+    m_Address: group/notosanscjktc_regularsdf
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - textmesh
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 56793a2774164cb4abc9fe1d2c390744, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 83c26c9da9e67224ab5de5dee5bfa130, type: 2}
+    - {fileID: 11400000, guid: 1804c3a0c28158440940603d9718f41f, type: 2}

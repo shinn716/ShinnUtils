@@ -1,0 +1,185 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Materials
+  m_EditorClassIdentifier: 
+  m_GroupName: Materials
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 7998c91a84aa41147a78e08edbb2e44d
+  m_SerializeEntries:
+  - m_GUID: 99b063fd725de2144bfc7cbd025336f3
+    m_Address: "Assets/mdp/Materials/\u5F8C\u96FB\u6C60\u6AC3\u9580_bake_t.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 36a1e7fde6b5d3d428eaf7b94e7944c3
+    m_Address: "Assets/mdp/Materials/\u6D88\u9632\u9285\u6392_bake.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7581a9dbf9c8cfc4880e5e508567fcfc
+    m_Address: Assets/mdp/Materials/Hotspot2.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d84ea1a298a689b4aab32ab1bac51910
+    m_Address: "Assets/mdp/Materials/\u96FB\u6C60_\u5F8C.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d99e9380a1fc72f429b842a88d52a367
+    m_Address: Assets/mdp/Materials/highlight_1.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4cde8e66a9aebae42a808298ea7a65c9
+    m_Address: Assets/mdp/Materials/fence.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7dfcdf9af2c37f8439b22331edd0faf7
+    m_Address: Assets/mdp/Materials/glow.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e8bccfffd1c40b34399e1fc527faa1c6
+    m_Address: Assets/mdp/Materials/grassDark.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 181642e28849fba46974776b2eee69fa
+    m_Address: Assets/mdp/Materials/ACLightS.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 85e2b0c2c6a359b40a2b43ac4e8e0616
+    m_Address: "Assets/mdp/Materials/ACDC\u6AC3_bake.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f180aecce84f3fc4bb0de0bd1e379a9d
+    m_Address: Assets/mdp/Materials/plane_bake.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 289b294876985b54a9c52c6b3b7e699e
+    m_Address: Assets/mdp/Materials/line_particles.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f4ef96dd491536848a284306f9092f08
+    m_Address: Assets/mdp/Materials/line.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2422d0967c2f49c4a8c914dff2a23fc0
+    m_Address: Assets/mdp/Materials/Hotspot.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6531ebbf4b05d654fa000c314e24c1dc
+    m_Address: "Assets/mdp/Materials/\u96FB\u6C60_\u62BD.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c1db3b82987fbb744be39090027c9173
+    m_Address: "Assets/mdp/Materials/\u96FB\u6C60\u6AC3_bake.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0e12d62844c58204bb1e92d9e2988cbf
+    m_Address: "Assets/mdp/Materials/\u96FB\u6C60\u6BBC_bake.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 44609d4e94bc98a4d8ba952493eef57b
+    m_Address: "Assets/mdp/Materials/\u96FB\u6C60\u6BBC_\u5074.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 30be9779134173645ae4d4e5eb3f4339
+    m_Address: "Assets/mdp/Materials/\u524D\u96FB\u6C60\u6AC3\u9580_bake.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7cd1e555108ce7b438fd7675a3cc2694
+    m_Address: "Assets/mdp/Materials/\u5F8C\u96FB\u6C60\u6AC3\u9580_bake.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fe9c5fb15f817cf4c89a9809879756c1
+    m_Address: "Assets/mdp/Materials/\u8CA8\u6AC3_bake.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 71ab2fba4755e0741bba0959d4e09b15
+    m_Address: Assets/mdp/Materials/tireBake.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 30ebee89067807340b15d99097be80f4
+    m_Address: "Assets/mdp/Materials/ACDC\u63A7\u5236\u6AC3\u9580_bake.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: aed574fbeca93e54e99f98a739e1c141
+    m_Address: Assets/mdp/Materials/groundShadowRGB2048.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8f3b42922b5a51b438a9a15da08ab026
+    m_Address: Assets/mdp/Materials/TRUCKCColor.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e76f0235dfb1ddd44bcf68756e4f8715
+    m_Address: Assets/mdp/Materials/bg.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ddd138b00d6481f4882281f495c9950d
+    m_Address: Assets/mdp/Materials/bg_sky.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 28e99b526b635f54299d6f0ee73816f2
+    m_Address: Assets/mdp/Materials/Road_2.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d850f2e5be24a7c46b3e369721884641
+    m_Address: Assets/mdp/Materials/Truck_shadow.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 947d4d4e41fe6864b8cd3595cf7210aa
+    m_Address: Assets/mdp/Materials/bg_ground_2.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 31fc6db3816d95b48b0e5e596b963128
+    m_Address: Assets/mdp/Materials/bg_sky_2.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d855a20f2736a544598f304466700868
+    m_Address: "Assets/mdp/Materials/\u8CA8\u6AC302_RB_bake.mat"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 56793a2774164cb4abc9fe1d2c390744, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: e8e3d8b3bd698b14eb67864231ee4326, type: 2}
+    - {fileID: 11400000, guid: db9fd94f0984d454cb14bc2ef4ab125a, type: 2}
