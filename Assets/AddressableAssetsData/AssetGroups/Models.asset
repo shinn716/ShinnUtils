@@ -16,32 +16,7 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: 233398f1af9016a4a830d3003e15dbc2
-  m_SerializeEntries:
-  - m_GUID: ad7d54ce79dfc1745abc191c2228c591
-    m_Address: Assets/mdp/Models/MagicCube_Group.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: f7b430d304f79a5488f5f23e43d52f29
-    m_Address: Assets/mdp/Models/EISBG_Scene_fixGrass.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: fdf64fc4a2cb05b4d964fed2bad1c99d
-    m_Address: Assets/mdp/Models/Truck_animation.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 41e51ed283c1c2a44863f3383deb416a
-    m_Address: Assets/mdp/Models/MagicCube_Single.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 4cdb1af50f1429a4d9dacfbcc27f5c5a
-    m_Address: Assets/mdp/Models/bg.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
+  m_SerializeEntries: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 56793a2774164cb4abc9fe1d2c390744, type: 2}
   m_SchemaSet:

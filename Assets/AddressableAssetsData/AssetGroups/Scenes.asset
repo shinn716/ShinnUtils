@@ -16,43 +16,7 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: 105546ae0aa5e084583409a026a10a2c
-  m_SerializeEntries:
-  - m_GUID: 958ad2fb9eb0f4042a64d9a88d958418
-    m_Address: menu1
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - scene
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 883ed869687fd964b914da7771a31ef4
-    m_Address: home
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - scene
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 959f0e81e25ddaa4dbbad27e7bd7ba44
-    m_Address: menu2
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - scene
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 850226084a87c2d4d8a17e10f3be23da
-    m_Address: menu3
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - scene
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: b09dfda03a3223d48aeb94a3d043e3dc
-    m_Address: menu4
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - scene
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: bdb1350967ea2a14da17d32d74733c6b
-    m_Address: menu5
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - scene
-    FlaggedDuringContentUpdateRestriction: 0
+  m_SerializeEntries: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 56793a2774164cb4abc9fe1d2c390744, type: 2}
   m_SchemaSet:
