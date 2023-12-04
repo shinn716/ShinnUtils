@@ -1,9 +1,8 @@
 ﻿// Author: John Tsai
+// Last update: 11302023
 
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
@@ -18,42 +17,42 @@ namespace Shinn
         [Serializable]
         public class JsonData
         {
-            public string[] label;
+            public string[] language;
             public LanguageData[] datas;
 
             [Serializable]
             public class LanguageData
             {
                 [TextArea]
-                public string[] languageList;
+                public string[] context;
                 public string GUID;
             }
         }
 
         public JsonData allDatas;
-        
+
         [Tooltip("Copy to GUID")]
-        [SerializeField, Space] private string AutoGenGUID;
+        [SerializeField, Space] private string autoGenGUID;
         #endregion
 
         #region MAIN
         private void OnValidate()
         {
-            AutoGenGUID = Guid.NewGuid().ToString("N");
+            autoGenGUID = Guid.NewGuid().ToString("N");
         }
         #endregion
 
         #region PUBLIC
         public JsonData.LanguageData Find(string uuid)
         {
-            List<string> datauuid = new List<string>();
-            foreach (var i in allDatas.datas)
-                datauuid.Add(i.GUID);
+            var dataGuids = new List<string>(allDatas.datas.Length);
+            foreach (var data in allDatas.datas)
+                dataGuids.Add(data.GUID);
 
-            int index = Array.IndexOf(datauuid.ToArray(), uuid);
+            int index = dataGuids.IndexOf(uuid);
             if (index.Equals(-1))
             {
-                Debug.LogError("<color=red>[Error]</color>Not found " + uuid);
+                Debug.LogError("<color=red>[Error]</color>Not found " + "<color=red>" + uuid + "</color>");
                 return null;
             }
             else
@@ -103,28 +102,21 @@ namespace Shinn
         public bool buttonCopyGUID;
         public void CopyGUID()
         {
-            GUIUtility.systemCopyBuffer = AutoGenGUID;
+            GUIUtility.systemCopyBuffer = autoGenGUID;
         }
-
 
         private static LanguageObject OnSelectionChange()
         {
             if (Selection.activeObject is LanguageObject)
             {
                 if (Selection.assetGUIDs.Length > 0)
-                {
-                    var target = Selection.activeObject as LanguageObject;
-                    return target;
-                }
+                    return Selection.activeObject as LanguageObject;
             }
             return null;
         }
 #endif
         #endregion
     }
-
-
-
 }
 
 #if UNITY_EDITOR
