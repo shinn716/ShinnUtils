@@ -1,5 +1,6 @@
 {
     "name": "shinnUtils",
+    "rootNamespace": "",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
