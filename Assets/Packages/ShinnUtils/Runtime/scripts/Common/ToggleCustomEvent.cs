@@ -12,13 +12,25 @@ public class ToggleCustomEvent : MonoBehaviour
     [SerializeField] private UnityEvent isOnEvents = new UnityEvent();
     [SerializeField] private UnityEvent isOffEvents = new UnityEvent();
 
+    private Toggle toggle;
+
     private void OnEnable()
     {
         if (OnEnableEvent != null)
             OnEnableEvent.Invoke();
     }
 
-    public void OnValueChange(bool isOn)
+    /// <summary>
+    /// Start is called on the frame when a script is enabled just before
+    /// any of the Update methods is called the first time.
+    /// </summary>
+    void Start()
+    {
+        toggle = GetComponent<Toggle>();
+        toggle.onValueChanged.AddListener(OnValueChange);
+    }
+
+    private void OnValueChange(bool isOn)
     {
         if (isOn)
             isOnEvents.Invoke();
