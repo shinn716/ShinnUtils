@@ -1,13 +1,14 @@
-﻿using UnityEngine;
+﻿using System;
+using Cysharp.Threading.Tasks;
+using Delta.Input;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Camera))]
 public class Orbit : MonoBehaviour
 {
-    public static Orbit instance;
-
     #region DECLARE
-    [SerializeField] Transform povit;
+    [SerializeField] Transform pivot;
     [Header("Rotation"), SerializeField] private float rotCameraSpeed = .5f;
 
     [Header("Roll"), SerializeField] private float zoomDampening = .5f;
@@ -16,73 +17,68 @@ public class Orbit : MonoBehaviour
 
     [Space, SerializeField] private bool disableRoll = false;
     [SerializeField] private bool disablePan = false;
-    [SerializeField] bool autoStart = true;
-    [SerializeField] bool useKeyboard = false;
-    [SerializeField] bool enableKeyboard = true;
+    [SerializeField] float damping = 40;
 
     public bool Enable { get; set; } = true;
+    public Camera GetCamera { get; private set; } = null;
+    public event Action OnDraggingEvent = null;
 
     private Vector3 orgPos = Vector3.zero;
     private Quaternion orgRot = Quaternion.identity;
-    private Vector3 orgPovitPos = Vector3.zero;
-    private Quaternion orgPovitRot = Quaternion.identity;
+    private Vector3 orgPivotPos = Vector3.zero;
+    private Quaternion orgPivotRot = Quaternion.identity;
 
-    InputAction dragAction;
-    InputAction scrollAction;
-    InputAction panAction;
-
+    private InputAction dragAction = null;
+    private InputAction scrollAction = null;
+    private InputAction panAction = null;
     #endregion
 
     #region START
 
-    private void Awake()
+    /// <summary>
+    /// Awake is called when the script instance is being loaded.
+    /// </summary>
+    void Awake()
     {
-        instance = this;
+        GetCamera = GetComponent<Camera>();
     }
 
     private void Start()
     {
-        transform.SetParent(povit);
-
-        dragAction = TouchManager.instance.playerInput.actions["Drag"];
-        scrollAction = TouchManager.instance.playerInput.actions["Scroll"];
-        panAction = TouchManager.instance.playerInput.actions["Pan"];
-
-        dragAction.performed += Drag;
-        scrollAction.performed += Scroll;
-        panAction.performed += Pan;
-
+        transform.SetParent(pivot);
         orgPos = transform.localPosition;
         orgRot = transform.localRotation;
-        orgPovitPos = povit.transform.localPosition;
-        orgPovitRot = povit.transform.localRotation;
-
-        Enable = autoStart;
+        orgPivotPos = pivot.transform.localPosition;
+        orgPivotRot = pivot.transform.localRotation;
     }
 
-    private void Update()
+    /// <summary>
+    /// This function is called when the object becomes enabled and active.
+    /// </summary>
+    async private void OnEnable()
     {
-        if (!enableKeyboard)
-            return;
+        await UniTask.WaitUntil(() => InputManager.Instance.PlayerInput != null);
+        dragAction = InputManager.Instance.PlayerInput.actions["Drag"];
+        scrollAction = InputManager.Instance.PlayerInput.actions["Scroll"];
+        panAction = InputManager.Instance.PlayerInput.actions["Pan"];
 
-        if (Input.GetKey(KeyCode.W))
-            transform.Translate(Vector3.up * .01f);
-        else if (Input.GetKey(KeyCode.S))
-            transform.Translate(Vector3.down * .01f);
-        else if (Input.GetKey(KeyCode.A))
-            transform.Translate(Vector3.left * .01f);
-        else if (Input.GetKey(KeyCode.D))
-            transform.Translate(Vector3.right * .01f);
+        dragAction.performed += Drag;
+        scrollAction.performed += OnScroll;
+        panAction.performed += Pan;
     }
 
-    private void OnDestroy()
+    /// <summary>
+    /// This function is called when the behaviour becomes disabled or inactive.
+    /// </summary>
+    private void OnDisable()
     {
-        scrollAction.performed -= Scroll;
+        scrollAction.performed -= OnScroll;
         dragAction.performed -= Drag;
         panAction.performed -= Pan;
     }
 
-    private void Scroll(InputAction.CallbackContext ctx)
+
+    private void OnScroll(InputAction.CallbackContext ctx)
     {
         if (!Enable)
             return;
@@ -112,7 +108,7 @@ public class Orbit : MonoBehaviour
 
     private void Drag(InputAction.CallbackContext ctx)
     {
-        if (povit == null)
+        if (pivot == null)
             return;
 
         if (!Enable)
@@ -120,18 +116,8 @@ public class Orbit : MonoBehaviour
 
         var drag = ctx.ReadValue<Vector2>();
         Rotation(drag);
+        OnDraggingEvent?.Invoke();
     }
-
-    #endregion
-
-    #region PUBLIC
-    public void SetReset()
-    {
-        transform.SetLocalPositionAndRotation(orgPos, orgRot);
-        povit.SetLocalPositionAndRotation(orgPovitPos, orgPovitRot);
-    }
-    #endregion
-
     private float ClampAngle(float angle, float min, float max)
     {
         while (angle > 180f)
@@ -143,28 +129,27 @@ public class Orbit : MonoBehaviour
 
     private void Rotation(Vector2 deltaPos)
     {
-        Vector3 rot = povit.localEulerAngles;
+        Vector3 rot = pivot.localEulerAngles;
         rot.x = ClampAngle(rot.x - deltaPos.y, -20f, 60f);
         rot.y += deltaPos.x * rotCameraSpeed;
-        povit.localRotation = Quaternion.Slerp(povit.localRotation, Quaternion.Euler(rot), Time.deltaTime * 50);
+        rot.z = 0;
+        pivot.localRotation = Quaternion.Slerp(pivot.localRotation, Quaternion.Euler(rot), Time.deltaTime * damping);
     }
 
     private void Pan(float right, float forward)
     {
         transform.parent.Translate(panSpeed * right * Vector3.left, Space.Self);
         transform.parent.Translate(panSpeed * forward * Vector3.back, Space.Self);
-        // transform.parent.transform.position = Vector3.Scale(transform.parent.transform.position, new Vector3(1, 0, 1));
+        transform.parent.transform.position = Vector3.Scale(transform.parent.transform.position, new Vector3(1, 0, 1));
     }
 
-    [ContextMenu("DebugEnable")]
-    private void DebugEnable()
-    {
-        Enable = true;
-    }
+    #endregion
 
-    [ContextMenu("DebugDisable")]
-    private void DebugDisable()
+    #region PUBLIC
+    public void SetReset()
     {
-        Enable = false;
+        transform.SetLocalPositionAndRotation(orgPos, orgRot);
+        pivot.SetLocalPositionAndRotation(orgPivotPos, orgPivotRot);
     }
+    #endregion
 }

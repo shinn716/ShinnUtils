@@ -2,7 +2,7 @@
     "name": "TouchAction",
     "maps": [
         {
-            "name": "Touch",
+            "name": "Input",
             "id": "df02686e-ea9a-4a3e-8b83-dc6d08445079",
             "actions": [
                 {
@@ -76,6 +76,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "MidClick",
+                    "type": "Button",
+                    "id": "f6f4f558-2132-48c8-8d0c-2eb439b4dc72",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -137,7 +146,7 @@
                 {
                     "name": "modifier",
                     "id": "33369141-cdc6-4633-82e5-a3d11b1a12e0",
-                    "path": "<Mouse>/rightButton",
+                    "path": "<Mouse>/press",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -214,7 +223,7 @@
                 {
                     "name": "modifier",
                     "id": "356ebfab-ccd6-48e0-91c0-b1fbcc3b9a9a",
-                    "path": "<Mouse>/middleButton",
+                    "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -274,6 +283,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9b5e951d-8a28-40c9-be4a-1ceeb4694ba5",
+                    "path": "<Mouse>/middleButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MidClick",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -1,64 +1,77 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using System;
 using DG.Tweening;
+using UnityEngine;
 
-namespace Shinn
+[RequireComponent(typeof(CanvasGroup))]
+public class CanvasGroupHelper : MonoBehaviour
 {
-    [RequireComponent(typeof(CanvasGroup))]
-    public class CanvasGroupHelper : MonoBehaviour
+    [SerializeField] private bool scaleEFX = false;
+    [SerializeField] private float during = 0.5f;
+
+    public CanvasGroup canvasGroup { get; private set; }
+    public Action OnEnableAction { get; set; }
+    public Action OnDisableAction { get; set; }
+
+    private Vector3 originSize;
+
+    private void Awake()
     {
-        [SerializeField] bool scaleEFX = false;
-        [SerializeField] float during = .5f;
+        canvasGroup = GetComponent<CanvasGroup>();
+        originSize = transform.localScale;
+    }
 
-        public CanvasGroup canvasGroup { get; private set; } = null;
-        public Action OnEnableAction { get; set; } = null;
-        public Action OnDisableAction { get; set; } = null;
+    public void SetCanvasGroupState(bool enable)
+    {
+        if (canvasGroup.alpha == (enable ? 1 : 0)) return;  // 防止重複操作
+        canvasGroup.alpha = enable ? 1 : 0;
+        canvasGroup.blocksRaycasts = enable;
+        canvasGroup.interactable = enable;
 
-        private void Start()
+        if (enable)
         {
-            canvasGroup = GetComponent<CanvasGroup>();
+            OnEnableAction?.Invoke();
         }
-
-        public void EnableCanvas(bool _enable)
+        else
         {
-            canvasGroup.alpha = _enable ? 1 : 0;
-            canvasGroup.blocksRaycasts = _enable;
-            canvasGroup.interactable = _enable;
-
-            if (_enable)
-                OnEnableAction?.Invoke();
-            else
-                OnDisableAction?.Invoke();
+            OnDisableAction?.Invoke();
         }
+    }
 
-        public void Show()
+    public void Show(bool show)
+    {
+        if (show)
         {
-            canvasGroup.alpha = 1;
-            canvasGroup.interactable = true;
-            canvasGroup.blocksRaycasts = true;
+            Show();
+        }
+        else
+        {
+            Hide();
+        }
+    }
 
-            if (scaleEFX)
+    public void Show()
+    {
+        SetCanvasGroupState(true);
+
+        if (scaleEFX)
+        {
+            transform.localScale = Vector3.zero;
+            transform.DOScale(originSize, during).SetEase(Ease.OutExpo);
+        }
+    }
+
+    public void Hide()
+    {
+        if (scaleEFX)
+        {
+            transform.DOScale(Vector3.zero, during / 2).SetEase(Ease.OutQuad).OnComplete(() =>
             {
-                transform.localScale = Vector3.zero;
-                transform.DOScale(new Vector3(1, 1, 1), during).SetEase(Ease.OutExpo);
-            }
+                SetCanvasGroupState(false);
+            });
         }
-
-        public void Hide()
+        else
         {
-            canvasGroup.interactable = false;
-            canvasGroup.blocksRaycasts = false;
-
-            if (scaleEFX)
-            {
-                transform.localScale = Vector3.one;
-                transform.DOScale(new Vector3(0, 0, 0), during / 2).SetEase(Ease.OutQuad).OnComplete(() =>
-                {
-                    canvasGroup.alpha = 0;
-                });
-            }
+            SetCanvasGroupState(false);
         }
     }
 }

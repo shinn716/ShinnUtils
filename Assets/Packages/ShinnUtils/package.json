@@ -2,7 +2,7 @@
   "name": "com.shinn.utils",
   "displayName": "ShinnUtils",
   "description": "Development tools",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "license": "free",
   "author": 
   {
@@ -36,7 +36,7 @@
       "path": "WebGLBridgeSample~"
     },
     {
-      "displayName": "NewInputAction",
+      "displayName": "NewInputModule",
       "path": "NewInputAction~"
     },
     {
