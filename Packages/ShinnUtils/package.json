@@ -1,0 +1,64 @@
+{
+  "name": "com.shinn.utils",
+  "displayName": "ShinnUtils",
+  "description": "A collection of Unity development utilities: helpers, camera controllers, networking (TCP/UDP/Serial), object pooling, an event manager, and editor tools.",
+  "version": "1.0.0",
+  "unity": "6000.0",
+  "dependencies": {
+    "com.unity.ugui": "2.0.0"
+  },
+  "license": "MIT",
+  "author":
+  {
+    "name": "John Tsai",
+    "url": "https://github.com/shinn716"
+  },
+  "samples":
+  [
+    {
+      "displayName": "FirebaseStorageSample",
+      "description": "Upload and download files with Firebase Storage.",
+      "path": "FirebaseStorageSample~"
+    },
+    {
+      "displayName": "HDRP-ParticleSystemShader",
+      "description": "HDRP Shader Graph shaders and materials for particle systems.",
+      "path": "HDRPParticleSystemShader~"
+    },
+    {
+      "displayName": "Samples",
+      "description": "Core usage samples: ObjectPool, EventManager, TCP/UDP communication, and a language pack.",
+      "path": "Samples~"
+    },
+    {
+      "displayName": "SimpleDotween",
+      "description": "DOTween tweening helper with a custom editor.",
+      "path": "SimpleDotween~"
+    },
+    {
+      "displayName": "SimpleItween",
+      "description": "iTween-based tweening helper with path and single-value controllers.",
+      "path": "SimpleItween~"
+    },
+    {
+      "displayName": "WebGLBridgeSample",
+      "description": "Two-way messaging between a Unity WebGL build and a React host page.",
+      "path": "WebGLBridgeSample~"
+    },
+    {
+      "displayName": "NewInputModule",
+      "description": "Input System setup with orbit and first-person camera controls.",
+      "path": "NewInputAction~"
+    },
+    {
+      "displayName": "AddressableSample",
+      "description": "Load assets (including TextMeshPro) at runtime via Addressables.",
+      "path": "AddressableSample~"
+    },
+    {
+      "displayName": "CommonAssets",
+      "description": "Reusable shaders, materials, sprites, and demo prefabs.",
+      "path": "CommonAssets~"
+    }
+  ]
+}
