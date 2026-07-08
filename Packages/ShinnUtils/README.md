@@ -14,17 +14,17 @@ Unity Package Manager → **Add package from git URL…**, then paste a URL that
 points at the package sub-folder and pins a version tag:
 
 ```
-https://github.com/shinn716/ShinnUtils.git?path=/Packages/ShinnUtils#v0.4.0
+https://github.com/shinn716/ShinnUtils.git?path=/Packages/ShinnUtils#v1.0.0
 ```
 
 Or add it directly to `Packages/manifest.json`:
 
 ```json
-"com.shinn.utils": "https://github.com/shinn716/ShinnUtils.git?path=/Packages/ShinnUtils#v0.4.0"
+"com.shinn.utils": "https://github.com/shinn716/ShinnUtils.git?path=/Packages/ShinnUtils#v1.0.0"
 ```
 
 - `?path=` selects the package folder inside the repo (Unity 2019.3.4+).
-- `#v0.4.0` pins a released tag; omit it to track the default branch.
+- `#v1.0.0` pins a released tag; omit it to track the default branch.
 
 ## Assemblies
 
@@ -41,8 +41,18 @@ Or add it directly to `Packages/manifest.json`:
 | Patterns | `ObjectPool`, `IPooledObject`, `EventManager` |
 | Common | `Follower`, `Hover`, `RotateAround`, `RotateSelf`, `SyncTransform`, ... |
 
-> Types live under the `Shinn`, `Shinn.Common`, and `Shinn.Event` namespaces.
-> Some legacy files are still in the global namespace and are being migrated.
+> All runtime types live under the `Shinn`, `Shinn.Common`, or `Shinn.Event` namespaces.
+
+## Editor tools
+
+Under the **Tools ▸ ShinnDev** menu:
+
+| Tool | Purpose |
+|------|---------|
+| Batching Prefabs | Save the selected GameObjects as prefabs into a chosen folder |
+| Copy File Menu | Recursively copy a folder tree to a destination |
+| Find Missing Scripts | List GameObjects with missing script references in the selection (including children) |
+| Edit ▸ Always Start From Scene 0 | Toggle so entering Play mode always loads build scene 0 |
 
 ## Samples
 

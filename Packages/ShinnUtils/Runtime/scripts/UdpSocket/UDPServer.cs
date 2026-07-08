@@ -36,8 +36,8 @@ namespace Shinn.Common
         private IPEndPoint ipEndPoint;
         private UdpClient udpClient;
         private Thread thread;
-        private byte[] receiveByte;
-        private bool loop = false;
+        private volatile bool loop = false;
+        private readonly SynchronizationContext syncContext;
 
         public event Action<string> Receiver;
 
@@ -48,12 +48,15 @@ namespace Shinn.Common
         /// <param name="port"></param>
         public UDPServer(string ip = "127.0.0.1", int port = 10000)
         {
+            // Capture the creating thread's context (typically Unity's main thread)
+            // so received messages can be marshalled back for safe Unity API access.
+            syncContext = SynchronizationContext.Current;
+
             loop = true;
             ipEndPoint = new IPEndPoint(IPAddress.Parse(ip), port);
             udpClient = new UdpClient(ipEndPoint.Port);
-            receiveByte = new byte[1024];
 
-            thread = new Thread(() => ReceiveData());
+            thread = new Thread(ReceiveData) { IsBackground = true };
             thread.Start();
 
             Debug.Log($"Init UDPServer {ip}/{port}");
@@ -63,9 +66,19 @@ namespace Shinn.Common
         {
             while (loop)
             {
-                receiveByte = udpClient.Receive(ref ipEndPoint);
-                string receiveData = Encoding.UTF8.GetString(receiveByte);
-                Receiver?.Invoke(receiveData);
+                try
+                {
+                    byte[] receiveByte = udpClient.Receive(ref ipEndPoint);
+                    string receiveData = Encoding.UTF8.GetString(receiveByte);
+                    DispatchReceived(receiveData);
+                }
+                catch (Exception e) when (e is SocketException || e is ObjectDisposedException)
+                {
+                    // Closing the socket during Dispose() unblocks Receive here; exit quietly on shutdown.
+                    if (loop)
+                        Debug.LogError("UDPServer receive error: " + e);
+                    break;
+                }
             }
         }
 
@@ -75,8 +88,25 @@ namespace Shinn.Common
         public void Dispose()
         {
             loop = false;
-            udpClient?.Close();
-            thread?.Abort();
+            udpClient?.Close();   // unblocks the pending Receive()
+
+            if (thread != null && thread.IsAlive)
+                thread.Join(500);
+            thread = null;
+        }
+
+        // Marshal the callback back to the creating thread (typically Unity's main
+        // thread) so handlers can safely call Unity APIs.
+        private void DispatchReceived(string message)
+        {
+            var handler = Receiver;
+            if (handler == null)
+                return;
+
+            if (syncContext != null)
+                syncContext.Post(_ => handler(message), null);
+            else
+                handler(message);
         }
     }
 }
