@@ -1,0 +1,55 @@
+{
+  "name": "com.shinn.utils",
+  "displayName": "ShinnUtils",
+  "description": "Development tools",
+  "version": "0.4.0",
+  "unity": "6000.0",
+  "dependencies": {
+    "com.unity.ugui": "2.0.0"
+  },
+  "license": "MIT",
+  "author": 
+  {
+    "name": "John Tsai",
+    "url": "https://github.com/shinn716"
+  },
+  "samples": 
+  [
+    {
+      "displayName": "FirebaseStorageSample",
+      "path": "FirebaseStorageSample~"
+    },
+    {
+      "displayName": "HDRP-ParticleSystemShader",
+      "path": "HDRPParticleSystemShader~"
+    },
+    {
+      "displayName": "Samples",
+      "path": "Samples~"
+    },
+    {
+      "displayName": "SimpleDotween",
+      "path": "SimpleDotween~"
+    },
+    {
+      "displayName": "SimpleItween",
+      "path": "SimpleItween~"
+    },
+    {
+      "displayName": "WebGLBridgeSample",
+      "path": "WebGLBridgeSample~"
+    },
+    {
+      "displayName": "NewInputModule",
+      "path": "NewInputAction~"
+    },
+    {
+      "displayName": "AddressableSample",
+      "path": "AddressableSample~"
+    },
+    {
+      "displayName": "CommonAssets",
+      "path": "CommonAssets~"
+    }
+  ]
+}
