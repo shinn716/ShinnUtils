@@ -14,17 +14,17 @@ Unity Package Manager → **Add package from git URL…**, then paste a URL that
 points at the package sub-folder and pins a version tag:
 
 ```
-https://github.com/shinn716/ShinnUtils.git?path=/Packages/ShinnUtils#v1.0.0
+https://github.com/shinn716/ShinnUtils.git?path=/Packages/ShinnUtils#1.0.0
 ```
 
 Or add it directly to `Packages/manifest.json`:
 
 ```json
-"com.shinn.utils": "https://github.com/shinn716/ShinnUtils.git?path=/Packages/ShinnUtils#v1.0.0"
+"com.shinn.utils": "https://github.com/shinn716/ShinnUtils.git?path=/Packages/ShinnUtils#1.0.0"
 ```
 
 - `?path=` selects the package folder inside the repo (Unity 2019.3.4+).
-- `#v1.0.0` pins a released tag; omit it to track the default branch.
+- `#1.0.0` pins a released tag; omit it to track the default branch.
 
 ## Assemblies
 

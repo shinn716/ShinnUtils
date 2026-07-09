@@ -12,10 +12,10 @@ shaders/materials/prefabs ship as the **CommonAssets** sample.
 Unity Package Manager → **Add package from git URL…**:
 
 ```
-https://github.com/shinn716/ShinnUtils.git?path=/Packages/ShinnUtils#v1.0.0
+https://github.com/shinn716/ShinnUtils.git?path=/Packages/ShinnUtils#1.0.0
 ```
 
-Omit `#v1.0.0` to track the default branch. `?path=` requires Unity 2019.3.4+.
+Omit `#1.0.0` to track the default branch. `?path=` requires Unity 2019.3.4+.
 
 ### Newtonsoft.Json (only needed by some samples)
 
